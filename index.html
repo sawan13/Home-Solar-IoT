@@ -1090,9 +1090,9 @@ function buildChart() {
     let d = pts.map((p,i) => {
       if(i===0) return `M ${p[0].toFixed(1)},${p[1].toFixed(1)}`;
       const pr = pts[i-1];
-      const cx1 = pr[0]+(p[0]-pr[0])*0.5;
+      const cx1 = pr[0]+(p[0]-pr[0])*1;
       const cy1 = pr[1];
-      const cx2 = p[0]-(p[0]-pr[0])*0.5;
+      const cx2 = p[0]-(p[0]-pr[0])*1;
       const cy2 = p[1];
       return `C ${cx1.toFixed(1)},${cy1.toFixed(1)} ${cx2.toFixed(1)},${cy2.toFixed(1)} ${p[0].toFixed(1)},${p[1].toFixed(1)}`;
     }).join(' ');
