@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SolarOS Pro — User Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07111F; --bg1: #0B1929; --bg2: #0F2035; --bg3: #122440;
+  --glass: rgba(11,25,41,0.80); --glass2: rgba(11,25,41,0.55);
+  --rim: rgba(59,148,255,.12); --rim2: rgba(59,148,255,.25);
+  --txt: #C8DFEF; --txt2: #6B9AB8; --mut: #2A4A62;
+  --acc: #F5A623; --accB: #FF7733;
+  --grn: #00C896; --red: #FF3B5C; --blu: #3DB8FF; --pur: #9B5DE5;
+  --glow: rgba(245,166,35,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(59,148,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(59,148,255,.035) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;}
+
+/* Header */
+header{position:sticky;top:0;z-index:200;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:rgba(11,25,41,.86);backdrop-filter:blur(32px);border-bottom:1px solid var(--rim);}
+.logo{display:flex;align-items:center;gap:13px;cursor:pointer;}
+.logo-gem{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--acc),var(--accB));display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 0 28px var(--glow);}
+.logo-n{font-family:'Rajdhani';font-size:20px;font-weight:700;letter-spacing:1px;color:var(--txt);}
+.logo-n em{color:var(--acc);font-style:normal;}
+.logo-s{font-family:'JetBrains Mono';font-size:10px;color:var(--mut);letter-spacing:.8px;margin-top:1px;}
+.hdr-r{display:flex;align-items:center;gap:10px;}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:6px 15px;border-radius:24px;background:var(--glass2);border:1px solid var(--rim2);font-family:'JetBrains Mono';font-size:11px;color:var(--acc);}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--grn);box-shadow:0 0 9px var(--grn);animation:livepulse 2s infinite;}
+@keyframes livepulse{0%,100%{opacity:1}50%{opacity:.25}}
+#clock{font-family:'JetBrains Mono';font-size:13px;color:var(--txt2);background:var(--glass2);border:1px solid var(--rim);padding:6px 14px;border-radius:10px;}
+
+/* Sidebar Toggle */
+.sidebar-toggle{display:none;width:40px;height:40px;background:var(--glass2);border:1px solid var(--rim2);border-radius:10px;cursor:pointer;align-items:center;justify-content:center;font-size:20px;color:var(--txt);margin-right:10px;}
+.sidebar-toggle:hover{background:var(--rim);}
+
+/* Sidebar */
+.sidebar{position:fixed;top:0;left:-260px;width:260px;height:100vh;background:rgba(11,25,41,.98);backdrop-filter:blur(32px);border-right:1px solid var(--rim);z-index:300;padding:20px 0;transition:left .3s ease;display:flex;flex-direction:column;}
+.sidebar.open{left:0;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;}
+.sidebar-overlay.show{display:block;}
+.sidebar-logo{display:flex;align-items:center;gap:12px;padding:0 20px 20px;border-bottom:1px solid var(--rim);margin-bottom:10px;}
+.sidebar-logo .logo-gem{width:36px;height:36px;font-size:18px;}
+.sidebar-logo-text{font-family:'Rajdhani';font-size:16px;font-weight:700;color:var(--txt);}
+.sidebar-logo-text em{color:var(--acc);}
+.sidebar-nav{display:flex;flex-direction:column;gap:4px;padding:0 10px;}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;color:var(--txt2);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;}
+.sidebar-link:hover{background:var(--glass2);color:var(--txt);}
+.sidebar-link.active{background:linear-gradient(135deg,var(--acc),var(--accB));color:var(--bg);}
+.sidebar-link-icon{font-size:18px;width:24px;}
+.sidebar-close{position:absolute;top:15px;right:15px;width:32px;height:32px;background:var(--glass2);border:1px solid var(--rim2);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--txt2);}
+.sidebar-close:hover{color:var(--txt);}
+.user-info{padding:16px 20px;border-top:1px solid var(--rim);margin-top:auto;}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--pur),var(--blu));display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:8px;}
+.user-name{font-weight:600;font-size:14px;}
+.user-role{font-size:11px;color:var(--mut);}
+
+/* Main */
+.wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:24px;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px;}
+.page-title{font-family:'Rajdhani';font-size:28px;font-weight:700;display:flex;align-items:center;gap:12px;}
+.page-title span{font-size:24px;}
+.page-subtitle{font-size:13px;color:var(--mut);margin-top:4px;}
+
+/* Card */
+.card{background:var(--glass);backdrop-filter:blur(28px);border:1px solid var(--rim);border-radius:20px;padding:26px;box-shadow:0 4px 30px rgba(0,0,0,.4);margin-bottom:20px;}
+.card-title{font-family:'JetBrains Mono';font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;}
+.badge{font-size:10px;padding:3px 11px;border-radius:20px;font-family:'JetBrains Mono';letter-spacing:.6px;font-weight:500;}
+.badge-admin{background:rgba(155,93,229,.14);color:var(--pur);border:1px solid rgba(155,93,229,.3);}
+.badge-user{background:rgba(61,184,255,.14);color:var(--blu);border:1px solid rgba(61,184,255,.3);}
+.badge-green{background:rgba(0,200,150,.14);color:var(--grn);border:1px solid rgba(0,200,150,.3);}
+
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px;}
+.stat-card{background:var(--glass);border:1px solid var(--rim);border-radius:16px;padding:20px;display:flex;align-items:center;gap:16px;}
+.stat-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.stat-icon.users{background:rgba(155,93,229,.15);border:1px solid rgba(155,93,229,.3);}
+.stat-icon.admins{background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);}
+.stat-icon.active{background:rgba(0,200,150,.15);border:1px solid rgba(0,200,150,.3);}
+.stat-info{}
+.stat-label{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1px;}
+.stat-value{font-family:'Rajdhani';font-size:32px;font-weight:700;}
+
+/* Users Table */
+.table-wrap{overflow-x:auto;}
+.users-table{width:100%;border-collapse:collapse;}
+.users-table th{text-align:left;padding:14px 16px;background:var(--bg2);color:var(--mut);font-size:10px;text-transform:uppercase;letter-spacing:1px;font-family:'JetBrains Mono';border-bottom:1px solid var(--rim);}
+.users-table td{padding:16px;border-bottom:1px solid var(--rim);vertical-align:middle;}
+.users-table tr:last-child td{border-bottom:none;}
+.users-table tr:hover{background:var(--glass2);}
+.user-cell{display:flex;align-items:center;gap:12px;}
+.user-avatar-small{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--blu),var(--pur));display:flex;align-items:center;justify-content:center;font-size:16px;}
+.user-details{}
+.user-name-cell{font-weight:600;font-size:14px;}
+.user-email-cell{font-size:12px;color:var(--mut);}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;}
+.btn-primary{background:linear-gradient(135deg,var(--acc),var(--accB));color:#0a0f15;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(245,166,35,.35);}
+.btn-secondary{background:var(--glass2);color:var(--txt2);border:1px solid var(--rim2);}
+.btn-secondary:hover{background:var(--rim);}
+.btn-danger{background:rgba(255,59,92,.15);color:var(--red);border:1px solid rgba(255,59,92,.3);}
+.btn-danger:hover{background:rgba(255,59,92,.25);}
+.btn-sm{padding:6px 12px;font-size:12px;}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--bg1);border:1px solid var(--rim);border-radius:20px;padding:28px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.modal-title{font-family:'Rajdhani';font-size:22px;font-weight:700;}
+.modal-close{width:32px;height:32px;background:var(--glass2);border:1px solid var(--rim2);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--txt2);}
+.modal-close:hover{color:var(--txt);}
+.form-group{margin-bottom:18px;}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.form-input,.form-select{width:100%;padding:12px 14px;background:var(--bg2);border:1px solid var(--rim2);border-radius:10px;color:var(--txt);font-size:14px;}
+.form-input:focus,.form-select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(245,166,35,.15);}
+.modal-actions{display:flex;gap:12px;margin-top:24px;}
+.modal-actions .btn{flex:1;}
+
+/* Logout */
+.logout-btn{background:rgba(255,59,92,.15);color:var(--red);border:1px solid rgba(255,59,92,.3);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;}
+.logout-btn:hover{background:rgba(255,59,92,.25);}
+
+/* Responsive */
+@media(max-width:900px){
+  .sidebar-toggle{display:flex;}
+  header .hdr-r .chip{display:none;}
+}
+@media(min-width:901px){
+  .sidebar,.sidebar-overlay,.sidebar-toggle{display:none !important;}
+}
+@media(max-width:768px){
+  header{padding:0 14px;height:54px;}
+  .logo-gem{width:32px;height:32px;font-size:16px;}
+  .logo-n{font-size:16px;}
+  .logo-s{display:none;}
+  .wrap{padding:14px;}
+  .page-title{font-size:22px;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .card{padding:16px;border-radius:14px;}
+  .users-table th,.users-table td{padding:10px 8px;font-size:12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-close" onclick="toggleSidebar()">✕</div>
+  <div class="sidebar-logo" onclick="window.location.href='index.html'">
+    <div class="logo-gem">☀️</div>
+    <div class="sidebar-logo-text">Solar<span>OS</span> Pro</div>
+  <div class="sidebar-nav">
+    <div class="sidebar-link" onclick="window.location.href='index.html'"><span class="sidebar-link-icon">📊</span> Dashboard</div>
+    <div class="sidebar-link" onclick="window.location.href='powerflow.html'"><span class="sidebar-link-icon">⚡</span> Power Flow</div>
+    <div class="sidebar-link" onclick="window.location.href='analytics.html'"><span class="sidebar-link-icon">📈</span> Analytics</div>
+    <div class="sidebar-link" onclick="window.location.href='devices.html'"><span class="sidebar-link-icon">📱</span> Devices</div>
+    <div class="sidebar-link active" onclick="window.location.href='users.html'"><span class="sidebar-link-icon">👥</span> Users</div>
+    <div class="sidebar-link" onclick="window.location.href='settings.html'"><span class="sidebar-link-icon">⚙️</span> Settings</div>
+  <div class="user-info">
+    <div class="user-avatar">👤</div>
+    <div class="user-name" id="currentUserName">Admin</div>
+    <div class="user-role">Administrator</div>
+    <button class="logout-btn" onclick="logout()" style="margin-top:12px;width:100%;">🚪 Logout</button>
+  </div>
+</nav>
+
+<!-- Header -->
+<header>
+  <div style="display:flex;align-items:center;">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="logo" onclick="window.location.href='index.html'">
+      <div class="logo-gem">☀️</div>
+      <div><div class="logo-n">Solar<span style="color:var(--acc)">OS</span> Pro</div><div class="logo-s">USER MANAGEMENT</div>
+    </div>
+  <div class="hdr-r">
+    <div class="chip"><div class="dot-live"></div><span>LIVE</span></div>
+    <div id="clock">--:--</div>
+</header>
+
+<div class="wrap">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title"><span>👥</span> User Management</h1>
+      <p class="page-subtitle">Manage system users and their access permissions</p>
+    </div>
+    <button class="btn btn-primary" onclick="openModal()">➕ Add User</button>
+  </div>
+  
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon users">👥</div>
+      <div class="stat-info">
+        <div class="stat-label">Total Users</div>
+        <div class="stat-value" id="totalUsers">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon admins">⚡</div>
+      <div class="stat-info">
+        <div class="stat-label">Administrators</div>
+        <div class="stat-value" id="totalAdmins">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon active">✓</div>
+      <div class="stat-info">
+        <div class="stat-label">Active Sessions</div>
+        <div class="stat-value" id="activeSessions">1</div>
+    </div>
+  
+  <!-- Users Table -->
+  <div class="card">
+    <div class="card-title">
+      System Users
+      <span class="badge badge-green">Admin Only</span>
+    </div>
+    <div class="table-wrap">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <!-- Users will be loaded here -->
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<!-- Add/Edit User Modal -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modalTitle">➕ Add New User</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <form id="userForm">
+      <input type="hidden" id="editUserIndex">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-input" id="userUsername" placeholder="Enter username" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-input" id="userName" placeholder="Enter full name" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" id="userEmail" placeholder="user@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" id="userPassword" placeholder="Enter password" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role</label>
+        <select class="form-select" id="userRole">
+          <option value="user">User</option>
+          <option value="admin">Administrator</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">💾 Save User</button>
+      </div>
+    </form>
+  </div>
+
+<script>
+// Check admin authentication
+const currentUser = JSON.parse(localStorage.getItem('solarCurrentUser'));
+if(!currentUser || currentUser.role !== 'admin'){
+  window.location.href = 'login.html';
+}
+
+// Get users from localStorage or initialize
+function getUsers(){
+  return JSON.parse(localStorage.getItem('solarUsers') || '[]');
+}
+
+function saveUsers(users){
+  localStorage.setItem('solarUsers', JSON.stringify(users));
+}
+
+// Initialize with default users if empty
+if(!localStorage.getItem('solarUsers')){
+  saveUsers([
+    {username:'admin',password:'admin123',role:'admin',name:'Administrator',email:'admin@solaros.local',created:new Date().toISOString()},
+    {username:'user',password:'user123',role:'user',name:'John Doe',email:'john@example.com',created:new Date().toISOString()}
+  ]);
+}
+
+// Update stats
+function updateStats(){
+  const users = getUsers();
+  const admins = users.filter(u => u.role === 'admin').length;
+  document.getElementById('totalUsers').textContent = users.length;
+  document.getElementById('totalAdmins').textContent = admins;
+  document.getElementById('activeSessions').textContent = currentUser ? '1' : '0';
+}
+
+// Render users table
+function renderUsers(){
+  const users = getUsers();
+  const tbody = document.getElementById('usersTableBody');
+  tbody.innerHTML = '';
+  
+  users.forEach((user, index) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div class="user-cell">
+          <div class="user-avatar-small">${user.role === 'admin' ? '👑' : '👤'}</div>
+          <div class="user-details">
+            <div class="user-name-cell">${user.name}</div>
+            <div class="user-email-cell">${user.email || 'No email'}</div>
+        </div>
+      </td>
+      <td><span class="badge ${user.role === 'admin' ? 'badge-admin' : 'badge-user'}">${user.role}</span></td>
+      <td><span class="badge badge-green">Active</span></td>
+      <td>${user.created ? new Date(user.created).toLocaleDateString() : 'N/A'}</td>
+      <td>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-sm btn-secondary" onclick="editUser(${index})">✏️ Edit</button>
+          ${user.username !== 'admin' ? `<button class="btn btn-sm btn-danger" onclick="deleteUser(${index})">🗑️</button>` : ''}
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// Open modal for adding user
+function openModal(user = null){
+  document.getElementById('userModal').classList.add('show');
+  document.getElementById('modalTitle').textContent = user ? '✏️ Edit User' : '➕ Add New User';
+  document.getElementById('userForm').reset();
+  document.getElementById('editUserIndex').value = user ? user.index : '';
+  
+  if(user){
+    document.getElementById('userUsername').value = user.user.username;
+    document.getElementById('userName').value = user.user.name;
+    document.getElementById('userEmail').value = user.user.email || '';
+    document.getElementById('userPassword').value = user.user.password;
+    document.getElementById('userRole').value = user.user.role;
+  }
+}
+
+// Close modal
+function closeModal(){
+  document.getElementById('userModal').classList.remove('show');
+}
+
+// Edit user
+function editUser(index){
+  const users = getUsers();
+  openModal({user: users[index], index});
+}
+
+// Delete user
+function deleteUser(index){
+  if(confirm('Are you sure you want to delete this user?')){
+    const users = getUsers();
+    users.splice(index, 1);
+    saveUsers(users);
+    renderUsers();
+    updateStats();
+  }
+}
+
+// Save user (add or update)
+document.getElementById('userForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  
+  const users = getUsers();
+  const editIndex = document.getElementById('editUserIndex').value;
+  
+  const newUser = {
+    username: document.getElementById('userUsername').value,
+    name: document.getElementById('userName').value,
+    email: document.getElementById('userEmail').value,
+    password: document.getElementById('userPassword').value,
+    role: document.getElementById('userRole').value,
+    created: editIndex !== '' ? users[editIndex].created : new Date().toISOString()
+  };
+  
+  if(editIndex !== ''){
+    users[editIndex] = newUser;
+  } else {
+    users.push(newUser);
+  }
+  
+  saveUsers(users);
+  closeModal();
+  renderUsers();
+  updateStats();
+});
+
+// Toggle sidebar
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+
+// Logout
+function logout(){
+  localStorage.removeItem('solarCurrentUser');
+  localStorage.removeItem('solarToken');
+  window.location.href = 'login.html';
+}
+
+// Clock
+setInterval(()=>{ document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }, 1000);
+document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+
+// Update user info in sidebar
+if(currentUser){
+  document.getElementById('currentUserName').textContent = currentUser.name || currentUser.username;
+}
+
+// Initialize
+updateStats();
+renderUsers();
+</script>
+</body>
+</html>

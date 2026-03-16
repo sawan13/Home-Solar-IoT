@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>KSolare 5GPro · Solar Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════
+   THEME VARIABLES
+   dawn 5-7h · day 7-17h · dusk 17-19.5h · night 19.5-5h
+   ══════════════════════════════════════════ */
+:root {
+  --ease: cubic-bezier(.22,1,.36,1);
+  --snap: cubic-bezier(.4,0,.2,1);
+  --tf: .18s; --tm: .45s; --ts: 1.5s;
+}
+
+/* DAY — deep navy/slate with amber sun */
+[data-theme="day"] {
+  --bg:    #07111F; --bg1: #0B1929; --bg2: #0F2035; --bg3: #122440;
+  --glass: rgba(11,25,41,0.80); --glass2: rgba(11,25,41,0.55);
+  --rim:   rgba(59,148,255,.12); --rim2: rgba(59,148,255,.25);
+  --txt:   #C8DFEF; --txt2: #6B9AB8; --mut: #2A4A62;
+  --acc:   #F5A623; --accB: #FF7733;
+  --grn:   #00C896; --red: #FF3B5C; --blu: #3DB8FF; --pur: #9B5DE5;
+  --glow:  rgba(245,166,35,.35); --glowG: rgba(0,200,150,.25);
+  --glowB: rgba(61,184,255,.2);  --glowR: rgba(255,59,92,.25);
+  --sh:    0 4px 30px rgba(0,0,0,.4);
+  --shH:   0 12px 50px rgba(0,0,0,.65);
+  --orbC:  radial-gradient(circle at 36% 36%,#FFE566,#F5A623 55%,#FF7733);
+  --orbG:  rgba(245,166,35,.5);
+  --grid:  rgba(59,148,255,.035);
+  --scanL: rgba(59,148,255,.06);
+}
+/* DAWN — deep burnt orange */
+[data-theme="dawn"] {
+  --bg:    #0E0400; --bg1: #180700; --bg2: #220B00; --bg3: #2C0F00;
+  --glass: rgba(22,7,0,.82); --glass2: rgba(22,7,0,.58);
+  --rim:   rgba(255,115,30,.12); --rim2: rgba(255,115,30,.26);
+  --txt:   #FFE2B8; --txt2: #C07040; --mut: #6A3015;
+  --acc:   #FF6420; --accB: #FFA030;
+  --grn:   #44FF88; --red: #FF4444; --blu: #FFB060; --pur: #FF88CC;
+  --glow:  rgba(255,100,32,.45); --glowG: rgba(68,255,136,.2);
+  --glowB: rgba(255,176,96,.22); --glowR: rgba(255,68,68,.25);
+  --sh:    0 4px 30px rgba(0,0,0,.5);
+  --shH:   0 12px 50px rgba(0,0,0,.7);
+  --orbC:  radial-gradient(circle at 36% 36%,#FFD070,#FF6420 55%,#C03000);
+  --orbG:  rgba(255,100,32,.55);
+  --grid:  rgba(255,115,30,.035);
+  --scanL: rgba(255,115,30,.06);
+}
+/* DUSK — deep indigo/violet */
+[data-theme="dusk"] {
+  --bg:    #060112; --bg1: #0A021C; --bg2: #0F0428; --bg3: #150633;
+  --glass: rgba(10,2,28,.82); --glass2: rgba(10,2,28,.58);
+  --rim:   rgba(160,100,255,.12); --rim2: rgba(160,100,255,.26);
+  --txt:   #E8DAFF; --txt2: #9070C8; --mut: #4A2C6A;
+  --acc:   #FFBB33; --accB: #B06AFF;
+  --grn:   #30FFBB; --red: #FF4488; --blu: #BB88FF; --pur: #FF88FF;
+  --glow:  rgba(255,187,51,.35); --glowG: rgba(48,255,187,.2);
+  --glowB: rgba(187,136,255,.22); --glowR: rgba(255,68,136,.25);
+  --sh:    0 4px 30px rgba(0,0,0,.5);
+  --shH:   0 12px 50px rgba(0,0,0,.7);
+  --orbC:  radial-gradient(circle at 36% 36%,#FFD870,#FF8820 50%,#9B1AC8);
+  --orbG:  rgba(255,187,51,.4);
+  --grid:  rgba(160,100,255,.035);
+  --scanL: rgba(160,100,255,.06);
+}
+/* NIGHT — near-black with cool steel blue */
+[data-theme="night"] {
+  --bg:    #010508; --bg1: #02090F; --bg2: #040D18; --bg3: #071220;
+  --glass: rgba(3,9,18,.85); --glass2: rgba(3,9,18,.62);
+  --rim:   rgba(255,255,255,.055); --rim2: rgba(255,255,255,.10);
+  --txt:   #C5D8EA; --txt2: #4A6880; --mut: #1E3040;
+  --acc:   #FFC233; --accB: #30D9AA;
+  --grn:   #0DD898; --red: #F03358; --blu: #4EB8FF; --pur: #AA7BFF;
+  --glow:  rgba(255,194,51,.2); --glowG: rgba(13,216,152,.18);
+  --glowB: rgba(78,184,255,.15); --glowR: rgba(240,51,88,.2);
+  --sh:    0 4px 30px rgba(0,0,0,.65);
+  --shH:   0 14px 55px rgba(0,0,0,.88);
+  --orbC:  radial-gradient(circle at 40% 40%,#E8F0FF,#B4CCEC 55%,#6888AA);
+  --orbG:  rgba(178,205,255,.18);
+  --grid:  rgba(255,255,255,.022);
+  --scanL: rgba(78,184,255,.05);
+}
+
+/* ── RESET ── */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg); color:var(--txt);
+  min-height:100vh; overflow-x:hidden;
+  transition: background var(--ts) var(--ease), color var(--ts) var(--ease);
+}
+
+/* ── GRID BG ── */
+body::before{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:52px 52px;
+  transition:background var(--ts) var(--ease);
+}
+
+/* Scan line sweep */
+body::after{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:linear-gradient(to bottom,transparent 0%,var(--scanL) 50%,transparent 100%);
+  background-size:100% 200px;
+  animation:scanSweep 8s linear infinite;
+}
+@keyframes scanSweep{from{background-position:0 -200px}to{background-position:0 100vh}}
+
+/* ── AMBIENT BLOBS ── */
+.amb{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.b{position:absolute;border-radius:50%;filter:blur(100px);transition:all var(--ts) var(--ease);}
+.b1{width:650px;height:650px;top:-18%;right:-12%;background:var(--glow);opacity:.15;}
+.b2{width:480px;height:480px;bottom:8%;left:-10%;background:var(--blu);opacity:.07;}
+.b3{width:320px;height:320px;top:42%;left:28%;background:var(--grn);opacity:.05;}
+
+/* Stars */
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 2.5s;}
+[data-theme="night"] .stars{opacity:1;}
+.st{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--sd,3s) ease-in-out infinite var(--ss,0s);}
+@keyframes twinkle{0%,100%{opacity:.08;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+.shoot{position:fixed;opacity:0;top:15%;left:8%;animation:sshot 10s 5s infinite;}
+@keyframes sshot{0%,100%{opacity:0;transform:translate(0,0) rotate(22deg)}4%{opacity:1}28%{opacity:0;transform:translate(340px,155px) rotate(22deg)}}
+.shoot::after{content:'';position:absolute;right:3px;top:0.5px;width:100px;height:1.5px;background:linear-gradient(to left,rgba(255,255,255,.85),transparent);transform-origin:right center;}
+
+/* ── ORB ── */
+.orb-w{position:fixed;top:50px;right:5.5%;z-index:1;pointer-events:none;transition:all var(--ts) var(--ease);}
+.orb{
+  width:64px;height:64px;border-radius:50%;background:var(--orbC);
+  box-shadow:0 0 0 18px color-mix(in srgb,var(--orbG) 20%,transparent),
+             0 0 60px var(--orbG),0 0 130px color-mix(in srgb,var(--orbG) 30%,transparent);
+  animation:orbFloat 7s ease-in-out infinite;
+  transition:all var(--ts) var(--ease);
+}
+[data-theme="night"] .orb{width:50px;height:50px;}
+@keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:200;height:62px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 26px;
+  background:color-mix(in srgb,var(--bg1) 86%,transparent);
+  backdrop-filter:blur(32px) saturate(200%);
+  -webkit-backdrop-filter:blur(32px) saturate(200%);
+  border-bottom:1px solid var(--rim);
+  transition:background var(--ts) var(--ease),border-color var(--ts) var(--ease);
+}
+.logo{display:flex;align-items:center;gap:13px;}
+.logo-gem{
+  width:38px;height:38px;border-radius:11px;
+  background:linear-gradient(135deg,var(--acc),var(--accB));
+  display:flex;align-items:center;justify-content:center;font-size:19px;
+  box-shadow:0 0 28px var(--glow);
+  animation:gemGlow 4s ease-in-out infinite;
+  transition:all var(--ts) var(--ease);
+}
+@keyframes gemGlow{0%,100%{box-shadow:0 0 22px var(--glow)}50%{box-shadow:0 0 44px var(--glow),0 0 88px color-mix(in srgb,var(--glow) 40%,transparent)}}
+.logo-n{font-family:'Rajdhani';font-size:20px;font-weight:700;letter-spacing:1px;color:var(--txt);}
+.logo-n em{color:var(--acc);font-style:normal;}
+.logo-s{font-family:'JetBrains Mono';font-size:10px;color:var(--mut);letter-spacing:.8px;margin-top:1px;}
+.hdr-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:6px 15px;border-radius:24px;
+  background:var(--glass2);border:1px solid var(--rim2);
+  backdrop-filter:blur(14px);
+  font-family:'JetBrains Mono';font-size:11px;color:var(--acc);
+  transition:all var(--tm) var(--ease);
+}
+.chip:hover{box-shadow:0 0 18px var(--glow);}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--grn);box-shadow:0 0 9px var(--grn);animation:livepulse 2s infinite;}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.7)}}
+#clock{
+  font-family:'JetBrains Mono';font-size:13px;color:var(--txt2);
+  background:var(--glass2);border:1px solid var(--rim);
+  backdrop-filter:blur(14px);padding:6px 14px;border-radius:10px;
+  letter-spacing:.6px;transition:all var(--ts) var(--ease);
+}
+
+/* ── LAYOUT ── */
+.wrap{position:relative;z-index:2;max-width:1420px;margin:0 auto;padding:0 24px 90px;}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:5px;padding:22px 0 18px;flex-wrap:wrap;}
+.tab{
+  padding:8px 19px;border-radius:12px;
+  font-family:'Rajdhani';font-size:14px;font-weight:600;letter-spacing:.5px;
+  border:1px solid var(--rim);color:var(--mut);background:transparent;
+  cursor:pointer;white-space:nowrap;
+  transition:all var(--tf) var(--ease);
+}
+.tab:hover{background:var(--glass2);color:var(--txt2);border-color:var(--rim2);transform:translateY(-1px);box-shadow:var(--sh);}
+.tab.on{
+  background:linear-gradient(135deg,var(--acc),var(--accB));
+  color:var(--bg);border-color:transparent;
+  box-shadow:0 4px 24px var(--glow);font-weight:700;
+}
+
+/* ── PANE ── */
+.pane{display:none;}
+.pane.on{display:block;animation:paneIn .38s var(--ease);}
+@keyframes paneIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ── CARD ── */
+.card{
+  background:var(--glass);
+  backdrop-filter:blur(28px) saturate(170%);
+  -webkit-backdrop-filter:blur(28px) saturate(170%);
+  border:1px solid var(--rim);border-radius:20px;padding:26px;
+  box-shadow:var(--sh);position:relative;overflow:hidden;
+  transition:background var(--ts) var(--ease),border-color var(--ts) var(--ease),
+             box-shadow var(--tf) var(--ease),transform var(--tf) var(--ease);
+}
+.card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;border-radius:20px;
+  background:linear-gradient(135deg,rgba(255,255,255,.025) 0%,transparent 55%);
+}
+.card:hover{box-shadow:var(--shH);border-color:var(--rim2);}
+.ct{
+  font-family:'JetBrains Mono';font-size:10px;text-transform:uppercase;letter-spacing:2px;
+  color:var(--mut);margin-bottom:20px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:color var(--ts) var(--ease);
+}
+/* badges */
+.bdg{font-size:10px;padding:3px 11px;border-radius:20px;font-family:'JetBrains Mono';letter-spacing:.6px;font-weight:500;}
+.bl{background:color-mix(in srgb,var(--grn) 14%,transparent);color:var(--grn);border:1px solid color-mix(in srgb,var(--grn) 30%,transparent);}
+.bw{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red);border:1px solid color-mix(in srgb,var(--red) 30%,transparent);}
+.bi{background:color-mix(in srgb,var(--blu) 14%,transparent);color:var(--blu);border:1px solid color-mix(in srgb,var(--blu) 30%,transparent);}
+.ba{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent);}
+
+/* ── GRIDS ── */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;}
+.gfl{display:grid;grid-template-columns:1fr 310px;gap:16px;margin-bottom:16px;}
+@media(max-width:1100px){.g4{grid-template-columns:1fr 1fr;}.gfl{grid-template-columns:1fr;}}
+@media(max-width:680px){.g4{grid-template-columns:1fr 1fr;}.g3{grid-template-columns:1fr;}.g2{grid-template-columns:1fr;}}
+@media(max-width:420px){.g4{grid-template-columns:1fr;}}
+
+/* ── KPI ── */
+.kpi{
+  background:var(--glass);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+  border:1px solid var(--rim);border-radius:18px;padding:22px;
+  position:relative;overflow:hidden;cursor:default;
+  transition:all var(--tf) var(--ease);
+  animation:cardIn .55s var(--ease) both;
+}
+.kpi:nth-child(1){animation-delay:.04s}.kpi:nth-child(2){animation-delay:.09s}
+.kpi:nth-child(3){animation-delay:.14s}.kpi:nth-child(4){animation-delay:.19s}
+@keyframes cardIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:18px 18px 0 0;background:linear-gradient(90deg,transparent,var(--kc) 50%,transparent);}
+.kpi:hover{transform:translateY(-4px);box-shadow:var(--shH);border-color:var(--rim2);}
+.kpi-g{position:absolute;top:-22px;right:-22px;width:110px;height:110px;border-radius:50%;background:var(--kc);filter:blur(42px);opacity:.12;transition:opacity var(--tm);}
+.kpi:hover .kpi-g{opacity:.22;}
+.kpi-icon{font-size:22px;margin-bottom:11px;display:block;}
+.kpi-l{font-family:'JetBrains Mono';font-size:10px;text-transform:uppercase;letter-spacing:1.6px;color:var(--mut);margin-bottom:6px;}
+.kpi-v{font-family:'Rajdhani';font-size:34px;font-weight:700;line-height:1;letter-spacing:-.5px;color:var(--kc);}
+.kpi-u{font-size:14px;font-weight:400;font-family:'Inter';color:var(--mut);margin-left:2px;}
+.kpi-s{font-family:'JetBrains Mono';font-size:10px;color:var(--mut);margin-top:9px;transition:color var(--ts) var(--ease);}
+
+/* ── CLEANING ALERT ── */
+.c-alert{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:16px 24px;border-radius:18px;margin-bottom:16px;
+  background:linear-gradient(128deg,rgba(130,30,15,.92),rgba(165,20,40,.92));
+  border:1px solid rgba(255,60,80,.28);backdrop-filter:blur(22px);
+  box-shadow:0 8px 44px rgba(200,20,50,.25),inset 0 1px 0 rgba(255,255,255,.06);
+  animation:cAlertIn .5s var(--ease);
+}
+@keyframes cAlertIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.c-icon{font-size:26px;animation:shk 2.2s ease-in-out infinite;}
+@keyframes shk{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-9deg) scale(1.1)}75%{transform:rotate(9deg) scale(1.1)}}
+.c-btn{background:rgba(255,255,255,.93);color:#7C1020;border:none;border-radius:11px;padding:10px 22px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Rajdhani';letter-spacing:.5px;transition:all var(--tf) var(--ease);}
+.c-btn:hover{background:#fff;transform:scale(1.05);box-shadow:0 4px 18px rgba(0,0,0,.3);}
+
+/* ── CHART ── */
+.c-svg{width:100%;height:195px;overflow:visible;display:block;}
+
+/* ══════════════════════════════════════════════════════
+   POWER FLOW DIAGRAM  — the heart of the page
+   ══════════════════════════════════════════════════════ */
+.pf-wrap{
+  position:relative;width:100%;
+  background:var(--glass);
+  backdrop-filter:blur(28px) saturate(170%);
+  -webkit-backdrop-filter:blur(28px) saturate(170%);
+  border:1px solid var(--rim);border-radius:20px;
+  padding:28px 24px 22px;
+  box-shadow:var(--sh);
+  overflow:hidden;
+  transition:background var(--ts) var(--ease),border-color var(--ts) var(--ease);
+}
+.pf-wrap::before{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,.025) 0%,transparent 55%);pointer-events:none;}
+
+/* Scenario row */
+.sc-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.sc-btn{
+  padding:8px 16px;border-radius:11px;border:1px solid var(--rim2);
+  font-size:12px;font-weight:600;font-family:'Rajdhani';letter-spacing:.5px;
+  cursor:pointer;color:var(--txt2);background:var(--glass2);
+  transition:all var(--tf) var(--ease);
+}
+.sc-btn:hover{transform:translateY(-2px);box-shadow:var(--sh);border-color:var(--acc);}
+.sc-btn.active-ok{background:linear-gradient(135deg,var(--acc),var(--accB));color:var(--bg);border-color:transparent;box-shadow:0 4px 22px var(--glow);}
+.sc-btn.active-bad{background:linear-gradient(135deg,#C01030,#FF3355);color:#fff;border-color:transparent;box-shadow:0 4px 22px rgba(255,50,80,.4);}
+.sc-btn.active-warn{background:linear-gradient(135deg,#805000,#C08000);color:#fff;border-color:transparent;box-shadow:0 4px 22px rgba(255,160,0,.35);}
+
+/* Emergency banner */
+.e-banner{
+  display:none;flex-wrap:wrap;align-items:center;gap:14px;
+  padding:14px 20px;border-radius:14px;margin-bottom:18px;
+  backdrop-filter:blur(18px);border:1px solid;
+  animation:cAlertIn .4s var(--ease);
+}
+.e-banner.eb-red{background:rgba(200,10,40,.22);border-color:rgba(255,50,80,.38);box-shadow:0 6px 36px rgba(200,10,40,.3);}
+.e-banner.eb-amber{background:rgba(180,90,0,.22);border-color:rgba(255,160,0,.38);box-shadow:0 6px 36px rgba(180,90,0,.3);}
+.e-banner.show{display:flex;}
+.e-banner-icon{font-size:24px;animation:shk 1.6s infinite;}
+.e-title{font-weight:700;font-size:15px;color:#fff;margin-bottom:3px;font-family:'Rajdhani';letter-spacing:.5px;}
+.e-desc{font-family:'JetBrains Mono';font-size:11px;color:rgba(255,255,255,.72);}
+
+/* Main SVG */
+.pf-svg{width:100%;overflow:visible;display:block;max-width:980px;margin:0 auto;}
+
+/* Nodes */
+.n-group{cursor:pointer;transition:filter .25s;}
+.n-group:hover{filter:brightness(1.15);}
+
+.n-outer{fill:none;stroke-width:1.5;transition:stroke .4s,opacity .4s;}
+.n-inner{fill:var(--bg2);transition:fill .4s;}
+.n-bg{transition:opacity .4s;}
+
+/* Ring orbit */
+.n-ring{fill:none;stroke-width:1.5;stroke-dasharray:5 4;opacity:.55;animation:spinRing 10s linear infinite;}
+@keyframes spinRing{to{stroke-dashoffset:-60}}
+.n-ring.rev{animation-direction:reverse;}
+
+/* Node status LED */
+.n-led{transition:fill .4s,r .4s;}
+.led-ok{fill:var(--grn);}
+.led-warn{fill:var(--acc);animation:ledPulse 1.2s infinite;}
+.led-bad{fill:var(--red);animation:ledPulse .8s infinite;}
+.led-off{fill:var(--mut);opacity:.5;}
+@keyframes ledPulse{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* Paths */
+.pf-path{fill:none;stroke-width:2.5;stroke-linecap:round;transition:stroke .5s,opacity .5s;}
+.pf-path.dim{opacity:.18;}
+.pf-path.active{opacity:1;}
+.pf-path.alert-flash{animation:pathFlash .9s infinite;}
+@keyframes pathFlash{0%,100%{opacity:1}50%{opacity:.15}}
+
+/* Power flow particles — CSS animated circles on SVG paths */
+.particle{transition:opacity .4s;}
+.particle.off{opacity:0!important;}
+
+/* Float labels on paths */
+.path-lbl{font-family:'JetBrains Mono';font-size:11px;font-weight:500;dominant-baseline:middle;text-anchor:middle;transition:opacity .4s,fill .4s;}
+.path-lbl.dim{opacity:0;}
+
+/* Node text */
+.n-title{font-family:'Rajdhani';font-weight:700;dominant-baseline:middle;text-anchor:middle;fill:var(--txt);transition:fill .4s;}
+.n-sub{font-family:'JetBrains Mono';dominant-baseline:middle;text-anchor:middle;fill:var(--mut);transition:fill .4s;}
+.n-val{font-family:'JetBrains Mono';font-weight:500;dominant-baseline:middle;text-anchor:middle;transition:fill .4s,opacity .4s;}
+
+/* Failure overlay text */
+.fail-text{font-family:'Rajdhani';font-weight:700;dominant-baseline:middle;text-anchor:middle;fill:var(--red);animation:failFlash 1.1s ease-in-out infinite;}
+@keyframes failFlash{0%,100%{opacity:1}50%{opacity:.1}}
+
+/* Legend */
+.leg{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;padding:12px 16px;background:var(--glass2);border-radius:12px;border:1px solid var(--rim);}
+.leg-item{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:11px;color:var(--txt2);}
+.leg-line{width:28px;height:3px;border-radius:2px;}
+
+/* ── BARS ── */
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;padding-bottom:22px;}
+.bw{flex:1;display:flex;flex-direction:column;align-items:center;}
+.bar{width:100%;border-radius:5px 5px 0 0;min-height:4px;transition:height .7s var(--ease),filter .18s;cursor:pointer;position:relative;}
+.bar:hover{filter:brightness(1.3);}
+.btip{position:absolute;bottom:calc(100%+5px);left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--rim2);border-radius:8px;padding:4px 9px;font-family:'JetBrains Mono';font-size:10px;color:var(--txt);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;box-shadow:var(--sh);}
+.bar:hover .btip{opacity:1;}
+.blbl{font-size:8px;color:var(--mut);font-family:'JetBrains Mono';margin-top:4px;white-space:nowrap;}
+
+/* ── TABLE ── */
+.tw{overflow-x:auto;border-radius:14px;border:1px solid var(--rim);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead th{padding:10px 13px;background:var(--glass2);color:var(--mut);font-family:'JetBrains Mono';font-size:10px;text-transform:uppercase;letter-spacing:1.4px;border-bottom:1px solid var(--rim);position:sticky;top:0;backdrop-filter:blur(14px);transition:all var(--ts) var(--ease);}
+tbody td{padding:9px 13px;border-bottom:1px solid var(--rim);color:var(--txt2);transition:all var(--ts) var(--ease);}
+tbody tr:last-child td{border:none;}
+tbody tr:hover td{background:color-mix(in srgb,var(--acc) 5%,transparent);}
+.r-addr{font-family:'JetBrains Mono';font-size:11px;font-weight:600;color:var(--acc);}
+.r-scl{font-family:'JetBrains Mono';font-size:10px;color:var(--blu);}
+.r-ok{font-family:'JetBrains Mono';font-size:10px;color:var(--grn);}
+
+/* ── ARCH LAYERS ── */
+.layer{border-radius:16px;padding:17px 20px;margin-bottom:11px;background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--rim);border-left:3px solid var(--lc,var(--acc));box-shadow:var(--sh);transition:all var(--ts) var(--ease);animation:layerIn .5s var(--ease) both;}
+.layer:hover{box-shadow:var(--shH);}
+@keyframes layerIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.layer:nth-child(odd){animation-delay:.06s}.layer:nth-child(even){animation-delay:.13s}
+.lhd{font-family:'JetBrains Mono';font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;color:var(--lc,var(--acc));}
+.lnodes{display:flex;gap:9px;flex-wrap:wrap;}
+.lnode{background:var(--glass2);border:1px solid var(--rim2);border-radius:12px;padding:11px 14px;font-size:12px;font-weight:600;flex:1;min-width:130px;display:flex;align-items:flex-start;gap:8px;transition:all var(--tf) var(--ease);}
+.lnode:hover{border-color:var(--acc);transform:translateY(-2px);}
+.lnode small{display:block;font-size:10px;font-weight:400;color:var(--mut);font-family:'JetBrains Mono';margin-top:2px;line-height:1.5;}
+.lconn{text-align:center;margin:3px 0;font-family:'JetBrains Mono';font-size:11px;color:var(--mut);display:flex;align-items:center;justify-content:center;gap:8px;}
+.lline{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--rim2),transparent);}
+
+/* ── CODE ── */
+.code{background:var(--bg);border:1px solid var(--rim2);border-radius:14px;padding:18px 20px;overflow-x:auto;font-family:'JetBrains Mono';font-size:12px;line-height:1.9;position:relative;transition:all var(--ts) var(--ease);}
+.ctag{position:absolute;top:13px;right:15px;font-family:'JetBrains Mono';font-size:10px;color:var(--mut);background:var(--glass2);border:1px solid var(--rim);border-radius:6px;padding:3px 9px;}
+.cm{color:var(--mut);}.ck{color:var(--blu);}.cv{color:var(--grn);}.cf{color:var(--acc);}
+
+/* ── STEPS ── */
+.steps{display:flex;flex-direction:column;gap:12px;}
+.step{display:flex;gap:14px;align-items:flex-start;animation:stepIn .4s var(--ease) both;}
+.step:nth-child(1){animation-delay:.04s}.step:nth-child(2){animation-delay:.09s}
+.step:nth-child(3){animation-delay:.14s}.step:nth-child(4){animation-delay:.19s}
+.step:nth-child(5){animation-delay:.24s}
+@keyframes stepIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.snum{width:28px;height:28px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,var(--acc),var(--accB));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--bg);box-shadow:0 3px 14px var(--glow);font-family:'Rajdhani';}
+.stxt{font-size:13px;color:var(--txt2);line-height:1.7;}
+.stxt strong{color:var(--txt);}
+code{font-family:'JetBrains Mono';font-size:11px;background:var(--glass2);border:1px solid var(--rim2);padding:2px 7px;border-radius:5px;color:var(--grn);}
+
+/* ── MISC ── */
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0 14px;font-family:'JetBrains Mono';font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--rim2),transparent);}
+.warn-box{background:color-mix(in srgb,var(--acc) 8%,transparent);border:1px solid color-mix(in srgb,var(--acc) 24%,transparent);border-radius:11px;padding:11px 15px;margin-bottom:16px;font-family:'JetBrains Mono';font-size:11px;color:var(--txt2);line-height:1.8;}
+.warn-box strong{color:var(--acc);}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px;}
+.mbox{background:var(--glass2);border:1px solid var(--rim);border-radius:12px;padding:13px;text-align:center;transition:all var(--tm) var(--ease);}
+.mbox:hover{border-color:var(--rim2);transform:scale(1.02);}
+.mv{font-family:'Rajdhani';font-size:21px;font-weight:700;}
+.ml{font-family:'JetBrains Mono';font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:var(--mut);margin-top:4px;}
+.prog{height:5px;background:var(--bg);border-radius:3px;overflow:hidden;margin:10px 0 4px;}
+.pf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--grn),var(--acc));transition:width 1.4s var(--ease);}
+.alist{display:flex;flex-direction:column;gap:9px;}
+.ai{display:flex;gap:11px;padding:12px;border-radius:12px;background:var(--glass2);border-left:3px solid;border-top:1px solid var(--rim);border-right:1px solid var(--rim);border-bottom:1px solid var(--rim);transition:all var(--tf) var(--ease);}
+.ai:hover{transform:translateX(3px);}
+.ai.ok{border-left-color:var(--grn);}.ai.wn{border-left-color:var(--acc);}.ai.cr{border-left-color:var(--red);}
+.ai-t{font-size:13px;color:var(--txt2);line-height:1.5;}.ai-d{font-family:'JetBrains Mono';font-size:10px;color:var(--mut);margin-top:3px;}
+.s-bucket{background:var(--glass2);border:1px solid var(--rim2);border-radius:13px;padding:14px;margin-bottom:9px;}
+.s-title{font-family:'Rajdhani';font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.srow{display:flex;gap:10px;padding:6px 9px;border-radius:7px;transition:background var(--tf);}
+.srow:hover{background:color-mix(in srgb,var(--acc) 6%,transparent);}
+.sc1{font-family:'JetBrains Mono';font-size:11px;color:var(--txt);width:165px;flex-shrink:0;}
+.sc2{font-family:'JetBrains Mono';font-size:10px;color:var(--blu);width:115px;flex-shrink:0;}
+.sc3{font-family:'JetBrains Mono';font-size:10px;color:var(--mut);flex:1;}
+.srow.stag .sc1::before{content:'🏷 ';}
+.ssec{font-family:'JetBrains Mono';font-size:9px;text-transform:uppercase;letter-spacing:1.8px;color:var(--mut);padding:5px 9px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){header{padding:0 14px;}.wrap{padding:0 14px 60px;}.orb-w{top:70px;right:10px;}.orb{width:44px;height:44px;}.card{padding:18px;}.kpi-v{font-size:26px;}.tabs{gap:4px;}.tab{padding:7px 12px;font-size:13px;}}
+@media(max-width:400px){.kpi-v{font-size:22px;}#clock{display:none;}.logo-s{display:none;}}
+</style>
+</head>
+<body data-theme="day">
+
+<!-- ATMOSPHERE -->
+<div class="amb">
+  <div class="b b1"></div><div class="b b2"></div><div class="b b3"></div>
+  <div class="stars" id="stars"></div>
+  <div class="shoot"></div>
+</div>
+<div class="orb-w"><div class="orb"></div></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-gem">☀️</div>
+    <div>
+      <div class="logo-n">K<em>solare</em> 5G Pro</div>
+      <div class="logo-s">3.4kW ON-GRID · SINGLE PHASE · SOLARMANV5</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <div class="chip"><div class="dot-live"></div><span id="themeLabel">☀️ Day Mode</span></div>
+    <div id="clock">--:--:--</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab on"  onclick="go('dash',this)">📊 Dashboard</button>
+    <button class="tab" onclick="go('flow',this)">⚡ Power Flow</button>
+    <button class="tab" onclick="go('conn',this)">🔌 Connect</button>
+    <button class="tab" onclick="go('regs',this)">📋 Registers</button>
+    <button class="tab" onclick="go('arch',this)">🏗 Architecture</button>
+    <button class="tab" onclick="go('db',this)">🗄 Database</button>
+    <button class="tab" onclick="go('code',this)">💻 Code</button>
+  </div>
+
+  <!-- ██████ DASHBOARD ██████ -->
+  <div class="pane on" id="p-dash">
+    <div class="c-alert" id="cAlert">
+      <div style="display:flex;align-items:center;gap:13px;flex:1;min-width:0">
+        <span class="c-icon">🧹</span>
+        <div>
+          <div style="font-family:'Rajdhani';font-weight:700;font-size:16px;color:#fff;margin-bottom:3px;letter-spacing:.5px">Panels Need Cleaning — Efficiency 69% (−31% below rated)</div>
+          <div style="font-family:'JetBrains Mono';font-size:11px;color:rgba(255,255,255,.72)">23 days since last wash · −0.91kW lost · ₹52/day missed · Clean to recover full 3.4kW</div>
+        </div>
+      </div>
+      <button class="c-btn" onclick="this.closest('.c-alert').remove()">✅ Mark Cleaned</button>
+    </div>
+
+    <div class="g4">
+      <div class="kpi" style="--kc:var(--acc)"><div class="kpi-g"></div><span class="kpi-icon">☀️</span><div class="kpi-l">AC Output</div><div class="kpi-v" id="kv1">2.35<span class="kpi-u">kW</span></div><div class="kpi-s" id="ks1" style="color:var(--red)">⚠ 69% — dirty panels</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-g"></div><span class="kpi-icon">🏠</span><div class="kpi-l">Home Load</div><div class="kpi-v" id="kv2">1.42<span class="kpi-u">kW</span></div><div class="kpi-s" id="ks2">231V · 50.0Hz</div></div>
+      <div class="kpi" style="--kc:var(--grn)"><div class="kpi-g"></div><span class="kpi-icon" id="ki3">🔌</span><div class="kpi-l" id="kl3">Grid Export</div><div class="kpi-v" id="kv3">0.93<span class="kpi-u">kW</span></div><div class="kpi-s" id="ks3" style="color:var(--grn)">Feeding grid ↑</div></div>
+      <div class="kpi" style="--kc:var(--blu)"><div class="kpi-g"></div><span class="kpi-icon">⚡</span><div class="kpi-l">Today's Yield</div><div class="kpi-v" id="kv4">13.8<span class="kpi-u">kWh</span></div><div class="kpi-s" id="ks4" style="color:var(--grn)">₹104 saved today</div></div>
+    </div>
+
+    <div class="gfl">
+      <div class="card">
+        <div class="ct">Power Timeline — Today <span class="bdg bl">LIVE</span></div>
+        <svg class="c-svg" id="chartSvg" viewBox="0 0 700 185" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--acc)" stop-opacity=".42"/><stop offset="100%" stop-color="var(--acc)" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--red)" stop-opacity=".28"/><stop offset="100%" stop-color="var(--red)" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gex" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--acc)" stop-opacity=".10"/><stop offset="100%" stop-color="var(--acc)" stop-opacity="0"/></linearGradient>
+          </defs>
+          <line x1="0" y1="22"  x2="695" y2="22"  stroke="var(--rim2)" stroke-width="1"/>
+          <line x1="0" y1="60"  x2="695" y2="60"  stroke="var(--rim2)" stroke-width="1"/>
+          <line x1="0" y1="98"  x2="695" y2="98"  stroke="var(--rim2)" stroke-width="1"/>
+          <line x1="0" y1="136" x2="695" y2="136" stroke="var(--rim2)" stroke-width="1"/>
+          <path id="pe" fill="url(#gex)" stroke="var(--acc)" stroke-width="1.3" stroke-dasharray="5,4" opacity=".5"/>
+          <path id="pa" fill="url(#ga)"/>
+          <path id="pl" fill="url(#gl)"/>
+          <path id="la" fill="none" stroke="var(--acc)" stroke-width="2.6" stroke-linecap="round"/>
+          <path id="ll" fill="none" stroke="var(--red)" stroke-width="2" stroke-dasharray="6,4" stroke-linecap="round"/>
+          <text x="4"   y="178" fill="var(--mut)" font-size="9" font-family="monospace">06:00</text>
+          <text x="167" y="178" fill="var(--mut)" font-size="9" font-family="monospace">09:00</text>
+          <text x="332" y="178" fill="var(--mut)" font-size="9" font-family="monospace">12:00</text>
+          <text x="498" y="178" fill="var(--mut)" font-size="9" font-family="monospace">15:00</text>
+          <text x="634" y="178" fill="var(--mut)" font-size="9" font-family="monospace">18:00</text>
+          <text x="640" y="26"  fill="var(--mut)" font-size="9" font-family="monospace">3.4kW</text>
+          <text x="640" y="64"  fill="var(--mut)" font-size="9" font-family="monospace">2.5kW</text>
+          <text x="640" y="102" fill="var(--mut)" font-size="9" font-family="monospace">1.5kW</text>
+          <rect x="4" y="6" width="10" height="3" rx="1.5" fill="var(--acc)"/>
+          <text x="18" y="11" fill="var(--mut)" font-size="9" font-family="monospace">Actual</text>
+          <line x1="74" y1="8" x2="88" y2="8" stroke="var(--acc)" stroke-width="1.3" stroke-dasharray="4,3" opacity=".55"/>
+          <text x="93" y="11" fill="var(--mut)" font-size="9" font-family="monospace">Expected</text>
+          <rect x="177" y="6" width="10" height="3" rx="1.5" fill="var(--red)"/>
+          <text x="191" y="11" fill="var(--mut)" font-size="9" font-family="monospace">Load</text>
+        </svg>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:11px">
+        <div class="ct">System Status</div>
+        <div id="statusRows" style="display:flex;flex-direction:column;gap:9px">
+          <div class="srow" style="background:var(--glass2);border:1px solid var(--rim2);border-radius:11px;padding:10px 14px">
+            <span class="sc1" style="width:auto;flex:1;font-size:13px;color:var(--txt);font-family:'Inter';font-weight:500">DC Input</span>
+            <span style="font-family:'JetBrains Mono';font-size:12px;color:var(--acc)" id="sv-dc">372V · 9.1A</span>
+          </div>
+          <div class="srow" style="background:var(--glass2);border:1px solid var(--rim2);border-radius:11px;padding:10px 14px">
+            <span style="flex:1;font-size:13px;color:var(--txt);font-weight:500">Grid Freq.</span>
+            <span style="font-family:'JetBrains Mono';font-size:12px;color:var(--grn)" id="sv-freq">50.02 Hz</span>
+          </div>
+          <div class="srow" style="background:var(--glass2);border:1px solid var(--rim2);border-radius:11px;padding:10px 14px">
+            <span style="flex:1;font-size:13px;color:var(--txt);font-weight:500">Inverter Temp</span>
+            <span style="font-family:'JetBrains Mono';font-size:12px;color:var(--acc)" id="sv-temp">57°C</span>
+          </div>
+          <div class="srow" style="background:var(--glass2);border:1px solid var(--rim2);border-radius:11px;padding:10px 14px">
+            <span style="flex:1;font-size:13px;color:var(--txt);font-weight:500">Power Factor</span>
+            <span style="font-family:'JetBrains Mono';font-size:12px;color:var(--grn)">0.99</span>
+          </div>
+          <div class="srow" style="background:var(--glass2);border:1px solid var(--rim2);border-radius:11px;padding:10px 14px">
+            <span style="flex:1;font-size:13px;color:var(--txt);font-weight:500">UPS Battery</span>
+            <span style="font-family:'JetBrains Mono';font-size:12px;color:var(--grn)" id="sv-ups">84% · Standby</span>
+          </div>
+          <div class="srow" style="background:var(--glass2);border:1px solid var(--rim2);border-radius:11px;padding:10px 14px">
+            <span style="flex:1;font-size:13px;color:var(--txt);font-weight:500">Port 8899</span>
+            <span style="font-family:'JetBrains Mono';font-size:12px;color:var(--grn)">● Connected</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g3">
+      <div class="card">
+        <div class="ct">14-Day Generation <span class="bdg bi">kWh</span></div>
+        <div class="bars" id="barsEl"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Monthly Summary</div>
+        <div style="font-family:'Rajdhani';font-size:46px;font-weight:700;letter-spacing:-1px;color:var(--grn);line-height:1;">₹2,890</div>
+        <div style="font-family:'JetBrains Mono';font-size:10px;color:var(--mut);margin-top:5px;">saved vs full grid · this month</div>
+        <div class="prog"><div class="pf" style="width:74%"></div></div>
+        <div style="font-family:'JetBrains Mono';font-size:10px;color:var(--mut);">74% of ₹3,900 goal · <span style="color:var(--red)">+₹420 if cleaned</span></div>
+        <div class="mg">
+          <div class="mbox"><div class="mv" style="color:var(--acc)">278kWh</div><div class="ml">Generated</div></div>
+          <div class="mbox"><div class="mv" style="color:var(--red)">174kWh</div><div class="ml">Consumed</div></div>
+          <div class="mbox"><div class="mv" style="color:var(--grn)">104kWh</div><div class="ml">Exported</div></div>
+          <div class="mbox"><div class="mv" style="color:var(--blu)">69%</div><div class="ml">Avg Eff.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ct">Alerts <span class="bdg bw">3 Active</span></div>
+        <div class="alist">
+          <div class="ai cr"><span style="font-size:16px">🧹</span><div><div class="ai-t"><strong>Cleaning overdue.</strong> 23 days, efficiency 69%.</div><div class="ai-d">Today · AI Detection</div></div></div>
+          <div class="ai wn"><span style="font-size:16px">🌡️</span><div><div class="ai-t"><strong>Inverter 62°C</strong> — elevated, check ventilation.</div><div class="ai-d">Today 13:44 · Reg 0x000B</div></div></div>
+          <div class="ai ok"><span style="font-size:16px">✅</span><div><div class="ai-t">SolarmanV5 comms healthy on port 8899.</div><div class="ai-d">Today 08:00</div></div></div>
+          <div class="ai ok"><span style="font-size:16px">🌤</span><div><div class="ai-t">Tomorrow: partly sunny · ~16 kWh expected.</div><div class="ai-d">OpenWeatherMap</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ██████ POWER FLOW ██████ -->
+  <div class="pane" id="p-flow">
+    <div class="pf-wrap">
+      <div class="ct" style="margin-bottom:16px">
+        Live Power Flow Diagram
+        <span class="bdg bl" id="pfBadge">NORMAL OPERATION</span>
+      </div>
+
+      <!-- Scenario Controls -->
+      <div class="sc-row">
+        <button class="sc-btn active-ok" id="sc-normal"  onclick="scenario('normal',this)">☀️ Normal Operation</button>
+        <button class="sc-btn"           id="sc-gridcut" onclick="scenario('gridcut',this)">🔴 Grid Power Cut</button>
+        <button class="sc-btn"           id="sc-cloudy"  onclick="scenario('cloudy',this)">☁️ Low Solar / Cloudy</button>
+        <button class="sc-btn"           id="sc-night"   onclick="scenario('scnight',this)">🌙 Night Mode</button>
+        <button class="sc-btn"           id="sc-fault"   onclick="scenario('fault',this)">⚠️ Inverter Fault</button>
+      </div>
+
+      <!-- Emergency Banner -->
+      <div class="e-banner eb-red" id="eBanner">
+        <span class="e-banner-icon">⚡</span>
+        <div><div class="e-title" id="eTitle">Grid Power Cut Detected!</div><div class="e-desc" id="eDesc">Grid export stopped · UPS battery now supplying home load</div></div>
+      </div>
+
+      <!-- ═══ SVG POWER FLOW ═══ -->
+      <!--
+        Layout (viewBox 0 0 960 500):
+        Solar Panels  → cx=120 cy=180
+        Inverter      → cx=380 cy=180   (center)
+        Grid Meter    → cx=650 cy=180
+        Grid Supply   → cx=840 cy=180
+        UPS/Battery   → cx=380 cy=360
+        Home Load     → cx=620 cy=360
+
+        Paths:
+        Solar → Inverter   (horizontal, amber)
+        Inverter → Meter   (horizontal, blue)
+        Meter → Grid       (horizontal, green)
+        Inverter → UPS     (vertical down, orange)
+        UPS → Load         (horizontal right, red/orange)
+        Inverter → Load    (diagonal, red)
+        Grid → Meter       (reverse, dashed green — for import)
+      -->
+      <svg class="pf-svg" id="pfSvg" viewBox="0 0 960 500" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <filter id="gf-acc" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="gf-grn" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="gf-blu" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="gf-red" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="gf-org" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="3" stdDeviation="8" flood-opacity=".5"/>
+          </filter>
+          <!-- Node glow radial fills -->
+          <radialGradient id="rg-solar" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="var(--acc)" stop-opacity=".20"/>
+            <stop offset="100%" stop-color="var(--acc)" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="rg-inv" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="var(--blu)" stop-opacity=".20"/>
+            <stop offset="100%" stop-color="var(--blu)" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="rg-meter" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="var(--blu)" stop-opacity=".15"/>
+            <stop offset="100%" stop-color="var(--blu)" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="rg-grid" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="var(--grn)" stop-opacity=".18"/>
+            <stop offset="100%" stop-color="var(--grn)" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="rg-ups" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="var(--accB)" stop-opacity=".18"/>
+            <stop offset="100%" stop-color="var(--accB)" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="rg-load" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="var(--red)" stop-opacity=".18"/>
+            <stop offset="100%" stop-color="var(--red)" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- ═══ CONNECTION PATHS (base dim lines) ═══ -->
+        <!-- Solar→Inverter -->
+        <path id="path-SI" d="M 188 180 L 316 180" class="pf-path dim" stroke="var(--acc)"/>
+        <!-- Inverter→Meter -->
+        <path id="path-IM" d="M 444 180 L 596 180" class="pf-path dim" stroke="var(--blu)"/>
+        <!-- Meter→Grid -->
+        <path id="path-MG" d="M 694 180 L 796 180" class="pf-path dim" stroke="var(--grn)"/>
+        <!-- Grid→Meter (import, reverse dashed) -->
+        <path id="path-GM" d="M 796 190 L 694 190" class="pf-path dim" stroke="var(--grn)" stroke-dasharray="7 5"/>
+        <!-- Inverter→UPS -->
+        <path id="path-IU" d="M 380 244 L 380 296" class="pf-path dim" stroke="var(--accB)"/>
+        <!-- UPS→Load -->
+        <path id="path-UL" d="M 444 360 L 564 360" class="pf-path dim" stroke="var(--red)"/>
+        <!-- Inverter→Load (diagonal) -->
+        <path id="path-IL" d="M 420 226 C 440 290 540 310 564 340" class="pf-path dim" stroke="var(--red)" stroke-dasharray="6 4"/>
+
+        <!-- ═══ POWER LABELS on paths ═══ -->
+        <text id="lbl-SI" x="252" y="166" class="path-lbl dim" fill="var(--acc)"></text>
+        <text id="lbl-IM" x="520" y="166" class="path-lbl dim" fill="var(--blu)"></text>
+        <text id="lbl-MG" x="745" y="166" class="path-lbl dim" fill="var(--grn)"></text>
+        <text id="lbl-UL" x="504" y="347" class="path-lbl dim" fill="var(--red)"></text>
+        <text id="lbl-IL" x="500" y="278" class="path-lbl dim" fill="var(--red)"></text>
+
+        <!-- ═══ ANIMATED PARTICLES (travel along paths) ═══ -->
+        <!-- Solar→Inverter: 3 amber dots -->
+        <circle id="p-SI-1" r="6"   class="particle" fill="var(--acc)" filter="url(#gf-acc)" opacity="0">
+          <animateMotion dur="1.7s" repeatCount="indefinite" begin="0s"><mpath href="#path-SI"/></animateMotion>
+        </circle>
+        <circle id="p-SI-2" r="4.5" class="particle" fill="var(--acc)" filter="url(#gf-acc)" opacity="0">
+          <animateMotion dur="1.7s" repeatCount="indefinite" begin="0.57s"><mpath href="#path-SI"/></animateMotion>
+        </circle>
+        <circle id="p-SI-3" r="3"   class="particle" fill="var(--acc)" filter="url(#gf-acc)" opacity="0">
+          <animateMotion dur="1.7s" repeatCount="indefinite" begin="1.14s"><mpath href="#path-SI"/></animateMotion>
+        </circle>
+
+        <!-- Inverter→Meter: 3 blue dots -->
+        <circle id="p-IM-1" r="5.5" class="particle" fill="var(--blu)" filter="url(#gf-blu)" opacity="0">
+          <animateMotion dur="1.5s" repeatCount="indefinite" begin="0.1s"><mpath href="#path-IM"/></animateMotion>
+        </circle>
+        <circle id="p-IM-2" r="4"   class="particle" fill="var(--blu)" filter="url(#gf-blu)" opacity="0">
+          <animateMotion dur="1.5s" repeatCount="indefinite" begin="0.6s"><mpath href="#path-IM"/></animateMotion>
+        </circle>
+        <circle id="p-IM-3" r="2.8" class="particle" fill="var(--blu)" filter="url(#gf-blu)" opacity="0">
+          <animateMotion dur="1.5s" repeatCount="indefinite" begin="1.1s"><mpath href="#path-IM"/></animateMotion>
+        </circle>
+
+        <!-- Meter→Grid: 2 green export dots -->
+        <circle id="p-MG-1" r="5"   class="particle" fill="var(--grn)" filter="url(#gf-grn)" opacity="0">
+          <animateMotion dur="1.3s" repeatCount="indefinite" begin="0s"><mpath href="#path-MG"/></animateMotion>
+        </circle>
+        <circle id="p-MG-2" r="3.5" class="particle" fill="var(--grn)" filter="url(#gf-grn)" opacity="0">
+          <animateMotion dur="1.3s" repeatCount="indefinite" begin="0.5s"><mpath href="#path-MG"/></animateMotion>
+        </circle>
+
+        <!-- Grid→Meter: 2 green import dots (reverse) -->
+        <circle id="p-GM-1" r="5"   class="particle" fill="var(--grn)" filter="url(#gf-grn)" opacity="0">
+          <animateMotion dur="1.3s" repeatCount="indefinite" begin="0s" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#path-MG"/></animateMotion>
+        </circle>
+        <circle id="p-GM-2" r="3.5" class="particle" fill="var(--grn)" filter="url(#gf-grn)" opacity="0">
+          <animateMotion dur="1.3s" repeatCount="indefinite" begin="0.5s" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#path-MG"/></animateMotion>
+        </circle>
+
+        <!-- Inverter→UPS: 2 orange dots (charging) -->
+        <circle id="p-IU-1" r="4.5" class="particle" fill="var(--accB)" filter="url(#gf-org)" opacity="0">
+          <animateMotion dur="1.1s" repeatCount="indefinite" begin="0s"><mpath href="#path-IU"/></animateMotion>
+        </circle>
+        <circle id="p-IU-2" r="3"   class="particle" fill="var(--accB)" filter="url(#gf-org)" opacity="0">
+          <animateMotion dur="1.1s" repeatCount="indefinite" begin="0.4s"><mpath href="#path-IU"/></animateMotion>
+        </circle>
+
+        <!-- UPS→Load: 3 red dots (backup power) -->
+        <circle id="p-UL-1" r="6"   class="particle" fill="var(--red)" filter="url(#gf-red)" opacity="0">
+          <animateMotion dur="1.3s" repeatCount="indefinite" begin="0s"><mpath href="#path-UL"/></animateMotion>
+        </circle>
+        <circle id="p-UL-2" r="4.5" class="particle" fill="var(--red)" filter="url(#gf-red)" opacity="0">
+          <animateMotion dur="1.3s" repeatCount="indefinite" begin="0.43s"><mpath href="#path-UL"/></animateMotion>
+        </circle>
+        <circle id="p-UL-3" r="3"   class="particle" fill="var(--red)" filter="url(#gf-red)" opacity="0">
+          <animateMotion dur="1.3s" repeatCount="indefinite" begin="0.86s"><mpath href="#path-UL"/></animateMotion>
+        </circle>
+
+        <!-- Inverter→Load direct: 3 red dots -->
+        <circle id="p-IL-1" r="5.5" class="particle" fill="var(--red)" filter="url(#gf-red)" opacity="0">
+          <animateMotion dur="1.55s" repeatCount="indefinite" begin="0s"><mpath href="#path-IL"/></animateMotion>
+        </circle>
+        <circle id="p-IL-2" r="4"   class="particle" fill="var(--red)" filter="url(#gf-red)" opacity="0">
+          <animateMotion dur="1.55s" repeatCount="indefinite" begin="0.52s"><mpath href="#path-IL"/></animateMotion>
+        </circle>
+        <circle id="p-IL-3" r="2.8" class="particle" fill="var(--red)" filter="url(#gf-red)" opacity="0">
+          <animateMotion dur="1.55s" repeatCount="indefinite" begin="1.04s"><mpath href="#path-IL"/></animateMotion>
+        </circle>
+
+        <!-- ═══ NODES ═══ -->
+
+        <!-- SOLAR PANELS  cx=120 cy=180 r=62 -->
+        <g class="n-group" id="n-solar">
+          <circle cx="120" cy="180" r="70" fill="url(#rg-solar)" opacity=".9"/>
+          <circle cx="120" cy="180" r="62" class="n-inner" filter="url(#drop)"/>
+          <circle cx="120" cy="180" r="62" class="n-outer" stroke="var(--acc)" id="o-solar"/>
+          <circle cx="120" cy="180" r="72" class="n-ring" stroke="var(--acc)" id="r-solar"/>
+          <text x="120" y="164" class="fn-icon" font-size="28px" dominant-baseline="middle" text-anchor="middle">🌞</text>
+          <text x="120" y="184" class="n-title" font-size="13">Solar</text>
+          <text x="120" y="197" class="n-title" font-size="13">Panels</text>
+          <text x="120" y="213" id="nv-solar" class="n-val" font-size="11" fill="var(--acc)">2.35 kW</text>
+          <circle cx="166" cy="134" r="7" class="n-led led-ok" id="led-solar"/>
+        </g>
+
+        <!-- INVERTER  cx=380 cy=180 r=68 -->
+        <g class="n-group" id="n-inv">
+          <circle cx="380" cy="180" r="78" fill="url(#rg-inv)" opacity=".9"/>
+          <circle cx="380" cy="180" r="68" class="n-inner" filter="url(#drop)"/>
+          <circle cx="380" cy="180" r="68" class="n-outer" stroke="var(--blu)" id="o-inv"/>
+          <circle cx="380" cy="180" r="78" class="n-ring rev" stroke="var(--blu)" id="r-inv"/>
+          <text x="380" y="162" class="fn-icon" font-size="26px" dominant-baseline="middle" text-anchor="middle">⚡</text>
+          <text x="380" y="180" class="n-title" font-size="14">KSolare</text>
+          <text x="380" y="194" class="n-title" font-size="14">5GPro</text>
+          <text x="380" y="210" id="nv-inv" class="n-val" font-size="11" fill="var(--blu)">2.35 kW</text>
+          <circle cx="430" cy="128" r="7" class="n-led led-ok" id="led-inv"/>
+          <text id="inv-fault-lbl" x="380" y="108" class="fail-text" font-size="13" opacity="0">⚠ FAULT</text>
+        </g>
+
+        <!-- GRID METER  cx=650 cy=180 r=54 -->
+        <g class="n-group" id="n-meter">
+          <circle cx="650" cy="180" r="62" fill="url(#rg-meter)" opacity=".9"/>
+          <circle cx="650" cy="180" r="54" class="n-inner" filter="url(#drop)"/>
+          <circle cx="650" cy="180" r="54" class="n-outer" stroke="var(--blu)" id="o-meter"/>
+          <circle cx="650" cy="180" r="64" class="n-ring" stroke="var(--blu)" id="r-meter"/>
+          <text x="650" y="168" class="fn-icon" font-size="22px" dominant-baseline="middle" text-anchor="middle">🔌</text>
+          <text x="650" y="185" class="n-title" font-size="12">Grid</text>
+          <text x="650" y="198" class="n-title" font-size="12">Meter</text>
+          <text x="650" y="213" id="nv-meter" class="n-val" font-size="11" fill="var(--blu)">0.93 kW</text>
+          <circle cx="690" cy="140" r="6" class="n-led led-ok" id="led-meter"/>
+        </g>
+
+        <!-- GRID SUPPLY  cx=840 cy=180 r=54 -->
+        <g class="n-group" id="n-grid">
+          <circle cx="840" cy="180" r="62" fill="url(#rg-grid)" opacity=".9"/>
+          <circle cx="840" cy="180" r="54" class="n-inner" filter="url(#drop)"/>
+          <circle cx="840" cy="180" r="54" class="n-outer" stroke="var(--grn)" id="o-grid"/>
+          <circle cx="840" cy="180" r="64" class="n-ring rev" stroke="var(--grn)" id="r-grid"/>
+          <text x="840" y="168" class="fn-icon" font-size="22px" dominant-baseline="middle" text-anchor="middle">🏭</text>
+          <text x="840" y="185" class="n-title" font-size="12">Grid</text>
+          <text x="840" y="198" class="n-title" font-size="12">Supply</text>
+          <text x="840" y="213" id="nv-grid" class="n-val" font-size="11" fill="var(--grn)">Export ↑</text>
+          <circle cx="880" cy="140" r="6" class="n-led led-ok" id="led-grid"/>
+          <text id="grid-cut-lbl" x="840" y="118" class="fail-text" font-size="12" opacity="0">⚠ NO GRID</text>
+        </g>
+
+        <!-- UPS/BATTERY  cx=380 cy=360 r=54 -->
+        <g class="n-group" id="n-ups">
+          <circle cx="380" cy="360" r="62" fill="url(#rg-ups)" opacity=".9"/>
+          <circle cx="380" cy="360" r="54" class="n-inner" filter="url(#drop)"/>
+          <circle cx="380" cy="360" r="54" class="n-outer" stroke="var(--accB)" id="o-ups"/>
+          <circle cx="380" cy="360" r="64" class="n-ring" stroke="var(--accB)" id="r-ups"/>
+          <text x="380" y="348" class="fn-icon" font-size="22px" dominant-baseline="middle" text-anchor="middle">🔋</text>
+          <text x="380" y="365" class="n-title" font-size="12">UPS /</text>
+          <text x="380" y="378" class="n-title" font-size="12">Battery</text>
+          <text x="380" y="393" id="nv-ups" class="n-val" font-size="11" fill="var(--accB)">84% · Stby</text>
+          <circle cx="420" cy="320" r="6" class="n-led led-ok" id="led-ups"/>
+        </g>
+
+        <!-- HOME LOAD  cx=620 cy=360 r=60 -->
+        <g class="n-group" id="n-load">
+          <circle cx="620" cy="360" r="68" fill="url(#rg-load)" opacity=".9"/>
+          <circle cx="620" cy="360" r="60" class="n-inner" filter="url(#drop)"/>
+          <circle cx="620" cy="360" r="60" class="n-outer" stroke="var(--red)" id="o-load"/>
+          <circle cx="620" cy="360" r="70" class="n-ring rev" stroke="var(--red)" id="r-load"/>
+          <text x="620" y="345" class="fn-icon" font-size="26px" dominant-baseline="middle" text-anchor="middle">🏠</text>
+          <text x="620" y="363" class="n-title" font-size="13">Home</text>
+          <text x="620" y="377" class="n-title" font-size="13">Load</text>
+          <text x="620" y="393" id="nv-load" class="n-val" font-size="11" fill="var(--red)">1.42 kW</text>
+          <circle cx="664" cy="316" r="7" class="n-led led-ok" id="led-load"/>
+          <text id="load-nopower-lbl" x="620" y="420" class="fail-text" font-size="12" opacity="0" style="fill:var(--red)">NO POWER</text>
+        </g>
+      </svg>
+
+      <!-- Legend -->
+      <div class="leg">
+        <div class="leg-item"><div class="leg-line" style="background:var(--acc);box-shadow:0 0 7px var(--acc)"></div>Solar DC</div>
+        <div class="leg-item"><div class="leg-line" style="background:var(--blu);box-shadow:0 0 7px var(--blu)"></div>Inverter AC Out</div>
+        <div class="leg-item"><div class="leg-line" style="background:var(--grn);box-shadow:0 0 7px var(--grn)"></div>Grid Export/Import</div>
+        <div class="leg-item"><div class="leg-line" style="background:var(--accB);box-shadow:0 0 7px var(--accB)"></div>UPS Charging</div>
+        <div class="leg-item"><div class="leg-line" style="background:var(--red);box-shadow:0 0 7px var(--red)"></div>Home Load Power</div>
+        <div class="leg-item"><div class="leg-line" style="background:var(--mut);opacity:.5"></div>Inactive Path</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ██████ CONNECT ██████ -->
+  <div class="pane" id="p-conn">
+    <div class="g2" style="margin-bottom:16px">
+      <div class="card">
+        <div class="ct">KSolare 5GPro Connection</div>
+        <div style="background:var(--glass2);border:1px solid var(--rim2);border-radius:12px;padding:14px;margin-bottom:16px;font-family:'JetBrains Mono';font-size:12px;line-height:2.1;transition:all var(--ts) var(--ease)">
+          Model: <strong style="color:var(--txt)">KSY 3.4kW 1Ph 1MPPT (5G Pro)</strong><br>
+          Protocol: <strong style="color:var(--acc)">SolarmanV5 over TCP port 8899</strong><br>
+          COM1: <strong style="color:var(--grn)">WiFi datalogger stick</strong><br>
+          COM2: <strong style="color:var(--blu)">RS485 smart meter / wired backup</strong><br>
+          Modbus: <strong style="color:var(--txt)">9600 baud · 8N1 · Slave ID 1</strong>
+        </div>
+        <div class="ct" style="margin-top:0">Setup Steps</div>
+        <div class="steps">
+          <div class="step"><div class="snum">1</div><div class="stxt">Read the <strong>10-digit serial number</strong> on the WiFi stick in COM1 — e.g. <code>2112345678</code></div></div>
+          <div class="step"><div class="snum">2</div><div class="stxt">Connect stick to home WiFi via <strong>SolarmanPV app</strong>, or hotspot <code>AP_XXXXXXXX</code> → open <code>10.10.100.254</code></div></div>
+          <div class="step"><div class="snum">3</div><div class="stxt">Find the inverter's LAN IP in your router device list. Look for "Hi-Flying" or open port 8899.</div></div>
+          <div class="step"><div class="snum">4</div><div class="stxt">Verify: <code>nmap -p 8899 &lt;ip&gt;</code> — must show <strong>open</strong>.</div></div>
+          <div class="step"><div class="snum">5</div><div class="stxt">Run Python poller (Code tab). Non-zero register values = connected successfully.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ct">Communication Options</div>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <div style="border-radius:13px;padding:15px;border:1px solid var(--grn);background:color-mix(in srgb,var(--grn) 6%,transparent)">
+            <div style="font-family:'Rajdhani';font-weight:700;color:var(--grn);margin-bottom:8px;font-size:15px;letter-spacing:.5px">✅ PRIMARY — SolarmanV5 WiFi</div>
+            <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--txt2);line-height:2.0">Port: TCP 8899 · Library: pysolarmanv5<br>Poll every 30s · close socket after read<br>One TCP client at a time only<br>Night: comms CPU stays on (grid power)<br>Zero extra hardware needed ✓</div>
+          </div>
+          <div style="border-radius:13px;padding:15px;border:1px solid var(--blu);background:color-mix(in srgb,var(--blu) 5%,transparent)">
+            <div style="font-family:'Rajdhani';font-weight:700;color:var(--blu);margin-bottom:8px;font-size:14px;letter-spacing:.5px">🔧 BACKUP — RS485 Modbus RTU</div>
+            <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--mut);line-height:2.0">USB-RS485 adapter ~₹300 · COM2 port<br>pymodbus / minimalmodbus</div>
+          </div>
+          <div style="border-radius:13px;padding:15px;border:1px solid var(--rim2);background:var(--glass2)">
+            <div style="font-family:'Rajdhani';font-weight:700;color:var(--mut);margin-bottom:8px;font-size:14px;letter-spacing:.5px">🌐 OPTIONAL — SolarmanPV Cloud</div>
+            <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--mut);line-height:2.0">REST API · 100 calls/day free<br>3–5s latency · remote access only</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ██████ REGISTERS ██████ -->
+  <div class="pane" id="p-regs">
+    <div class="card">
+      <div class="ct">Modbus Register Map — KSolare 5GPro</div>
+      <div class="warn-box">⚠ Addresses marked <strong>†</strong> need verification via register scan or <strong>service@ksolare.com · 8530111222</strong>. FC=04 Input Registers (live, RO). FC=03 Holding Registers (config, R/W).</div>
+      <div class="divider">Input Registers FC=04 — Live Telemetry (Read Only)</div>
+      <div class="tw" style="margin-bottom:20px">
+        <table>
+          <thead><tr><th>Dec</th><th>Hex</th><th>Parameter</th><th>Unit</th><th>Scale</th><th>Type</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="r-addr">0</td><td class="r-addr">0x0000</td><td><strong>Device Status</strong></td><td>—</td><td class="r-scl">×1</td><td class="r-ok">U16 RO</td><td>0=Standby · 2=Normal · 5=Fault</td></tr>
+            <tr><td class="r-addr">1</td><td class="r-addr">0x0001</td><td><strong>Fault Code</strong></td><td>—</td><td class="r-scl">×1</td><td class="r-ok">U16 RO</td><td>F0–F19 per manual · 0=no fault</td></tr>
+            <tr><td class="r-addr">2</td><td class="r-addr">0x0002</td><td><strong>DC Voltage (PV)</strong></td><td>V</td><td class="r-scl">÷10</td><td class="r-ok">U16 RO</td><td>3720 → 372.0V</td></tr>
+            <tr><td class="r-addr">3</td><td class="r-addr">0x0003</td><td><strong>DC Current (PV)</strong></td><td>A</td><td class="r-scl">÷10</td><td class="r-ok">U16 RO</td><td>91 → 9.1A</td></tr>
+            <tr><td class="r-addr">4</td><td class="r-addr">0x0004</td><td><strong>DC Input Power</strong></td><td>W</td><td class="r-scl">÷1</td><td class="r-ok">U16 RO</td><td>Raw watts from PV panels</td></tr>
+            <tr><td class="r-addr">6</td><td class="r-addr">0x0006</td><td><strong>AC Grid Voltage ★</strong></td><td>V</td><td class="r-scl">÷10</td><td class="r-ok">U16 RO</td><td>2310 → 231.0V · F10 if outside 200–250V</td></tr>
+            <tr><td class="r-addr">7</td><td class="r-addr">0x0007</td><td><strong>AC Output Current</strong></td><td>A</td><td class="r-scl">÷10</td><td class="r-ok">U16 RO</td><td>102 → 10.2A</td></tr>
+            <tr><td class="r-addr">8</td><td class="r-addr">0x0008</td><td><strong>AC Output Power ★</strong></td><td>W</td><td class="r-scl">÷1</td><td class="r-ok">U16 RO</td><td>Primary — active watts to grid</td></tr>
+            <tr><td class="r-addr">9</td><td class="r-addr">0x0009</td><td><strong>Grid Frequency ★</strong></td><td>Hz</td><td class="r-scl">÷100</td><td class="r-ok">U16 RO</td><td>5001 → 50.01Hz · F11 if out of range</td></tr>
+            <tr><td class="r-addr">10</td><td class="r-addr">0x000A</td><td><strong>Power Factor</strong></td><td>—</td><td class="r-scl">÷1000</td><td class="r-ok">S16 RO</td><td>1000 = 1.0 PF · signed</td></tr>
+            <tr><td class="r-addr">11</td><td class="r-addr">0x000B</td><td><strong>Inverter Temp ★</strong></td><td>°C</td><td class="r-scl">÷10</td><td class="r-ok">S16 RO</td><td>Heatsink · F8 if out of spec</td></tr>
+            <tr><td class="r-addr">13</td><td class="r-addr">0x000D</td><td><strong>Today Energy ★</strong></td><td>kWh</td><td class="r-scl">÷10</td><td class="r-ok">U16 RO</td><td>138 → 13.8 kWh since midnight</td></tr>
+            <tr><td class="r-addr">14–15</td><td class="r-addr">0x000E</td><td><strong>Total Energy ★</strong></td><td>kWh</td><td class="r-scl">÷10</td><td class="r-ok">U32 RO</td><td>Lifetime · 2 registers · high word first</td></tr>
+            <tr><td class="r-addr">40 †</td><td class="r-addr">0x0028</td><td><strong>ISO Resistance</strong></td><td>kΩ</td><td class="r-scl">÷1</td><td class="r-ok">U16 RO</td><td>Insulation · F6 if too low</td></tr>
+            <tr><td class="r-addr">60 †</td><td class="r-addr">0x003C</td><td><strong>GFCI Leakage</strong></td><td>mA</td><td class="r-scl">÷1</td><td class="r-ok">U16 RO</td><td>Ground fault · alert if &gt;300mA</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="divider">Holding Registers FC=03 — Configuration (R/W)</div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Dec</th><th>Hex</th><th>Parameter</th><th>Unit</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="r-addr">200</td><td class="r-addr">0x00C8</td><td><strong>Modbus Slave Address</strong></td><td>—</td><td>Default 1 · multi-unit RS485 bus</td></tr>
+            <tr><td class="r-addr">201</td><td class="r-addr">0x00C9</td><td><strong>Baud Rate</strong></td><td>—</td><td>0=9600 · 1=19200 · 2=38400 · 3=115200</td></tr>
+            <tr><td class="r-addr">210</td><td class="r-addr">0x00D2</td><td><strong>Active Power Limit</strong></td><td>%×10</td><td>1000=100% · throttle output power</td></tr>
+            <tr><td class="r-addr">215</td><td class="r-addr">0x00D7</td><td><strong>OV Trip Voltage</strong></td><td>V×10</td><td>Disconnect if AC exceeds this value</td></tr>
+            <tr><td class="r-addr">216</td><td class="r-addr">0x00D8</td><td><strong>UV Trip Voltage</strong></td><td>V×10</td><td>Disconnect if AC falls below this value</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="background:color-mix(in srgb,var(--red) 8%,transparent);border:1px solid color-mix(in srgb,var(--red) 22%,transparent);border-radius:10px;padding:11px 14px;margin-top:13px;font-size:13px;color:var(--txt2)">⚠️ <strong>Never write holding registers</strong> without KSolare guidance. Wrong values can trip protection or void warranty.</div>
+    </div>
+  </div>
+
+  <!-- ██████ ARCHITECTURE ██████ -->
+  <div class="pane" id="p-arch">
+    <div class="card" style="margin-bottom:16px">
+      <div class="ct">System Architecture — 4-Layer Stack</div>
+      <div class="layer" style="--lc:var(--acc)"><div class="lhd">Layer 1 · Field Hardware</div><div class="lnodes"><div class="lnode">🌞<div>Solar Panels<small>DC · 3.4kW · no comms</small></div></div><div class="lnode">⚡<div>KSolare 5GPro<small>DC→AC · MPPT · COM1 COM2</small></div></div><div class="lnode">📡<div>WiFi Datalogger<small>SolarmanV5 · TCP 8899</small></div></div><div class="lnode">🔋<div>UPS / Battery<small>Backup power · standby</small></div></div></div></div>
+      <div class="lconn"><div class="lline"></div>⬇ SolarmanV5 TCP 8899 · bidirectional poll/response<div class="lline"></div></div>
+      <div class="layer" style="--lc:var(--blu)"><div class="lhd">Layer 2 · Raspberry Pi 4 (Edge Hub)</div><div class="lnodes"><div class="lnode">🐍<div>Python Poller<small>pysolarmanv5 · 30s · systemd</small></div></div><div class="lnode">🦟<div>Mosquitto MQTT<small>Docker · port 1883</small></div></div><div class="lnode">🔴<div>Node-RED<small>Docker · port 1880 · logic</small></div></div><div class="lnode">🌤<div>Weather API<small>OpenWeatherMap · 15m</small></div></div></div></div>
+      <div class="lconn"><div class="lline"></div>⬇ HTTP Line Protocol · Node-RED writes · unidirectional<div class="lline"></div></div>
+      <div class="layer" style="--lc:var(--grn)"><div class="lhd">Layer 3 · InfluxDB 2.x (Docker · port 8086)</div><div class="lnodes"><div class="lnode">📊<div>solar_realtime<small>30s raw · 7-day</small></div></div><div class="lnode">📈<div>solar_history<small>1h rollup · 150-day</small></div></div><div class="lnode">🧹<div>cleaning_log<small>panel wash events · permanent</small></div></div><div class="lnode">⚠️<div>fault_log<small>F0–F19 history · permanent</small></div></div></div></div>
+      <div class="lconn"><div class="lline"></div>⬇ Flux query REST API · React reads · bidirectional<div class="lline"></div></div>
+      <div class="layer" style="--lc:var(--red)"><div class="lhd">Layer 4 · Presentation</div><div class="lnodes"><div class="lnode">⚛️<div>React Dashboard<small>This page · Nginx · port 80</small></div></div><div class="lnode">📱<div>Mobile / Laptop<small>PWA · Tailscale remote</small></div></div><div class="lnode">🖥️<div>4" TFT Screen<small>Python PIL · SPI GPIO</small></div></div><div class="lnode">✈️<div>Telegram Bot<small>Faults · cleaning alerts</small></div></div></div></div>
+    </div>
+  </div>
+
+  <!-- ██████ DATABASE ██████ -->
+  <div class="pane" id="p-db">
+    <div class="card">
+      <div class="ct">InfluxDB 2.x — Complete Schema</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:20px">
+        <div class="s-bucket"><div class="s-title"><span style="color:var(--acc)">●</span>solar_realtime</div><div style="font-family:'JetBrains Mono';font-size:11px;color:var(--mut);line-height:1.9">Retention: 7 days<br>Rate: 30s · ~50 MB/week<br>Use: live KPIs + chart</div></div>
+        <div class="s-bucket"><div class="s-title"><span style="color:var(--blu)">●</span>solar_history</div><div style="font-family:'JetBrains Mono';font-size:11px;color:var(--mut);line-height:1.9">Retention: 150 days<br>Rate: 1h rollup · ~260 MB<br>Use: trend charts</div></div>
+        <div class="s-bucket"><div class="s-title"><span style="color:var(--grn)">●</span>solar_logs</div><div style="font-family:'JetBrains Mono';font-size:11px;color:var(--mut);line-height:1.9">Retention: permanent<br>Events only · &lt;1 MB<br>Use: fault + clean log</div></div>
+      </div>
+      <div class="divider">Measurement: solar_telemetry</div>
+      <div style="background:var(--glass2);border-radius:12px;padding:4px 0;margin-bottom:16px">
+        <div class="ssec">Tags (indexed)</div>
+        <div class="srow stag"><span class="sc1">device_id</span><span class="sc2">tag·string</span><span class="sc3">"ksolare_5gpro_001"</span></div>
+        <div class="srow stag"><span class="sc1">location</span><span class="sc2">tag·string</span><span class="sc3">"pune_roof"</span></div>
+        <div class="ssec">Fields</div>
+        <div class="srow"><span class="sc1">ac_power_w</span><span class="sc2">field·float</span><span class="sc3">AC watts · reg 0x0008</span></div>
+        <div class="srow"><span class="sc1">ac_voltage_v</span><span class="sc2">field·float</span><span class="sc3">Grid V · reg 0x0006 ÷10</span></div>
+        <div class="srow"><span class="sc1">ac_freq_hz</span><span class="sc2">field·float</span><span class="sc3">Grid Hz · reg 0x0009 ÷100</span></div>
+        <div class="srow"><span class="sc1">dc_voltage_v</span><span class="sc2">field·float</span><span class="sc3">PV V · reg 0x0002 ÷10</span></div>
+        <div class="srow"><span class="sc1">dc_current_a</span><span class="sc2">field·float</span><span class="sc3">PV A · reg 0x0003 ÷10</span></div>
+        <div class="srow"><span class="sc1">temperature_c</span><span class="sc2">field·float</span><span class="sc3">Heatsink °C · reg 0x000B ÷10</span></div>
+        <div class="srow"><span class="sc1">today_kwh</span><span class="sc2">field·float</span><span class="sc3">kWh since midnight · reg 0x000D ÷10</span></div>
+        <div class="srow"><span class="sc1">total_kwh</span><span class="sc2">field·float</span><span class="sc3">Lifetime kWh · reg 0x000E U32 ÷10</span></div>
+        <div class="srow"><span class="sc1">efficiency_pct</span><span class="sc2">field·float</span><span class="sc3">Derived: (ac_power_w ÷ 3400) × 100</span></div>
+        <div class="srow"><span class="sc1">export_kw</span><span class="sc2">field·float</span><span class="sc3">Derived: ac_kw − load_kw</span></div>
+        <div class="srow"><span class="sc1">fault_code</span><span class="sc2">field·int</span><span class="sc3">F0–F19 · 0 = no fault</span></div>
+        <div class="srow"><span class="sc1">saved_rs</span><span class="sc2">field·float</span><span class="sc3">Derived: today_kwh × tariff_rs</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ██████ CODE ██████ -->
+  <div class="pane" id="p-code">
+    <div class="card" style="margin-bottom:16px">
+      <div class="ct">inverter_poller.py</div>
+      <div class="code"><div class="ctag">Python 3.x</div>
+<span class="cm">#!/usr/bin/env python3</span>
+<span class="cm"># KSolare 5GPro · SolarmanV5 Poller · Raspberry Pi 4</span>
+<span class="cm"># pip install pysolarmanv5 paho-mqtt</span>
+
+<span class="ck">import</span> time, json, logging
+<span class="ck">from</span> datetime <span class="ck">import</span> datetime
+<span class="ck">from</span> pysolarmanv5 <span class="ck">import</span> PySolarmanV5, NoSocketAvailableError
+<span class="ck">import</span> paho.mqtt.client <span class="ck">as</span> mqtt
+
+INVERTER_IP   = <span class="cv">"192.168.1.XXX"</span>   <span class="cm"># from router device list</span>
+LOGGER_SERIAL = <span class="cv">2112345678</span>        <span class="cm"># 10-digit from WiFi stick label</span>
+RATED_W, TARIFF, POLL_S = <span class="cv">3400</span>, <span class="cv">7.5</span>, <span class="cv">30</span>
+
+mq = mqtt.Client(); mq.connect(<span class="cv">"localhost"</span>, <span class="cv">1883</span>); mq.loop_start()
+
+<span class="ck">def</span> <span class="cf">u32</span>(inv, r):
+    <span class="ck">return</span> (inv.read_input_registers(r,<span class="cv">1</span>)[<span class="cv">0</span>] &lt;&lt; <span class="cv">16</span>) | inv.read_input_registers(r+<span class="cv">1</span>,<span class="cv">1</span>)[<span class="cv">0</span>]
+<span class="ck">def</span> <span class="cf">s16</span>(v): <span class="ck">return</span> v <span class="ck">if</span> v &lt; <span class="cv">32768</span> <span class="ck">else</span> v - <span class="cv">65536</span>
+
+<span class="ck">def</span> <span class="cf">poll</span>():
+    <span class="ck">try</span>:
+        inv = PySolarmanV5(INVERTER_IP, LOGGER_SERIAL, port=<span class="cv">8899</span>, mb_slave_id=<span class="cv">1</span>)
+        d = {
+            <span class="cv">"ts"</span>:          datetime.now().isoformat(),
+            <span class="cv">"status"</span>:      inv.read_input_registers(<span class="cv">0x0000</span>,<span class="cv">1</span>)[<span class="cv">0</span>],
+            <span class="cv">"fault"</span>:       inv.read_input_registers(<span class="cv">0x0001</span>,<span class="cv">1</span>)[<span class="cv">0</span>],
+            <span class="cv">"dc_v"</span>:        inv.read_input_registers(<span class="cv">0x0002</span>,<span class="cv">1</span>)[<span class="cv">0</span>] / <span class="cv">10</span>,
+            <span class="cv">"dc_a"</span>:        inv.read_input_registers(<span class="cv">0x0003</span>,<span class="cv">1</span>)[<span class="cv">0</span>] / <span class="cv">10</span>,
+            <span class="cv">"ac_w"</span>:        inv.read_input_registers(<span class="cv">0x0008</span>,<span class="cv">1</span>)[<span class="cv">0</span>],
+            <span class="cv">"ac_v"</span>:        inv.read_input_registers(<span class="cv">0x0006</span>,<span class="cv">1</span>)[<span class="cv">0</span>] / <span class="cv">10</span>,
+            <span class="cv">"freq"</span>:        inv.read_input_registers(<span class="cv">0x0009</span>,<span class="cv">1</span>)[<span class="cv">0</span>] / <span class="cv">100</span>,
+            <span class="cv">"temp"</span>:        s16(inv.read_input_registers(<span class="cv">0x000B</span>,<span class="cv">1</span>)[<span class="cv">0</span>]) / <span class="cv">10</span>,
+            <span class="cv">"today_kwh"</span>:   inv.read_input_registers(<span class="cv">0x000D</span>,<span class="cv">1</span>)[<span class="cv">0</span>] / <span class="cv">10</span>,
+            <span class="cv">"total_kwh"</span>:   u32(inv, <span class="cv">0x000E</span>) / <span class="cv">10</span>,
+        }
+        d[<span class="cv">"efficiency"</span>] = round(d[<span class="cv">"ac_w"</span>] / RATED_W * <span class="cv">100</span>, <span class="cv">1</span>)
+        d[<span class="cv">"saved_rs"</span>]  = round(d[<span class="cv">"today_kwh"</span>] * TARIFF, <span class="cv">2</span>)
+        mq.publish(<span class="cv">"solar/telemetry"</span>, json.dumps(d), qos=<span class="cv">1</span>)
+        <span class="ck">if</span> d[<span class="cv">"fault"</span>]: mq.publish(<span class="cv">"solar/fault"</span>, json.dumps(d), qos=<span class="cv">1</span>)
+        logging.info(<span class="cv">f"✅ {d['ac_w']}W | {d['efficiency']}% | {d['today_kwh']}kWh"</span>)
+        inv.disconnect()
+    <span class="ck">except</span> NoSocketAvailableError:
+        logging.warning(<span class="cv">"🌙 Night / unreachable"</span>)
+    <span class="ck">except Exception as</span> e: logging.error(<span class="cv">f"❌ {e}"</span>)
+
+<span class="ck">while True</span>: poll(); time.sleep(POLL_S)
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+/* ═══════════════════════════════════════════
+   THEME ENGINE
+   ═══════════════════════════════════════════ */
+const TL = {dawn:'🌅 Dawn Mode',day:'☀️ Day Mode',dusk:'🌆 Dusk Mode',night:'🌙 Night Mode'};
+let _t = null;
+function getTheme(){
+  const h = new Date().getHours() + new Date().getMinutes()/60;
+  return h>=5&&h<7?'dawn': h>=7&&h<17?'day': h>=17&&h<19.5?'dusk': 'night';
+}
+function applyTheme(){
+  const t = getTheme();
+  if(t===_t) return;
+  _t = t;
+  document.body.setAttribute('data-theme', t);
+  document.getElementById('themeLabel').textContent = TL[t];
+}
+applyTheme();
+setInterval(applyTheme, 30000);
+
+/* ═══════════════════════════════════════════
+   STARS
+   ═══════════════════════════════════════════ */
+(function(){
+  const c = document.getElementById('stars');
+  for(let i=0;i<180;i++){
+    const el = document.createElement('div');
+    el.className='st';
+    const sz = Math.random()*2.4+0.5;
+    el.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--sd:${2+Math.random()*5}s;--ss:-${Math.random()*6}s`;
+    c.appendChild(el);
+  }
+})();
+
+/* ═══════════════════════════════════════════
+   CLOCK
+   ═══════════════════════════════════════════ */
+setInterval(()=>{ document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN'); }, 1000);
+document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN');
+
+/* ═══════════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════════ */
+function go(id, btn){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='dash') setTimeout(buildChart, 50);
+}
+
+/* ═══════════════════════════════════════════
+   CHART
+   ═══════════════════════════════════════════ */
+function buildChart(){
+  const H=new Date().getHours(), M=new Date().getMinutes();
+  const n = Math.max(2, Math.min(H-6+(M>0?1:0), 13));
+  const actual=[],expected=[],load=[];
+  for(let i=0;i<n;i++){
+    const sp = Math.max(0, Math.sin((i/12)*Math.PI));
+    actual.push(Math.max(0, +(sp*3.4*.69+(Math.random()-.5)*.12).toFixed(2)));
+    expected.push(+(sp*3.4).toFixed(2));
+    load.push(+(0.9+Math.random()*.9).toFixed(2));
+  }
+  const W=695, CH=148, MAX=3.6;
+  const pts = arr => arr.map((v,i) => [(i/(n-1))*(W-14)+7, CH-(v/MAX)*CH]);
+  function curve(arr, close){
+    const p=pts(arr); let d=`M${p[0][0].toFixed(1)},${p[0][1].toFixed(1)}`;
+    for(let i=1;i<p.length;i++){const cx=(p[i-1][0]+p[i][0])/2; d+=` C${cx.toFixed(1)},${p[i-1][1].toFixed(1)} ${cx.toFixed(1)},${p[i][1].toFixed(1)} ${p[i][0].toFixed(1)},${p[i][1].toFixed(1)}`;}
+    if(close) d+=` L${p[n-1][0]},${CH} L${p[0][0]},${CH} Z`;
+    return d;
+  }
+  document.getElementById('pe').setAttribute('d',curve(expected,false));
+  document.getElementById('pa').setAttribute('d',curve(actual,true));
+  document.getElementById('pl').setAttribute('d',curve(load,true));
+  document.getElementById('la').setAttribute('d',curve(actual,false));
+  document.getElementById('ll').setAttribute('d',curve(load,false));
+}
+buildChart();
+
+/* ═══════════════════════════════════════════
+   BAR CHART
+   ═══════════════════════════════════════════ */
+(function(){
+  const lbl=['22','23','24','25','26','27','28','1','2','3','4','5','6','Today'];
+  const vals=lbl.map((_,i)=>i===13?13.8:+(7+Math.random()*11).toFixed(1));
+  const max=Math.max(...vals);
+  const bc=document.getElementById('barsEl');
+  lbl.forEach((l,i)=>{
+    const w=document.createElement('div'); w.className='bw';
+    const b=document.createElement('div'); b.className='bar';
+    b.style.cssText=`height:0px;background:${i===13?'var(--acc)':'color-mix(in srgb,var(--acc) 36%,transparent)'};transition-delay:${i*.04}s`;
+    const t=document.createElement('div'); t.className='btip'; t.textContent=`${vals[i]} kWh`;
+    const bl=document.createElement('div'); bl.className='blbl'; bl.textContent=l;
+    b.appendChild(t); w.appendChild(b); w.appendChild(bl); bc.appendChild(w);
+    setTimeout(()=>{ b.style.height=`${(vals[i]/max*115)}px`; }, 100+i*40);
+  });
+})();
+
+/* ═══════════════════════════════════════════
+   LIVE DASHBOARD SIMULATION
+   ═══════════════════════════════════════════ */
+function dashSim(){
+  const h=new Date().getHours()+new Date().getMinutes()/60;
+  const sp=Math.max(0,Math.sin(((h-6)/12)*Math.PI));
+  const gen=Math.max(0,+(sp*3.4*.69+(Math.random()-.5)*.09).toFixed(2));
+  const lod=+(1.1+Math.random()*.55).toFixed(2);
+  const exp=Math.max(0,+(gen-lod).toFixed(2));
+  const kwh=+(gen*Math.max(0,h-6)).toFixed(1);
+  const eff=Math.round((gen/3.4)*100);
+  const exporting=gen>lod;
+  const $=(id,v)=>{const e=document.getElementById(id);if(e)e.innerHTML=v;};
+  const $c=(id,c)=>{const e=document.getElementById(id);if(e)e.style.color=c;};
+  $('kv1',`${gen}<span class="kpi-u">kW</span>`);
+  $('kv2',`${lod}<span class="kpi-u">kW</span>`);
+  $('kv3',`${exp}<span class="kpi-u">kW</span>`);
+  $('kv4',`${kwh}<span class="kpi-u">kWh</span>`);
+  $('ks1', eff<80?`⚠ ${eff}% — dirty panels`:`✅ ${eff}% efficiency`);
+  $c('ks1', eff<80?'var(--red)':'var(--grn)');
+  $('ks4',`₹${Math.round(kwh*7.5)} saved today`);
+  document.getElementById('ki3').textContent=exporting?'🔌':'⚡';
+  document.getElementById('kl3').textContent=exporting?'Grid Export':'Grid Import';
+  $('ks3', exporting?'Feeding grid ↑':'⚠ Drawing from grid');
+  $c('ks3', exporting?'var(--grn)':'var(--red)');
+  $('sv-dc',`${(360+Math.random()*20).toFixed(0)}V · ${(8+Math.random()*2).toFixed(1)}A`);
+  $('sv-freq',`${(49.98+Math.random()*.09).toFixed(2)} Hz`);
+  const tmpC = (54+Math.random()*7).toFixed(0);
+  $('sv-temp',`${tmpC}°C`);
+  document.getElementById('sv-temp').style.color = tmpC>65?'var(--red)':'var(--acc)';
+}
+setInterval(dashSim, 5000); dashSim();
+
+/* ═══════════════════════════════════════════
+   POWER FLOW — particle & path control
+   ═══════════════════════════════════════════ */
+function pSet(ids, on){
+  ids.forEach(id=>{ const e=document.getElementById(id); if(e){ e.classList.toggle('off',!on); if(on) e.style.opacity='1'; else e.style.opacity='0'; }});
+}
+function pathSet(id, active, flash){
+  const e=document.getElementById(id); if(!e) return;
+  e.classList.toggle('active', active);
+  e.classList.toggle('dim', !active);
+  e.classList.toggle('alert-flash', !!flash);
+}
+function lblSet(id, txt, show){
+  const e=document.getElementById(id); if(!e) return;
+  if(txt!==null) e.textContent=txt;
+  e.classList.toggle('dim', !show);
+}
+function ledSet(id, state){ // ok | warn | bad | off
+  const e=document.getElementById(id); if(!e) return;
+  e.className='n-led led-'+state;
+}
+function nodeVal(id, txt, col){
+  const e=document.getElementById(id); if(!e) return;
+  e.textContent=txt; if(col) e.style.fill=col;
+}
+function failLbl(id, show){
+  const e=document.getElementById(id); if(!e) return;
+  e.style.opacity = show?'1':'0';
+}
+function badge(txt, cls){ document.getElementById('pfBadge').textContent=txt; document.getElementById('pfBadge').className='bdg '+cls; }
+function banner(show, type, title, desc){
+  const b=document.getElementById('eBanner');
+  b.classList.toggle('show', show);
+  if(show){ b.className='e-banner eb-'+type+' show'; document.getElementById('eTitle').textContent=title; document.getElementById('eDesc').textContent=desc; }
+}
+function clearSc(){
+  document.querySelectorAll('.sc-btn').forEach(b=>{ b.classList.remove('active-ok','active-bad','active-warn'); });
+}
+
+const SCENARIOS = {
+  normal:{
+    badge:'NORMAL OPERATION', badgeCls:'bl',
+    banner:false,
+    apply(){
+      // Solar→Inv→Meter→Grid (export) + Inv→UPS (charging) + Inv→Load
+      pathSet('path-SI',true); pathSet('path-IM',true); pathSet('path-MG',true);
+      pathSet('path-GM',false); pathSet('path-IU',true); pathSet('path-UL',false); pathSet('path-IL',true);
+      pSet(['p-SI-1','p-SI-2','p-SI-3'],true);
+      pSet(['p-IM-1','p-IM-2','p-IM-3'],true);
+      pSet(['p-MG-1','p-MG-2'],true); pSet(['p-GM-1','p-GM-2'],false);
+      pSet(['p-IU-1','p-IU-2'],true);
+      pSet(['p-UL-1','p-UL-2','p-UL-3'],false);
+      pSet(['p-IL-1','p-IL-2','p-IL-3'],true);
+      ledSet('led-solar','ok'); ledSet('led-inv','ok'); ledSet('led-meter','ok');
+      ledSet('led-grid','ok'); ledSet('led-ups','ok'); ledSet('led-load','ok');
+      failLbl('inv-fault-lbl',false); failLbl('grid-cut-lbl',false); failLbl('load-nopower-lbl',false);
+      nodeVal('nv-solar','2.35 kW','var(--acc)'); nodeVal('nv-inv','2.35 kW','var(--blu)');
+      nodeVal('nv-meter','0.93 kW','var(--blu)'); nodeVal('nv-grid','Export ↑','var(--grn)');
+      nodeVal('nv-ups','84% · Chg','var(--accB)'); nodeVal('nv-load','1.42 kW','var(--red)');
+      lblSet('lbl-SI','2.35 kW',true); lblSet('lbl-IM','2.35 kW',true);
+      lblSet('lbl-MG','Export',true); lblSet('lbl-UL','',false); lblSet('lbl-IL','1.42 kW',true);
+      document.getElementById('sv-ups').textContent='84% · Charging';
+    }
+  },
+  gridcut:{
+    badge:'⚠ GRID FAILURE — UPS ACTIVE', badgeCls:'bw',
+    banner:true, bannerType:'red',
+    bannerTitle:'Grid Power Cut Detected!',
+    bannerDesc:'Grid disconnected · Solar continues · UPS battery discharging to supply home load',
+    apply(){
+      // Solar still works → Inv → Load (direct)
+      // Grid DEAD — no Meter↔Grid flow
+      // UPS discharging → Load
+      pathSet('path-SI',true); pathSet('path-IM',false); pathSet('path-MG',false,true);
+      pathSet('path-GM',false); pathSet('path-IU',false); pathSet('path-UL',true); pathSet('path-IL',true);
+      pSet(['p-SI-1','p-SI-2','p-SI-3'],true);
+      pSet(['p-IM-1','p-IM-2','p-IM-3'],false);
+      pSet(['p-MG-1','p-MG-2'],false); pSet(['p-GM-1','p-GM-2'],false);
+      pSet(['p-IU-1','p-IU-2'],false);
+      pSet(['p-UL-1','p-UL-2','p-UL-3'],true);
+      pSet(['p-IL-1','p-IL-2','p-IL-3'],true);
+      ledSet('led-solar','ok'); ledSet('led-inv','ok'); ledSet('led-meter','warn');
+      ledSet('led-grid','bad'); ledSet('led-ups','warn'); ledSet('led-load','ok');
+      failLbl('inv-fault-lbl',false); failLbl('grid-cut-lbl',true); failLbl('load-nopower-lbl',false);
+      nodeVal('nv-solar','2.35 kW','var(--acc)'); nodeVal('nv-inv','2.35 kW','var(--blu)');
+      nodeVal('nv-meter','0 kW','var(--mut)'); nodeVal('nv-grid','⚠ NO GRID','var(--red)');
+      nodeVal('nv-ups','84% · Dis','var(--red)'); nodeVal('nv-load','1.42 kW','var(--red)');
+      lblSet('lbl-SI','2.35 kW',true); lblSet('lbl-IM','',false);
+      lblSet('lbl-MG','',false); lblSet('lbl-UL','UPS → Load',true); lblSet('lbl-IL','1.42 kW',true);
+      document.getElementById('sv-ups').textContent='84% · Discharging';
+    }
+  },
+  cloudy:{
+    badge:'☁ LOW SOLAR — GRID IMPORT', badgeCls:'ba',
+    banner:false,
+    apply(){
+      // Low solar → Inv but not enough → importing from Grid
+      pathSet('path-SI',true); pathSet('path-IM',true); pathSet('path-MG',false);
+      pathSet('path-GM',true); pathSet('path-IU',false); pathSet('path-UL',false); pathSet('path-IL',true);
+      pSet(['p-SI-1','p-SI-2','p-SI-3'],true);
+      pSet(['p-IM-1','p-IM-2','p-IM-3'],true);
+      pSet(['p-MG-1','p-MG-2'],false); pSet(['p-GM-1','p-GM-2'],true);
+      pSet(['p-IU-1','p-IU-2'],false);
+      pSet(['p-UL-1','p-UL-2','p-UL-3'],false);
+      pSet(['p-IL-1','p-IL-2','p-IL-3'],true);
+      ledSet('led-solar','warn'); ledSet('led-inv','ok'); ledSet('led-meter','ok');
+      ledSet('led-grid','ok'); ledSet('led-ups','ok'); ledSet('led-load','ok');
+      failLbl('inv-fault-lbl',false); failLbl('grid-cut-lbl',false); failLbl('load-nopower-lbl',false);
+      nodeVal('nv-solar','0.42 kW','var(--acc)'); nodeVal('nv-inv','0.42 kW','var(--blu)');
+      nodeVal('nv-meter','1.00 kW','var(--blu)'); nodeVal('nv-grid','Import ↓','var(--grn)');
+      nodeVal('nv-ups','78% · Stby','var(--accB)'); nodeVal('nv-load','1.42 kW','var(--red)');
+      lblSet('lbl-SI','0.42 kW',true); lblSet('lbl-IM','Import: 1kW',true);
+      lblSet('lbl-MG','',false); lblSet('lbl-UL','',false); lblSet('lbl-IL','1.42 kW',true);
+      document.getElementById('sv-ups').textContent='78% · Standby';
+    }
+  },
+  scnight:{
+    badge:'🌙 NIGHT — NO SOLAR', badgeCls:'bi',
+    banner:false,
+    apply(){
+      // No solar, grid supplies everything through meter
+      pathSet('path-SI',false); pathSet('path-IM',true); pathSet('path-MG',false);
+      pathSet('path-GM',true); pathSet('path-IU',false); pathSet('path-UL',false); pathSet('path-IL',true);
+      pSet(['p-SI-1','p-SI-2','p-SI-3'],false);
+      pSet(['p-IM-1','p-IM-2','p-IM-3'],true);
+      pSet(['p-MG-1','p-MG-2'],false); pSet(['p-GM-1','p-GM-2'],true);
+      pSet(['p-IU-1','p-IU-2'],false);
+      pSet(['p-UL-1','p-UL-2','p-UL-3'],false);
+      pSet(['p-IL-1','p-IL-2','p-IL-3'],true);
+      ledSet('led-solar','off'); ledSet('led-inv','off'); ledSet('led-meter','ok');
+      ledSet('led-grid','ok'); ledSet('led-ups','ok'); ledSet('led-load','ok');
+      failLbl('inv-fault-lbl',false); failLbl('grid-cut-lbl',false); failLbl('load-nopower-lbl',false);
+      nodeVal('nv-solar','0 kW','var(--mut)'); nodeVal('nv-inv','Sleep','var(--mut)');
+      nodeVal('nv-meter','1.20 kW','var(--blu)'); nodeVal('nv-grid','Supply ↓','var(--grn)');
+      nodeVal('nv-ups','92% · Stby','var(--accB)'); nodeVal('nv-load','1.20 kW','var(--red)');
+      lblSet('lbl-SI','',false); lblSet('lbl-IM','1.20 kW',true);
+      lblSet('lbl-MG','',false); lblSet('lbl-UL','',false); lblSet('lbl-IL','1.20 kW',true);
+      document.getElementById('sv-ups').textContent='92% · Standby';
+    }
+  },
+  fault:{
+    badge:'🔴 INVERTER FAULT F6', badgeCls:'bw',
+    banner:true, bannerType:'amber',
+    bannerTitle:'Inverter Fault F6 — Insulation Resistance Error!',
+    bannerDesc:'Inverter disconnected · Grid supplying load via meter · Contact KSolare service@ksolare.com',
+    apply(){
+      // Inverter faulted — solar disconnected, grid takes over
+      pathSet('path-SI',false); pathSet('path-IM',true); pathSet('path-MG',false);
+      pathSet('path-GM',true); pathSet('path-IU',false); pathSet('path-UL',false); pathSet('path-IL',true);
+      pSet(['p-SI-1','p-SI-2','p-SI-3'],false);
+      pSet(['p-IM-1','p-IM-2','p-IM-3'],true);
+      pSet(['p-MG-1','p-MG-2'],false); pSet(['p-GM-1','p-GM-2'],true);
+      pSet(['p-IU-1','p-IU-2'],false);
+      pSet(['p-UL-1','p-UL-2','p-UL-3'],false);
+      pSet(['p-IL-1','p-IL-2','p-IL-3'],false);
+      ledSet('led-solar','warn'); ledSet('led-inv','bad'); ledSet('led-meter','ok');
+      ledSet('led-grid','ok'); ledSet('led-ups','ok'); ledSet('led-load','warn');
+      failLbl('inv-fault-lbl',true); failLbl('grid-cut-lbl',false); failLbl('load-nopower-lbl',false);
+      nodeVal('nv-solar','3.40 kW','var(--acc)'); nodeVal('nv-inv','⚠ FAULT','var(--red)');
+      nodeVal('nv-meter','1.20 kW','var(--blu)'); nodeVal('nv-grid','Supply ↓','var(--grn)');
+      nodeVal('nv-ups','84% · Stby','var(--accB)'); nodeVal('nv-load','1.20 kW','var(--red)');
+      lblSet('lbl-SI','',false); lblSet('lbl-IM','1.20 kW',true);
+      lblSet('lbl-MG','',false); lblSet('lbl-UL','',false); lblSet('lbl-IL','',false);
+      document.getElementById('sv-ups').textContent='84% · Standby';
+    }
+  }
+};
+
+let currentSc = 'normal';
+function scenario(id, btn){
+  clearSc();
+  const sc = SCENARIOS[id]; currentSc = id;
+  if(id==='gridcut'||id==='fault') btn.classList.add('active-bad');
+  else if(id==='cloudy'||id==='scnight') btn.classList.add('active-warn');
+  else btn.classList.add('active-ok');
+  badge(sc.badge, sc.badgeCls);
+  if(sc.banner) banner(true, sc.bannerType, sc.bannerTitle, sc.bannerDesc);
+  else banner(false);
+  sc.apply();
+}
+
+// Init
+SCENARIOS.normal.apply();
+
+// Auto-jitter normal mode values
+setInterval(()=>{
+  if(currentSc==='normal'){
+    const gen=+(2.0+Math.random()*.75).toFixed(2);
+    const lod=+(1.0+Math.random()*.65).toFixed(2);
+    const exp=Math.max(0,gen-lod).toFixed(2);
+    nodeVal('nv-solar',`${gen} kW`,'var(--acc)');
+    nodeVal('nv-inv',`${gen} kW`,'var(--blu)');
+    nodeVal('nv-meter',`${exp} kW`,'var(--blu)');
+    nodeVal('nv-load',`${lod} kW`,'var(--red)');
+    lblSet('lbl-SI',`${gen} kW`,true);
+    lblSet('lbl-IM',`${gen} kW`,true);
+    lblSet('lbl-IL',`${lod} kW`,true);
+  }
+}, 3500);
+</script>
+</body>
+</html>

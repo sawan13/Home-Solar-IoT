@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SolarOS Pro — Connected Devices</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07111F; --bg1: #0B1929; --bg2: #0F2035; --bg3: #122440;
+  --glass: rgba(11,25,41,0.80); --glass2: rgba(11,25,41,0.55);
+  --rim: rgba(59,148,255,.12); --rim2: rgba(59,148,255,.25);
+  --txt: #C8DFEF; --txt2: #6B9AB8; --mut: #2A4A62;
+  --acc: #F5A623; --accB: #FF7733;
+  --grn: #00C896; --red: #FF3B5C; --blu: #3DB8FF; --pur: #9B5DE5;
+  --glow: rgba(245,166,35,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(59,148,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(59,148,255,.035) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;}
+
+/* Header */
+header{position:sticky;top:0;z-index:200;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:rgba(11,25,41,.86);backdrop-filter:blur(32px);border-bottom:1px solid var(--rim);}
+.logo{display:flex;align-items:center;gap:13px;cursor:pointer;}
+.logo-gem{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--acc),var(--accB));display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 0 28px var(--glow);}
+.logo-n{font-family:'Rajdhani';font-size:20px;font-weight:700;letter-spacing:1px;color:var(--txt);}
+.logo-n em{color:var(--acc);font.logo-s{font-style:normal;}
+-family:'JetBrains Mono';font-size:10px;color:var(--mut);letter-spacing:.8px;margin-top:1px;}
+.hdr-r{display:flex;align-items:center;gap:10px;}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:6px 15px;border-radius:24px;background:var(--glass2);border:1px solid var(--rim2);font-family:'JetBrains Mono';font-size:11px;color:var(--acc);}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--grn);box-shadow:0 0 9px var(--grn);animation:livepulse 2s infinite;}
+@keyframes livepulse{0%,100%{opacity:1}50%{opacity:.25}}
+#clock{font-family:'JetBrains Mono';font-size:13px;color:var(--txt2);background:var(--glass2);border:1px solid var(--rim);padding:6px 14px;border-radius:10px;}
+
+/* User Info Header */
+.user-info-header{display:flex;align-items:center;gap:6px;padding:4px 10px;background:var(--glass2);border:1px solid var(--rim2);border-radius:20px;cursor:pointer;}
+.user-avatar-small{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--pur),var(--blu));display:flex;align-items:center;justify-content:center;font-size:12px;}
+.user-name-display{font-size:11px;font-weight:600;color:var(--txt);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.user-role-display{font-size:9px;color:var(--mut);}
+
+/* Logout Button */
+.logout-btn{width:32px;height:32px;border-radius:8px;background:rgba(255,59,92,.1);border:1px solid rgba(255,59,92,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;}
+.logout-btn:hover{background:rgba(255,59,92,.2);}
+
+/* Sidebar Toggle */
+.sidebar-toggle{display:none;width:40px;height:40px;background:var(--glass2);border:1px solid var(--rim2);border-radius:10px;cursor:pointer;align-items:center;justify-content:center;font-size:20px;color:var(--txt);margin-right:10px;}
+.sidebar-toggle:hover{background:var(--rim);}
+
+/* Sidebar */
+.sidebar{position:fixed;top:0;left:-260px;width:260px;height:100vh;background:rgba(11,25,41,.98);backdrop-filter:blur(32px);border-right:1px solid var(--rim);z-index:300;padding:20px 0;transition:left .3s ease;display:flex;flex-direction:column;}
+.sidebar.open{left:0;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;}
+.sidebar-overlay.show{display:block;}
+.sidebar-logo{display:flex;align-items:center;gap:12px;padding:0 20px 20px;border-bottom:1px solid var(--rim);margin-bottom:10px;}
+.sidebar-logo .logo-gem{width:36px;height:36px;font-size:18px;}
+.sidebar-logo-text{font-family:'Rajdhani';font-size:16px;font-weight:700;color:var(--txt);}
+.sidebar-logo-text em{color:var(--acc);}
+.sidebar-nav{display:flex;flex-direction:column;gap:4px;padding:0 10px;}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;color:var(--txt2);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;}
+.sidebar-link:hover{background:var(--glass2);color:var(--txt);}
+.sidebar-link.active{background:linear-gradient(135deg,var(--acc),var(--accB));color:var(--bg);}
+.sidebar-link-icon{font-size:18px;width:24px;}
+.sidebar-close{position:absolute;top:15px;right:15px;width:32px;height:32px;background:var(--glass2);border:1px solid var(--rim2);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--txt2);}
+.sidebar-close:hover{color:var(--txt);}
+
+/* Main */
+.wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:24px;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px;}
+.page-title{font-family:'Rajdhani';font-size:28px;font-weight:700;display:flex;align-items:center;gap:12px;}
+.page-title span{font-size:24px;}
+.page-subtitle{font-size:13px;color:var(--mut);margin-top:4px;}
+
+/* Card */
+.card{background:var(--glass);backdrop-filter:blur(28px);border:1px solid var(--rim);border-radius:20px;padding:26px;box-shadow:0 4px 30px rgba(0,0,0,.4);margin-bottom:20px;}
+.card-title{font-family:'JetBrains Mono';font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;}
+.badge{font-size:10px;padding:3px 11px;border-radius:20px;font-family:'JetBrains Mono';letter-spacing:.6px;font-weight:500;}
+.badge-admin{background:rgba(155,93,229,.14);color:var(--pur);border:1px solid rgba(155,93,229,.3);}
+.badge-user{background:rgba(61,184,255,.14);color:var(--blu);border:1px solid rgba(61,184,255,.3);}
+.badge-green{background:rgba(0,200,150,.14);color:var(--grn);border:1px solid rgba(0,200,150,.3);}
+.badge-online{background:rgba(0,200,150,.14);color:var(--grn);border:1px solid rgba(0,200,150,.3);}
+.badge-offline{background:rgba(255,59,92,.14);color:var(--red);border:1px solid rgba(255,59,92,.3);}
+.badge-warn{background:rgba(245,166,35,.14);color:var(--acc);border:1px solid rgba(245,166,35,.3);}
+
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px;}
+.stat-card{background:var(--glass);border:1px solid var(--rim);border-radius:16px;padding:20px;display:flex;align-items:center;gap:16px;}
+.stat-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.stat-icon.total{background:rgba(61,184,255,.15);border:1px solid rgba(61,184,255,.3);}
+.stat-icon.online{background:rgba(0,200,150,.15);border:1px solid rgba(0,200,150,.3);}
+.stat-icon.offline{background:rgba(255,59,92,.15);border:1px solid rgba(255,59,92,.3);}
+.stat-icon.warn{background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);}
+.stat-info{}
+.stat-label{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1px;}
+.stat-value{font-family:'Rajdhani';font-size:32px;font-weight:700;}
+
+/* Device List */
+.device-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+.device-card{background:var(--bg2);border:1px solid var(--rim);border-radius:16px;padding:20px;transition:all .2s;}
+.device-card:hover{border-color:var(--rim2);transform:translateY(-2px);}
+.device-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.device-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.device-icon.inverter{background:linear-gradient(135deg,rgba(61,184,255,.2),rgba(61,184,255,.1));border:1px solid rgba(61,184,255,.3);}
+.device-icon.battery{background:linear-gradient(135deg,rgba(245,166,35,.2),rgba(245,166,35,.1));border:1px solid rgba(245,166,35,.3);}
+.device-icon.meter{background:linear-gradient(135deg,rgba(155,93,229,.2),rgba(155,93,229,.1));border:1px solid rgba(155,93,229,.3);}
+.device-icon.sensor{background:linear-gradient(135deg,rgba(0,200,150,.2),rgba(0,200,150,.1));border:1px solid rgba(0,200,150,.3);}
+.device-icon.wifi{background:linear-gradient(135deg,rgba(245,166,35,.2),rgba(245,166,35,.1));border:1px solid rgba(245,166,35,.3);}
+.device-info{}
+.device-name{font-weight:700;font-size:16px;margin-bottom:4px;}
+.device-type{font-size:12px;color:var(--mut);}
+.device-status{display:flex;align-items:center;gap:6px;}
+.status-dot{width:8px;height:8px;border-radius:50%;}
+.status-dot.online{background:var(--grn);box-shadow:0 0 8px var(--grn);}
+.status-dot.offline{background:var(--red);}
+.status-dot.warn{background:var(--acc);animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.device-details{background:var(--bg1);border-radius:12px;padding:14px;margin-bottom:14px;}
+.detail-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rim);}
+.detail-row:last-child{border:none;}
+.detail-label{font-size:12px;color:var(--mut);}
+.detail-value{font-family:'JetBrains Mono';font-size:12px;color:var(--txt);}
+
+.device-actions{display:flex;gap:8px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;}
+.btn-secondary{background:var(--glass2);color:var(--txt2);border:1px solid var(--rim2);}
+.btn-secondary:hover{background:var(--rim);}
+.btn-danger{background:rgba(255,59,92,.15);color:var(--red);border:1px solid rgba(255,59,92,.3);}
+.btn-danger:hover{background:rgba(255,59,92,.25);}
+.btn-sm{padding:8px 14px;font-size:12px;}
+
+/* Logs */
+.logs-container{max-height:300px;overflow-y:auto;}
+.log-entry{display:flex;align-items:flex-start;gap:12px;padding:12px;border-bottom:1px solid var(--rim);}
+.log-entry:last-child{border:none;}
+.log-time{font-family:'JetBrains Mono';font-size:11px;color:var(--mut);min-width:70px;}
+.log-icon{font-size:16px;}
+.log-message{font-size:13px;flex:1;}
+.log-message .device-name{color:var(--blu);font-weight:600;display:inline;}
+.log-message .action{color:var(--txt2);}
+
+/* Refresh Button */
+.refresh-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:var(--glass2);border:1px solid var(--rim2);color:var(--txt2);font-size:13px;cursor:pointer;transition:all .2s;}
+.refresh-btn:hover{background:var(--rim);}
+
+/* Empty State */
+.empty-state{text-align:center;padding:60px 20px;}
+.empty-icon{font-size:64px;margin-bottom:16px;opacity:.5;}
+.empty-title{font-size:20px;font-weight:700;margin-bottom:8px;}
+.empty-desc{color:var(--mut);margin-bottom:24px;}
+
+/* Responsive */
+@media(max-width:900px){
+  .sidebar-toggle{display:flex;}
+  header .hdr-r .chip{display:none;}
+}
+@media(min-width:901px){
+  .sidebar,.sidebar-overlay,.sidebar-toggle{display:none !important;}
+}
+@media(max-width:768px){
+  header{padding:0 14px;height:54px;}
+  .logo-gem{width:32px;height:32px;font-size:16px;}
+  .logo-n{font-size:16px;}
+  .logo-s{display:none;}
+  .wrap{padding:14px;}
+  .page-title{font-size:22px;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .card{padding:16px;border-radius:14px;}
+  .device-list{grid-template-columns:1fr;}
+  .user-name-display{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-close" onclick="toggleSidebar()">✕</div>
+  <div class="sidebar-logo" onclick="window.location.href='index.html'">
+    <div class="logo-gem">☀️</div>
+    <div class="sidebar-logo-text">Solar<span>OS</span> Pro</div>
+  <div class="sidebar-nav">
+    <div class="sidebar-link" onclick="window.location.href='index.html'"><span class="sidebar-link-icon">📊</span> Dashboard</div>
+    <div class="sidebar-link" onclick="window.location.href='powerflow.html'"><span class="sidebar-link-icon">⚡</span> Power Flow</div>
+    <div class="sidebar-link" onclick="window.location.href='analytics.html'"><span class="sidebar-link-icon">📈</span> Analytics</div>
+    <div class="sidebar-link active" onclick="window.location.href='devices.html'"><span class="sidebar-link-icon">📱</span> Devices</div>
+    <div class="sidebar-link" id="sidebarAdminLink" onclick="window.location.href='users.html'" style="display:none;"><span class="sidebar-link-icon">👥</span> Users</div>
+    <div class="sidebar-link" onclick="window.location.href='settings.html'"><span class="sidebar-link-icon">⚙️</span> Settings</div>
+</nav>
+
+<!-- Header -->
+<header>
+  <div style="display:flex;align-items:center;">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="logo" onclick="window.location.href='index.html'">
+      <div class="logo-gem">☀️</div>
+      <div><div class="logo-n">Solar<span style="color:var(--acc)">OS</span> Pro</div><div class="logo-s">CONNECTED DEVICES</div>
+    </div>
+  <div class="hdr-r">
+    <div class="user-info-header" onclick="window.location.href='users.html'">
+      <div class="user-avatar-small" id="userAvatar">👤</div>
+      <div>
+        <div class="user-name-display" id="userName">User</div>
+        <div class="user-role-display" id="userRole">User</div>
+    </div>
+    <button class="logout-btn" onclick="logout()" title="Logout">🚪</button>
+    <button class="refresh-btn" onclick="refreshDevices()">🔄 Scan</button>
+    <div id="clock">--:--</div>
+</header>
+
+<div class="wrap">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title"><span>📱</span> Connected Devices</h1>
+      <p class="page-subtitle">Monitor and manage all connected IoT devices</p>
+    </div>
+  
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon total">📱</div>
+      <div class="stat-info">
+        <div class="stat-label">Total Devices</div>
+        <div class="stat-value" id="totalDevices">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon online">✓</div>
+      <div class="stat-info">
+        <div class="stat-label">Online</div>
+        <div class="stat-value" id="onlineDevices">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon offline">✕</div>
+      <div class="stat-info">
+        <div class="stat-label">Offline</div>
+        <div class="stat-value" id="offlineDevices">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon warn">⚠</div>
+      <div class="stat-info">
+        <div class="stat-label">Warnings</div>
+        <div class="stat-value" id="warningDevices">0</div>
+    </div>
+  
+  <!-- Device Cards -->
+  <div class="card">
+    <div class="card-title">
+      Active Devices
+      <span class="badge badge-online">Live</span>
+    </div>
+    <div class="device-list" id="deviceList">
+      <!-- Devices will be loaded here -->
+    </div>
+  
+  <!-- Connection Logs -->
+  <div class="card">
+    <div class="card-title">
+      Connection Logs
+      <span class="badge badge-warn">Recent</span>
+    </div>
+    <div class="logs-container" id="logsContainer">
+      <!-- Logs will be loaded here -->
+    </div>
+</div>
+
+<script>
+// Auto logout after 3 minutes of inactivity
+const AUTO_LOGOUT_TIME = 3 * 60 * 1000;
+let inactivityTimer;
+
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => { logout(); }, AUTO_LOGOUT_TIME);
+  localStorage.setItem('solarLastActivity', Date.now());
+}
+
+document.addEventListener('mousemove', resetInactivityTimer);
+document.addEventListener('keypress', resetInactivityTimer);
+document.addEventListener('click', resetInactivityTimer);
+document.addEventListener('scroll', resetInactivityTimer);
+resetInactivityTimer();
+
+// Check session
+const lastActivity = localStorage.getItem('solarLastActivity');
+if(lastActivity && (Date.now() - parseInt(lastActivity)) > AUTO_LOGOUT_TIME) { logout(); }
+
+// Check authentication
+const currentUser = localStorage.getItem('solarCurrentUser');
+if(!currentUser) { window.location.href = 'login.html'; }
+else {
+  const user = JSON.parse(currentUser);
+  document.getElementById('userName').textContent = user.name || user.username;
+  document.getElementById('userRole').textContent = user.role === 'admin' ? 'Admin' : 'User';
+  document.getElementById('userAvatar').textContent = user.role === 'admin' ? '👑' : '👤';
+  if(user.role === 'admin') document.getElementById('sidebarAdminLink').style.display = 'flex';
+}
+
+function logout() {
+  localStorage.removeItem('solarCurrentUser');
+  localStorage.removeItem('solarToken');
+  localStorage.removeItem('solarLastActivity');
+  window.location.href = 'login.html';
+}
+
+// Get devices from localStorage or initialize
+function getDevices(){ return JSON.parse(localStorage.getItem('solarDevices') || '[]'); }
+function saveDevices(devices){ localStorage.setItem('solarDevices', JSON.stringify(devices)); }
+function getLogs(){ return JSON.parse(localStorage.getItem('solarDeviceLogs') || '[]'); }
+function saveLogs(logs){ localStorage.setItem('solarDeviceLogs', JSON.stringify(logs)); }
+
+function addLog(deviceName, action, icon){
+  const logs = getLogs();
+  logs.unshift({ time: new Date().toISOString(), device: deviceName, action: action, icon: icon });
+  if(logs.length > 50) logs.pop();
+  saveLogs(logs);
+}
+
+if(!localStorage.getItem('solarDevices')){
+  saveDevices([
+    {id:1,name:'Inverter 5G Pro',type:'inverter',ip:'192.168.1.100',mac:'AA:BB:CC:DD:EE:01',status:'online',lastSeen:new Date().toISOString(),model:'SP5G-10K',firmware:'v2.4.1'},
+    {id:2,name:'WiFi Logger',type:'wifi',ip:'192.168.1.101',mac:'AA:BB:CC:DD:EE:02',status:'online',lastSeen:new Date().toISOString(),model:'LM5G-400',firmware:'v1.8.0'},
+    {id:3,name:'Smart Meter',type:'meter',ip:'192.168.1.102',mac:'AA:BB:CC:DD:EE:03',status:'online',lastSeen:new Date().toISOString(),model:'SM-1P-100A',firmware:'v3.2.1'},
+    {id:4,name:'Battery Pack 1',type:'battery',ip:'192.168.1.103',mac:'AA:BB:CC:DD:EE:04',status:'online',lastSeen:new Date().toISOString(),model:'HV-10K',firmware:'v1.5.0',capacity:'10kWh'},
+    {id:5,name:'Temp Sensor 1',type:'sensor',ip:'192.168.1.104',mac:'AA:BB:CC:DD:EE:05',status:'offline',lastSeen:new Date(Date.now() - 3600000).toISOString(),model:'TH-10',firmware:'v1.0.2'}
+  ]);
+  addLog('System','initialized device monitoring','📡');
+  addLog('Inverter 5G Pro','connected','⚡');
+}
+
+function updateStats(){
+  const devices = getDevices();
+  const online = devices.filter(d => d.status === 'online').length;
+  const offline = devices.filter(d => d.status === 'offline').length;
+  const warnings = devices.filter(d => d.status === 'warn').length;
+  document.getElementById('totalDevices').textContent = devices.length;
+  document.getElementById('onlineDevices').textContent = online;
+  document.getElementById('offlineDevices').textContent = offline;
+  document.getElementById('warningDevices').textContent = warnings;
+}
+
+function getDeviceIcon(type){
+  const icons = {inverter:'⚡',battery:'🔋',meter:'📊',sensor:'🌡️',wifi:'📶'};
+  return icons[type] || '📱';
+}
+
+function getStatusBadge(status){
+  const badges = {online:'badge-online',offline:'badge-offline',warn:'badge-warn'};
+  return badges[status] || 'badge-offline';
+}
+
+function renderDevices(){
+  const devices = getDevices();
+  const container = document.getElementById('deviceList');
+  if(devices.length === 0){
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📱</div><div class="empty-title">No Devices</div><div class="empty-desc">Click "Scan" to discover connected devices</div>';
+    return;
+  }
+  container.innerHTML = devices.map(device => `
+    <div class="device-card">
+      <div class="device-header">
+        <div class="device-icon ${device.type}">${getDeviceIcon(device.type)}</div>
+        <div class="device-info">
+          <div class="device-name">${device.name}</div>
+          <div class="device-type">${device.model || 'Unknown Model'}</div>
+        <div class="device-status">
+          <span class="status-dot ${device.status}"></span>
+          <span class="badge ${getStatusBadge(device.status)}">${device.status}</span>
+        </div>
+      <div class="device-details">
+        <div class="detail-row"><span class="detail-label">IP Address</span><span class="detail-value">${device.ip}</span></div>
+        <div class="detail-row"><span class="detail-label">MAC Address</span><span class="detail-value">${device.mac}</span></div>
+        <div class="detail-row"><span class="detail-label">Last Seen</span><span class="detail-value">${formatLastSeen(device.lastSeen)}</span></div>
+        <div class="detail-row"><span class="detail-label">Firmware</span><span class="detail-value">${device.firmware || 'N/A'}</span></div>
+        ${device.capacity ? `<div class="detail-row"><span class="detail-label">Capacity</span><span class="detail-value">${device.capacity}</span></div>` : ''}
+      </div>
+      <div class="device-actions">
+        <button class="btn btn-sm btn-secondary" onclick="pingDevice(${device.id})">📡 Ping</button>
+        <button class="btn btn-sm btn-danger" onclick="removeDevice(${device.id})">🗑️ Remove</button>
+      </div>
+  `).join('');
+}
+
+function formatLastSeen(isoString){
+  const date = new Date(isoString);
+  const now = new Date();
+  const diff = now - date;
+  if(diff < 60000) return 'Just now';
+  if(diff < 3600000) return Math.floor(diff/60000) + ' min ago';
+  if(diff < 86400000) return Math.floor(diff/3600000) + ' hours ago';
+  return date.toLocaleDateString();
+}
+
+function removeDevice(id){
+  if(confirm('Are you sure you want to remove this device?')){
+    const devices = getDevices();
+    const device = devices.find(d => d.id === id);
+    const index = devices.findIndex(d => d.id === id);
+    if(index > -1){
+      devices.splice(index, 1);
+      saveDevices(devices);
+      addLog(device.name,'removed','🗑️');
+      renderDevices();
+      updateStats();
+      renderLogs();
+    }
+  }
+}
+
+function pingDevice(id){
+  const device = getDevices().find(d => d.id === id);
+  if(device){
+    const btn = event.target;
+    btn.textContent = '⏳...';
+    btn.disabled = true;
+    setTimeout(()=>{
+      btn.textContent = '📡 Ping';
+      btn.disabled = false;
+      const success = Math.random() > 0.2;
+      addLog(device.name,success ? 'ping successful' : 'ping failed',success ? '✓' : '✕');
+      renderLogs();
+    }, 1500);
+  }
+}
+
+function refreshDevices(){
+  const btn = document.querySelector('.refresh-btn');
+  btn.innerHTML = '⏳ Scanning...';
+  btn.disabled = true;
+  setTimeout(()=>{
+    const devices = getDevices();
+    const newId = Math.max(...devices.map(d => d.id), 0) + 1;
+    if(Math.random() > 0.7){
+      const newDevice = {
+        id:newId,name:'New Device ' + newId,type:['inverter','battery','meter','sensor','wifi'][Math.floor(Math.random()*5)],
+        ip:'192.168.1.' + (100 + newId),mac:'AA:BB:CC:DD:EE:' + String(newId).padStart(2,'0'),status:'online',
+        lastSeen:new Date().toISOString(),model:'NEW-100',firmware:'v1.0.0'
+      };
+      devices.push(newDevice);
+      saveDevices(devices);
+      addLog(newDevice.name,'discovered','✨');
+    }
+    btn.innerHTML = '🔄 Scan';
+    btn.disabled = false;
+    renderDevices();
+    updateStats();
+    renderLogs();
+  }, 2000);
+}
+
+function renderLogs(){
+  const logs = getLogs();
+  const container = document.getElementById('logsContainer');
+  if(logs.length === 0){
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--mut)">No logs yet</div>';
+    return;
+  }
+  container.innerHTML = logs.slice(0,20).map(log => `<div class="log-entry"><span class="log-time">${new Date(log.time).toLocaleTimeString()}</span><span class="log-icon">${log.icon}</span><span class="log-message"><span class="device-name">${log.device}</span><span class="action">${log.action}</span></div>`).join('');
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+
+setInterval(()=>{ document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }, 1000);
+document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+
+updateStats();
+renderDevices();
+renderLogs();
+</script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SolarOS Pro — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07111F; --bg1: #0B1929; --bg2: #0F2035;
+  --glass: rgba(11,25,41,0.80); --glass2: rgba(11,25,41,0.55);
+  --rim: rgba(59,148,255,.12); --rim2: rgba(59,148,255,.25);
+  --txt: #C8DFEF; --txt2: #6B9AB8; --mut: #2A4A62;
+  --acc: #F5A623; --accB: #FF7733;
+  --grn: #00C896; --red: #FF3B5C; --blu: #3DB8FF;
+  --glow: rgba(245,166,35,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(59,148,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(59,148,255,.035) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;}
+
+.login-container{position:relative;z-index:1;width:100%;max-width:420px;padding:20px;}
+.login-card{background:var(--glass);backdrop-filter:blur(28px);border:1px solid var(--rim);border-radius:24px;padding:40px;box-shadow:0 8px 40px rgba(0,0,0,.5);}
+.login-logo{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:32px;}
+.login-gem{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--acc),var(--accB));display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 0 32px var(--glow);}
+.login-title{font-family:'Rajdhani';font-size:28px;font-weight:700;text-align:center;}
+.login-title em{color:var(--acc);font-style:normal;}
+.login-sub{font-size:13px;color:var(--mut);text-align:center;margin-top:6px;margin-bottom:28px;}
+
+.form-group{margin-bottom:20px;}
+.form-label{display:block;font-family:'JetBrains Mono';font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-bottom:8px;}
+.form-input{width:100%;padding:14px 16px;background:var(--bg2);border:1px solid var(--rim2);border-radius:12px;color:var(--txt);font-family:'JetBrains Mono';font-size:14px;transition:border-color .2s,box-shadow .2s;}
+.form-input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(245,166,35,.15);}
+.form-input::placeholder{color:var(--mut);}
+
+.remember-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.remember{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.remember input{display:none;}
+.checkbox{width:18px;height:18px;border:1px solid var(--rim2);border-radius:4px;background:var(--bg2);display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.remember input:checked+.checkbox{background:var(--acc);border-color:var(--acc);}
+.remember input:checked+.checkbox::after{content:'✓';color:var(--bg);font-size:12px;font-weight:700;}
+.remember-text{font-size:13px;color:var(--txt2);}
+.forgot{font-size:13px;color:var(--acc);text-decoration:none;}
+.forgot:hover{text-decoration:underline;}
+
+.login-btn{width:100%;padding:16px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--accB));color:#0a0f15;font-family:'Rajdhani';font-size:16px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,166,35,.35);}
+.login-btn:active{transform:translateY(0);}
+
+.login-divider{display:flex;align-items:center;gap:16px;margin:28px 0;}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--rim);}
+.login-divider span{font-family:'JetBrains Mono';font-size:11px;color:var(--mut);text-transform:uppercase;}
+
+.demo-info{background:var(--bg2);border:1px solid var(--rim);border-radius:12px;padding:16px;margin-bottom:20px;}
+.demo-title{font-family:'JetBrains Mono';font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-bottom:10px;}
+.demo-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rim);}
+.demo-row:last-child{border:none;}
+.demo-label{font-size:12px;color:var(--txt2);}
+.demo-value{font-family:'JetBrains Mono';font-size:12px;color:var(--txt);}
+
+.error-msg{background:rgba(255,59,92,.15);border:1px solid rgba(255,59,92,.3);border-radius:10px;padding:12px 16px;margin-bottom:20px;display:none;}
+.error-msg.show{display:block;}
+.error-msg span{font-size:13px;color:var(--red);}
+
+@media(max-width:480px){
+  .login-container{padding:12px;}
+  .login-card{padding:28px 20px;border-radius:16px;}
+  .login-gem{width:48px;height:48px;font-size:24px;}
+  .login-title{font-size:24px;}
+}
+</style>
+</head>
+<body>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-gem">☀️</div>
+    <h1 class="login-title">Solar<span>OS</span> Pro</h1>
+    <p class="login-sub">Sign in to your dashboard</p>
+    
+    <div class="error-msg" id="errorMsg">
+      <span>⚠️ Invalid username or password</span>
+    </div>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-input" id="username" placeholder="Enter username" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" id="password" placeholder="Enter password" required>
+      </div>
+      
+      <div class="remember-row">
+        <label class="remember">
+          <input type="checkbox" id="remember">
+          <span class="checkbox"></span>
+          <span class="remember-text">Remember me</span>
+        </label>
+      </div>
+      
+      <button type="submit" class="login-btn">🔐 Sign In</button>
+    </form>
+    
+    <div class="login-divider"><span>Demo</span></div>
+    
+    <div class="demo-info">
+      <div class="demo-title">Test Credentials</div>
+      <div class="demo-row">
+        <span class="demo-label">Admin</span>
+        <span class="demo-value">admin / admin123</span>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">User</span>
+        <span class="demo-value">user / user123</span>
+      </div>
+  </div>
+
+<script>
+// Auto logout after 3 minutes of inactivity
+const AUTO_LOGOUT_TIME = 3 * 60 * 1000; // 3 minutes in milliseconds
+let inactivityTimer;
+
+// Reset the timer on user activity
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    logout();
+  }, AUTO_LOGOUT_TIME);
+}
+
+// Listen for user activities
+document.addEventListener('mousemove', resetInactivityTimer);
+document.addEventListener('keypress', resetInactivityTimer);
+document.addEventListener('click', resetInactivityTimer);
+document.addEventListener('scroll', resetInactivityTimer);
+
+// Initialize timer on page load
+resetInactivityTimer();
+
+// Logout function
+function logout() {
+  localStorage.removeItem('solarCurrentUser');
+  localStorage.removeItem('solarToken');
+  window.location.href = 'login.html';
+}
+
+// Demo users database
+const users = [
+  { username: 'admin', password: 'admin123', role: 'admin', name: 'Administrator' },
+  { username: 'user', password: 'user123', role: 'user', name: 'John Doe' }
+];
+
+// Initialize users in localStorage
+if(!localStorage.getItem('solarUsers')){
+  localStorage.setItem('solarUsers', JSON.stringify(users));
+}
+
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const storedUsers = JSON.parse(localStorage.getItem('solarUsers') || '[]');
+  
+  const user = storedUsers.find(u => u.username === username && u.password === password);
+  
+  if(user){
+    // Login successful
+    localStorage.setItem('solarCurrentUser', JSON.stringify(user));
+    localStorage.setItem('solarToken', Date.now());
+    localStorage.setItem('solarLastActivity', Date.now());
+    
+    document.getElementById('errorMsg').classList.remove('show');
+    
+    // Redirect based on role
+    if(user.role === 'admin'){
+      window.location.href = 'users.html';
+    } else {
+      window.location.href = 'index.html';
+    }
+  } else {
+    // Login failed
+    document.getElementById('errorMsg').classList.add('show');
+  }
+});
+
+// Check if already logged in
+const currentUser = localStorage.getItem('solarCurrentUser');
+if(currentUser){
+  const user = JSON.parse(currentUser);
+  // Check if session expired
+  const lastActivity = localStorage.getItem('solarLastActivity');
+  if(lastActivity && (Date.now() - parseInt(lastActivity)) > AUTO_LOGOUT_TIME) {
+    logout();
+  } else if(user.role === 'admin'){
+    window.location.href = 'users.html';
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+</script>
+</body>
+</html>

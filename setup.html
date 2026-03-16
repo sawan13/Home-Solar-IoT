@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SolarOS Pro — Setup Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=DM+Sans:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --panel2: #f8f9fa;
+  --border: rgba(0,0,0,0.06);
+  --border2: rgba(0,0,0,0.10);
+  --sun: #E87706;
+  --green: #0a8754;
+  --red: #c41d3a;
+  --blue: #2563eb;
+  --purple: #6d28d9;
+  --text: #1a1f36;
+  --muted: #6b7280;
+  --muted2: #4b5563;
+  --warn: #d97706;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  min-height: 100vh;
+}
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 10%, rgba(217,119,6,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(37,99,235,0.06) 0%, transparent 60%);
+  pointer-events:none; z-index:0;
+}
+header {
+  position:sticky; top:0; z-index:100;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  height: 60px;
+}
+.logo { display:flex; align-items:center; gap:10px; cursor:pointer; }
+.logo-mark {
+  width:34px; height:34px;
+  background: linear-gradient(135deg, var(--sun), var(--warn));
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px;
+}
+.logo-name { font-weight:900; font-size:17px; letter-spacing:-0.5px; }
+.logo-name span { color:var(--sun); }
+.header-center { display:flex; align-items:center; gap:6px; }
+.nav-tab {
+  padding:6px 16px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted2);
+  cursor:pointer;
+  border:none; background:none;
+  transition:all 0.2s;
+}
+.nav-tab:hover, .nav-tab.active {
+  background:var(--panel2);
+  color:var(--text);
+}
+.header-right { display:flex; align-items:center; gap:12px; }
+#clock {
+  font-family:'JetBrains Mono', monospace;
+  font-size:13px;
+  color:var(--muted2);
+  background:var(--panel);
+  padding:6px 12px; border-radius:8px;
+  border:1px solid var(--border);
+}
+main { 
+  position:relative; z-index:1;
+  padding:24px 28px;
+  max-width:1600px; margin:0 auto;
+}
+.page-header {
+  margin-bottom:24px;
+}
+.page-header h1 {
+  font-size:24px; font-weight:900;
+  display:flex; align-items:center; gap:10px;
+}
+.page-header p { color:var(--muted); margin-top:4px; }
+.card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:22px;
+  margin-bottom:16px;
+}
+.card-title {
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--muted);
+  margin-bottom:18px;
+}
+.info-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.info-card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px; padding:22px;
+}
+.info-card h3 { font-size:15px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.info-card h3 .ico { font-size:20px; }
+.step {
+  display:flex; gap:12px; margin-bottom:12px;
+  padding-bottom:12px; border-bottom:1px solid var(--border);
+}
+.step:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.step-num {
+  width:24px; height:24px; flex-shrink:0;
+  background:var(--sun);
+  color:#1a0a00;
+  border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:12px;
+}
+.step-txt { font-size:13px; color:var(--muted2); line-height:1.5; }
+.step-txt strong { color:var(--text); }
+.cmd-block {
+  background:var(--bg);
+  border:1px solid var(--border2);
+  border-radius:8px;
+  padding:10px 14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  color:var(--green);
+  margin:8px 0;
+  line-height:1.7;
+}
+.cmd-block .comment { color:var(--muted); }
+.wire-table { width:100%; border-collapse:collapse; font-size:13px; }
+.wire-table th {
+  text-align:left; padding:8px 12px;
+  background:var(--panel2); color:var(--muted2);
+  font-size:11px; text-transform:uppercase; letter-spacing:1px;
+  font-family:'JetBrains Mono',monospace;
+}
+.wire-table td { padding:8px 12px; border-bottom:1px solid var(--border); }
+.wire-table tr:last-child td { border-bottom:none; }
+.color-dot {
+  display:inline-block; width:10px; height:10px;
+  border-radius:50%; margin-right:6px; vertical-align:middle;
+}
+.section-label {
+  display:flex; align-items:center; gap:12px;
+  margin:32px 0 16px;
+  font-size:12px; text-transform:uppercase;
+  letter-spacing:2px; color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+}
+.section-label::after {
+  content:''; flex:1; height:1px; background:var(--border);
+}
+.badge {
+  font-size:11px; background:var(--panel2); border:1px solid var(--border2);
+  padding:3px 10px; border-radius:20px; font-weight:600; color:var(--muted2);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" onclick="window.location.href='index.html'">
+    <div class="logo-mark">☀️</div>
+    <div class="logo-name">Solar<span>OS</span> <span style="color:var(--muted);font-size:11px;font-weight:400">Pro</span></div>
+  </div>
+  <div class="header-center">
+    <button class="nav-tab" onclick="window.location.href='index.html'">Dashboard</button>
+    <button class="nav-tab" onclick="window.location.href='analytics.html'">Analytics</button>
+    <button class="nav-tab" onclick="window.location.href='devices.html'">Devices</button>
+    <button class="nav-tab active">Setup Guide</button>
+    <button class="nav-tab" onclick="window.location.href='settings.html'">⚙️ Settings</button>
+  </div>
+  <div class="header-right">
+    <div id="clock">00:00:00</div>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-header">
+    <h1>📋 Setup Guide — Hardware & Software Stack</h1>
+    <p>Complete instructions for setting up your Home Solar IoT system.</p>
+  </div>
+
+  <div class="section-label">🔍 Step 1: Discover Your Inverter</div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3><span class="ico">🔎</span> Identify Your Inverter Brand</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-txt">Find the model sticker on the side of your inverter. Common WiFi brands: <strong>Growatt, Deye, Sofar, SolarEdge, Goodwe, Solis, Voltronic</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-txt">Check if there's a <strong>WiFi stick/dongle</strong> plugged into the inverter</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-txt">Check your router for the inverter's <strong>IP address</strong></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3><span class="ico">📡</span> Scan For Open Ports (on Pi4)</h3>
+      <div class="cmd-block">
+        <span class="comment"># Find inverter on network</span><br>
+        nmap -sn 192.168.1.0/24<br><br>
+        <span class="comment"># Scan inverter ports</span><br>
+        nmap -p 502,8899,8888,80 192.168.1.XXX
+      </div>
+      <div style="font-size:12px; color:var(--muted2); margin-top:8px;">
+        <strong style="color:var(--sun)">Port 502</strong> = Modbus TCP<br>
+        <strong style="color:var(--green)">Port 8899</strong> = SolarmanV5<br>
+        <strong style="color:var(--blue)">Port 80</strong> = Web UI
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3><span class="ico">🔌</span> Communication Types</h3>
+      <table class="wire-table">
+        <tr>
+          <th>Type</th><th>How To Use</th>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--sun)">SolarmanV5</strong></td>
+          <td style="color:var(--green)">Python pysolarmanv5</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--blue)">Modbus TCP</strong></td>
+          <td style="color:var(--green)">pymodbus</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--purple)">Modbus RTU</strong></td>
+          <td style="color:var(--green)">ESP32 + RS485</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label">🛠️ Step 2: Hardware Wiring</div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3><span class="ico">📶</span> Option A — WiFi Only (Easiest)</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-txt"><strong>Pi4 connects to home WiFi</strong> → polls inverter WiFi logger → reads data via SolarmanV5 or Modbus TCP</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-txt"><strong>ESP32 connects to home WiFi</strong> → posts PZEM-004T load readings to Pi4 via MQTT</div>
+      </div>
+      <div class="cmd-block">
+        pip3 install pysolarmanv5<br>
+        python3 -c "from pysolarmanv5 import PySolarmanV5"
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3><span class="ico">🔧</span> Option B — ESP32 + RS485</h3>
+      <table class="wire-table" style="margin-bottom:12px">
+        <tr><th>ESP32 Pin</th><th>RS485 Module</th></tr>
+        <tr><td>GPIO16 (RX2)</td><td>RO</td></tr>
+        <tr><td>GPIO17 (TX2)</td><td>DI</td></tr>
+        <tr><td>GPIO4</td><td>DE + RE</td></tr>
+        <tr><td>3.3V</td><td>VCC</td></tr>
+        <tr><td>GND</td><td>GND</td></tr>
+      </table>
+      <div style="color:var(--warn); font-size:12px;">⚠ Swap A/B if no data!</div>
+    </div>
+
+    <div class="info-card">
+      <h3><span class="ico">⚡</span> PZEM-004T Load Meter</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-txt">Clamp CT coil around <strong>main live wire</strong> at distribution board</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-txt">Connect PZEM to <strong>ESP32</strong> via TX/RX pins</div>
+      </div>
+      <div class="cmd-block">
+        PZEM TX → GPIO16<br>
+        PZEM RX → GPIO17<br>
+        5V → VIN, GND → GND
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">💻 Step 3: Software Stack</div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3><span class="ico">🐳</span> Install Docker on Pi4</h3>
+      <div class="cmd-block">
+        <span class="comment"># Install Docker</span><br>
+        curl -fsSL https://get.docker.com | sh<br>
+        sudo usermod -aG docker pi<br><br>
+        <span class="comment"># Run services</span><br>
+        docker run -d mosquitto<br>
+        docker run -d influxdb<br>
+        docker run -d grafana/grafana
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3><span class="ico">🔄</span> Data Pipeline Flow</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-txt"><strong>Python script</strong> polls inverter → publishes to MQTT <code style="color:var(--green)">solar/generation</code></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-txt"><strong>ESP32</strong> reads PZEM → publishes to MQTT <code style="color:var(--green)">solar/load</code></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-txt"><strong>Node-RED</strong> subscribes → writes to InfluxDB → sends alerts</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3><span class="ico">🧹</span> Panel Cleaning Algorithm</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-txt">Call <strong>OpenWeatherMap API</strong> for irradiance data</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-txt">Calculate <strong>expected = 3500W × irradiance</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-txt">If <strong>actual/expected < 0.80</strong> → flag for cleaning</div>
+      </div>
+      <div class="cmd-block">
+        efficiency = actual / expected<br>
+        if efficiency < 0.80:<br>
+        &nbsp;&nbsp;send_telegram_alert()
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">💰 Cost Summary</div>
+
+  <div class="card">
+    <h3 style="font-size:15px; font-weight:700; margin-bottom:14px;">🛒 Shopping List</h3>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+      <div style="background:var(--panel2); border-radius:10px; padding:14px; text-align:center;">
+        <div style="font-size:22px; margin-bottom:6px;">✅</div>
+        <div style="font-weight:700;">ESP32</div>
+        <div style="color:var(--green); font-weight:800;">₹0</div>
+        <div style="color:var(--muted); font-size:11px;">Already owned</div>
+      </div>
+      <div style="background:var(--panel2); border-radius:10px; padding:14px; text-align:center;">
+        <div style="font-size:22px; margin-bottom:6px;">✅</div>
+        <div style="font-weight:700;">Raspberry Pi 4</div>
+        <div style="color:var(--green); font-weight:800;">₹0</div>
+        <div style="color:var(--muted); font-size:11px;">Already owned</div>
+      </div>
+      <div style="background:var(--panel2); border-radius:10px; padding:14px; text-align:center;">
+        <div style="font-size:22px; margin-bottom:6px;">🔌</div>
+        <div style="font-weight:700;">PZEM-004T</div>
+        <div style="color:var(--sun); font-weight:800;">~₹650</div>
+        <div style="color:var(--muted); font-size:11px;">Load meter</div>
+      </div>
+      <div style="background:var(--panel2); border-radius:10px; padding:14px; text-align:center;">
+        <div style="font-size:22px; margin-bottom:6px;">📡</div>
+        <div style="font-weight:700;">RS485 Module</div>
+        <div style="color:var(--sun); font-weight:800;">~₹120</div>
+        <div style="color:var(--muted); font-size:11px;">Optional</div>
+      </div>
+    </div>
+    <div style="margin-top:16px; padding:14px; background:rgba(5,150,105,0.08); border:1px solid rgba(5,150,105,0.2); border-radius:10px; font-size:13px; color:var(--muted2);">
+      <strong style="color:var(--green)">Total: ~₹770</strong> (if inverter has WiFi stick) &nbsp;·&nbsp; 
+      All software is <strong style="color:var(--green)">free</strong>: Docker, Mosquitto, Node-RED, InfluxDB, Grafana &nbsp;·&nbsp; 
+      <strong style="color:var(--sun)">Telegram alerts: free</strong>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function tick() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+}
+setInterval(tick, 1000); tick();
+</script>
+
+</body>
+</html>

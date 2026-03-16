@@ -23,21 +23,16 @@
   --muted: #6b7280;
   --muted2: #4b5563;
   --warn: #d97706;
-  --shadow: rgba(0,0,0,0.06);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
-
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  line-height: 1.5;
   min-height: 100vh;
 }
-
-/* BG texture */
 body::before {
   content:'';
   position:fixed; inset:0;
@@ -46,50 +41,6 @@ body::before {
     radial-gradient(ellipse 50% 50% at 10% 80%, rgba(37,99,235,0.06) 0%, transparent 60%);
   pointer-events:none; z-index:0;
 }
-
-/* ======= ALERT BANNER ======= */
-.clean-alert {
-  position: fixed;
-  top: 0; left:0; right:0;
-  z-index: 1000;
-  background: linear-gradient(135deg, #7C2D12, #EA580C);
-  padding: 12px 24px;
-  display: flex; align-items: center; justify-content: space-between;
-  animation: slideDown 0.5s ease, alertPulse 2s ease-in-out infinite;
-  box-shadow: 0 4px 20px rgba(234,88,12,0.4), 0 0 30px rgba(234,88,12,0.3);
-  border-bottom: 3px solid #ff6b35;
-}
-@keyframes slideDown { from{transform:translateY(-100%)} to{transform:translateY(0)} }
-@keyframes alertPulse {
-  0%, 100% { box-shadow: 0 4px 20px rgba(234,88,12,0.4), 0 0 30px rgba(234,88,12,0.3); }
-  50% { box-shadow: 0 4px 40px rgba(234,88,12,0.7), 0 0 60px rgba(234,88,12,0.5); }
-}
-.clean-alert.hidden { display:none; }
-.alert-content { display:flex; align-items:center; gap:14px; }
-.alert-icon-big { font-size:28px; animation: shake 0.5s ease-in-out infinite; }
-@keyframes shake {
-  0%,100%{transform:rotate(0) scale(1)} 25%{transform:rotate(-10deg) scale(1.1)} 50%{transform:rotate(0) scale(1)} 75%{transform:rotate(10deg) scale(1.1)}
-}
-.alert-text h3 { font-size:15px; font-weight:700; color: #ffffff; animation: textPulse 1.5s ease-in-out infinite; }
-@keyframes textPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
-}
-.alert-text p { font-size:12px; opacity:0.85; color: #ffffff; }
-.alert-dismiss {
-  background: rgba(255,255,255,0.25); border:none; color:white;
-  border-radius:8px; padding:8px 16px; cursor:pointer; font-weight:600;
-  font-size:13px;
-  transition: all 0.3s;
-  animation: btnPulse 1s ease-in-out infinite;
-}
-@keyframes btnPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-.alert-dismiss:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
-
-/* ======= HEADER ======= */
 header {
   position:sticky; top:0; z-index:100;
   background: rgba(255,255,255,0.9);
@@ -99,21 +50,17 @@ header {
   display:flex; align-items:center; justify-content:space-between;
   height: 60px;
 }
-.logo { display:flex; align-items:center; gap:10px; }
+.logo { display:flex; align-items:center; gap:10px; cursor:pointer; }
 .logo-mark {
   width:34px; height:34px;
   background: linear-gradient(135deg, var(--sun), var(--warn));
   border-radius:10px;
   display:flex; align-items:center; justify-content:center;
   font-size:17px;
-  box-shadow: 0 0 20px rgba(217,119,6,0.3);
 }
 .logo-name { font-weight:900; font-size:17px; letter-spacing:-0.5px; }
 .logo-name span { color:var(--sun); }
-
-.header-center {
-  display:flex; align-items:center; gap:6px;
-}
+.header-center { display:flex; align-items:center; gap:6px; }
 .nav-tab {
   padding:6px 16px;
   border-radius:8px;
@@ -124,165 +71,95 @@ header {
   border:none; background:none;
   transition:all 0.2s;
 }
-.nav-tab:hover, .nav-tab.active {
-  background:var(--panel2);
-  color:var(--text);
-}
-
+.nav-tab:hover, .nav-tab.active { background:var(--panel2); color:var(--text); }
 .header-right { display:flex; align-items:center; gap:12px; }
-.live-chip {
-  display:flex; align-items:center; gap:7px;
-  background: rgba(5,150,105,0.1);
-  border:1px solid rgba(5,150,105,0.25);
-  border-radius:20px;
-  padding:5px 13px;
-  font-family:'JetBrains Mono', monospace;
-  font-size:11px;
-  color:var(--green);
-}
+.live-chip { display:flex; align-items:center; gap:7px; background: rgba(5,150,105,0.1); border:1px solid rgba(5,150,105,0.25); border-radius:20px; padding:5px 13px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--green); }
 .live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(5,150,105,0.5)} 50%{opacity:0.6;box-shadow:0 0 0 4px rgba(5,150,105,0)} }
+#clock { font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--muted2); background:var(--panel); padding:6px 12px; border-radius:8px; border:1px solid var(--border); }
+.inverter-badge { background:var(--panel2); border:1px solid var(--border2); border-radius:8px; padding:6px 12px; font-size:12px; display:flex; align-items:center; gap:6px; }
+.inv-dot { width:7px; height:7px; border-radius:50%; background:var(--sun); }
+main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin:0 auto; }
 
-#clock {
-  font-family:'JetBrains Mono', monospace;
-  font-size:13px;
-  color:var(--muted2);
+/* Filter Bar */
+.filter-bar {
   background:var(--panel);
-  padding:6px 12px; border-radius:8px;
   border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px 20px;
+  margin-bottom:20px;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:12px;
 }
-
-.inverter-badge {
-  background:var(--panel2);
+.filter-left { display:flex; align-items:center; gap:12px; }
+.filter-label { font-size:13px; font-weight:600; color:var(--muted2); }
+.filter-group { display:flex; gap:4px; }
+.filter-btn {
+  padding:8px 14px;
   border:1px solid var(--border2);
   border-radius:8px;
-  padding:6px 12px;
+  background:var(--panel);
+  color:var(--muted2);
   font-size:12px;
-  display:flex; align-items:center; gap:6px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s;
+  font-family:'JetBrains Mono', monospace;
 }
-.inv-dot { width:7px; height:7px; border-radius:50%; background:var(--sun); }
-
-/* ======= MAIN ======= */
-main { 
-  position:relative; z-index:1;
-  padding:24px 28px;
-  max-width:1600px; margin:0 auto;
-}
-
-/* ======= STATS ROW ======= */
-.kpi-row {
-  display:grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap:14px;
-  margin-bottom:20px;
+.filter-btn:hover { border-color:var(--sun); color:var(--sun); }
+.filter-btn.active { background:var(--sun); color:#1a0a00; border-color:var(--sun); }
+.filter-date { display:flex; align-items:center; gap:8px; }
+.filter-date input {
+  padding:8px 12px;
+  border:1px solid var(--border2);
+  border-radius:8px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px;
 }
 
-.kpi {
+/* KPI Cards with Donut */
+.kpi-row { display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; margin-bottom:20px; }
+.kpi-card {
   background:var(--panel);
   border:1px solid var(--border);
-  border-radius:14px;
+  border-radius:16px;
   padding:20px;
-  position:relative; overflow:hidden;
-  cursor:pointer;
-  transition:transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  position:relative;
+  overflow:hidden;
 }
-.kpi:hover { transform:translateY(-3px); border-color:var(--border2); box-shadow:0 8px 30px rgba(0,0,0,0.1); }
+.kpi-card:hover { border-color:var(--border2); box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+.kpi-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+.kpi-icon { font-size:24px; }
+.kpi-badge { font-size:10px; padding:3px 8px; border-radius:6px; font-family:'JetBrains Mono', monospace; font-weight:600; }
+.kpi-badge.up { background:rgba(5,150,105,0.1); color:var(--green); }
+.kpi-badge.down { background:rgba(196,29,58,0.1); color:var(--red); }
+.kpi-label { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-family:'JetBrains Mono', monospace; margin-bottom:8px; }
+.kpi-value { font-size:32px; font-weight:900; line-height:1; }
+.kpi-value.sun { color:var(--sun); }
+.kpi-value.red { color:var(--red); }
+.kpi-value.green { color:var(--green); }
+.kpi-value.blue { color:var(--blue); }
+.kpi-unit { font-size:14px; font-weight:400; color:var(--muted2); margin-left:2px; }
+.kpi-sub { font-size:11px; color:var(--muted); margin-top:6px; font-family:'JetBrains Mono', monospace; }
 
-.kpi-glow {
-  position:absolute; top:-20px; right:-20px;
-  width:100px; height:100px;
-  border-radius:50%;
-  filter:blur(40px);
-  opacity:0.15;
+/* Donut Chart */
+.donut-container { display:flex; align-items:center; gap:16px; margin-top:10px; }
+.donut {
+  width:70px; height:70px;
+  position:relative;
 }
-.kpi.gen .kpi-glow { background:var(--sun); }
-.kpi.load .kpi-glow { background:var(--red); }
-.kpi.exp .kpi-glow { background:var(--green); }
-.kpi.eff .kpi-glow { background:var(--purple); }
-.kpi.savings .kpi-glow { background:var(--blue); }
+.donut svg { transform:rotate(-90deg); }
+.donut-bg { fill:none; stroke:var(--panel2); stroke-width:8; }
+.donut-fill { fill:none; stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+.donut-center { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:14px; font-weight:700; font-family:'JetBrains Mono', monospace; }
+.donut-legend { display:flex; flex-direction:column; gap:4px; font-size:11px; }
+.donut-legend-item { display:flex; align-items:center; gap:6px; }
+.donut-dot { width:8px; height:8px; border-radius:50%; }
 
-.kpi-icon { font-size:22px; margin-bottom:10px; }
-.kpi-label {
-  font-family:'JetBrains Mono', monospace;
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:1.2px;
-  color:var(--muted);
-  margin-bottom:6px;
-}
-.kpi-val {
-  font-size:30px;
-  font-weight:900;
-  line-height:1;
-  letter-spacing:-1px;
-}
-.kpi-unit { font-size:14px; font-weight:400; color:var(--muted2); margin-left:3px; }
-.kpi-sub {
-  font-size:11px;
-  color:var(--muted);
-  margin-top:6px;
-  font-family:'JetBrains Mono', monospace;
-}
-.up { color:var(--green); }
-.down { color:var(--red); }
-.warn-col { color:var(--warn); }
-
-.kpi.gen .kpi-val { color:var(--sun); }
-.kpi.load .kpi-val { color:var(--red); }
-.kpi.exp .kpi-val { color:var(--green); }
-.kpi.eff .kpi-val { color:var(--purple); }
-.kpi.savings .kpi-val { color:var(--blue); }
-
-/* ======= PANEL HEALTH ROW ======= */
-.panel-health {
-  background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(234,88,12,0.05));
-  border: 1px solid rgba(249,115,22,0.25);
-  border-radius:14px;
-  padding:18px 22px;
-  margin-bottom:20px;
-  display:flex; align-items:center; justify-content:space-between; gap:20px;
-}
-.ph-left { display:flex; align-items:center; gap:16px; }
-.ph-icon { font-size:32px; }
-.ph-info h3 { font-size:15px; font-weight:700; color:var(--warn); }
-.ph-info p { font-size:12px; color:var(--muted2); margin-top:2px; }
-.ph-meters { display:flex; gap:24px; }
-.ph-metric { text-align:center; }
-.ph-metric .val { font-size:20px; font-weight:900; font-family:'JetBrains Mono', monospace; }
-.ph-metric .lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
-.ph-btn {
-  background:var(--warn);
-  color:#1a0a00;
-  border:none;
-  border-radius:10px;
-  padding:10px 20px;
-  font-weight:700;
-  font-size:13px;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.ph-btn:hover { opacity:0.85; }
-
-/* ======= GRID LAYOUT ======= */
-.grid-2 {
-  display:grid;
-  grid-template-columns: 1fr 320px;
-  gap:16px;
-  margin-bottom:16px;
-}
-.grid-3 {
-  display:grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap:16px;
-  margin-bottom:16px;
-}
-
-.card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:22px;
-}
+/* Grid Layout */
+.grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px; }
+.grid-3 { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
+.card { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:22px; }
 .card-title {
   font-family:'JetBrains Mono', monospace;
   font-size:10px;
@@ -292,109 +169,11 @@ main {
   margin-bottom:18px;
   display:flex; align-items:center; justify-content:space-between;
 }
-.card-title .tag {
-  font-size:10px;
-  padding:3px 9px;
-  border-radius:20px;
-  font-family:'JetBrains Mono', monospace;
-}
+.card-title .tag { font-size:10px; padding:3px 9px; border-radius:20px; font-family:'JetBrains Mono', monospace; }
 .tag-live { background:rgba(5,150,105,0.1); color:var(--green); border:1px solid rgba(5,150,105,0.3); }
 .tag-warn { background:rgba(251,146,60,0.1); color:var(--warn); border:1px solid rgba(251,146,60,0.3); }
-.tag-info { background:rgba(37,99,235,0.1); color:var(--blue); border:1px solid rgba(37,99,235,0.3); }
 
-/* ======= CHART ======= */
-.chart-area { position:relative; height:210px; }
-svg.mainchart { width:100%; height:100%; overflow:visible; }
-
-/* ======= ENERGY FLOW VISUAL ======= */
-.flow-diagram {
-  display:flex; flex-direction:column; align-items:center; gap:0; height:100%;
-  justify-content:center;
-}
-.flow-box {
-  background:var(--panel2);
-  border:1px solid var(--border2);
-  border-radius:12px;
-  padding:12px 16px;
-  text-align:center;
-  width:100%;
-  position:relative;
-}
-.flow-box .fb-icon { font-size:22px; }
-.flow-box .fb-label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
-.flow-box .fb-val { font-size:18px; font-weight:800; margin-top:2px; }
-.flow-connector {
-  display:flex; align-items:center; justify-content:center;
-  width:100%; height:28px; position:relative;
-}
-.flow-line-v {
-  width:2px; height:100%;
-  background:linear-gradient(180deg, rgba(217,119,6,0.6), rgba(217,119,6,0.1));
-  position:relative;
-}
-.flow-line-v::after {
-  content:'';
-  position:absolute;
-  width:6px; height:6px;
-  background:var(--sun);
-  border-radius:50%;
-  left:-2px;
-  animation: flowDown 1.5s linear infinite;
-}
-@keyframes flowDown { 0%{top:0;opacity:1} 100%{top:100%;opacity:0} }
-
-.flow-split { display:flex; gap:8px; width:100%; }
-.flow-box-sm {
-  background:var(--panel2);
-  border:1px solid var(--border2);
-  border-radius:12px;
-  padding:10px;
-  text-align:center;
-  flex:1;
-}
-.flow-box-sm .fb-icon { font-size:18px; }
-.flow-box-sm .fb-label { font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
-.flow-box-sm .fb-val { font-size:14px; font-weight:800; margin-top:2px; }
-
-/* ======= DEVICES ======= */
-.dev-item {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:11px 0;
-  border-bottom:1px solid var(--border);
-}
-.dev-item:last-child { border-bottom:none; }
-.dev-l { display:flex; align-items:center; gap:12px; }
-.dev-ico {
-  width:36px; height:36px;
-  background:var(--panel2);
-  border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:16px;
-}
-.dev-name { font-size:14px; font-weight:600; }
-.dev-st { font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-top:1px; }
-.dev-r { display:flex; align-items:center; gap:10px; }
-.dev-w { font-size:13px; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--sun); }
-.tog {
-  width:38px; height:21px;
-  background:var(--panel2);
-  border-radius:11px;
-  position:relative; cursor:pointer;
-  border:1px solid var(--border2);
-  transition:background 0.2s;
-}
-.tog.on { background:var(--green); border-color:var(--green); }
-.tog::after {
-  content:''; position:absolute;
-  top:2px; left:2px;
-  width:15px; height:15px;
-  border-radius:50%; background:white;
-  transition:transform 0.2s;
-  box-shadow:0 1px 4px rgba(0,0,0,0.2);
-}
-.tog.on::after { transform:translateX(17px); }
-
-/* ======= ALERTS ======= */
+/* Alert Cards */
 .alert-card {
   display:flex; gap:12px;
   padding:12px;
@@ -402,155 +181,63 @@ svg.mainchart { width:100%; height:100%; overflow:visible; }
   border-radius:10px;
   margin-bottom:8px;
   border-left:3px solid;
-  animation:fadeIn 0.3s ease;
 }
-@keyframes fadeIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
-.alert-card.info { border-color:var(--blue); }
+.alert-card:last-child { margin-bottom:0; }
+.alert-card.critical { border-color:var(--red); }
 .alert-card.warn { border-color:var(--warn); }
 .alert-card.ok { border-color:var(--green); }
-.alert-card.critical { border-color:var(--red); }
-.al-ico { font-size:18px; flex-shrink:0; margin-top:1px; }
-.al-txt { font-size:12px; line-height:1.5; }
-.al-time { font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-top:3px; }
+.alert-card.info { border-color:var(--blue); }
+.al-ico { font-size:18px; flex-shrink:0; }
+.al-txt { font-size:12px; line-height:1.5; flex:1; }
+.al-time { font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-top:4px; }
 
-/* ======= MONTHLY SAVINGS ======= */
-.big-num { font-size:46px; font-weight:900; letter-spacing:-2px; color:var(--green); line-height:1; }
-.big-sub { font-size:12px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-top:5px; }
-.prog { height:6px; background:var(--panel2); border-radius:3px; margin:14px 0 4px; overflow:hidden; }
-.prog-fill {
-  height:100%; border-radius:3px;
-  background:linear-gradient(90deg, var(--green), var(--sun));
-  transition: width 1s ease;
+/* Benefits Section */
+.benefit-card {
+  background: linear-gradient(135deg, rgba(217,119,6,0.08), rgba(5,150,105,0.05));
+  border:1px solid rgba(217,119,6,0.2);
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:12px;
 }
-.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
-.stat-box { background:var(--panel2); border-radius:10px; padding:12px; text-align:center; }
-.stat-box .sv { font-size:18px; font-weight:800; }
-.stat-box .sl { font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+.benefit-card:last-child { margin-bottom:0; }
+.benefit-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.benefit-icon { font-size:20px; }
+.benefit-title { font-weight:700; font-size:14px; }
+.benefit-desc { font-size:12px; color:var(--muted2); line-height:1.5; }
+.benefit-impact { display:inline-block; margin-top:8px; padding:4px 10px; background:rgba(5,150,105,0.1); color:var(--green); border-radius:6px; font-size:11px; font-weight:600; font-family:'JetBrains Mono', monospace; }
 
-/* ======= PANEL CLEANING HISTORY ======= */
-.clean-timeline { position:relative; padding-left:20px; }
-.clean-timeline::before {
-  content:''; position:absolute; left:6px; top:0; bottom:0;
-  width:2px; background:var(--border);
-}
-.clean-event {
-  position:relative; margin-bottom:16px;
-}
-.clean-event::before {
-  content:''; position:absolute;
-  left:-17px; top:4px;
-  width:10px; height:10px;
-  border-radius:50%;
-  border:2px solid var(--panel);
-}
-.clean-event.done::before { background:var(--green); border-color:var(--green); }
-.clean-event.warn::before { background:var(--warn); border-color:var(--warn); }
-.clean-event.critical::before { background:var(--red); border-color:var(--red); }
-.ce-date { font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
-.ce-desc { font-size:13px; font-weight:600; margin-top:2px; }
-.ce-gain { font-size:11px; color:var(--green); font-family:'JetBrains Mono',monospace; margin-top:1px; }
-
-/* ======= BOTTOM INFO ROW ======= */
-.info-section { margin-top:24px; }
-.info-section h2 {
-  font-size:20px; font-weight:900;
-  margin-bottom:16px;
-  display:flex; align-items:center; gap:10px;
-}
-.info-section h2 .badge {
-  font-size:11px; background:var(--panel2); border:1px solid var(--border2);
-  padding:3px 10px; border-radius:20px; font-weight:600; color:var(--muted2);
-}
-.info-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-.info-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:14px; padding:22px;
-}
-.info-card h3 { font-size:15px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
-.info-card h3 .ico { font-size:20px; }
-.step {
-  display:flex; gap:12px; margin-bottom:12px;
-  padding-bottom:12px; border-bottom:1px solid var(--border);
-}
-.step:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
-.step-num {
-  width:24px; height:24px; flex-shrink:0;
-  background:var(--sun);
-  color:#1a0a00;
-  border-radius:6px;
-  display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:12px;
-}
-.step-txt { font-size:13px; color:var(--muted2); line-height:1.5; }
-.step-txt strong { color:var(--text); }
-
-.cmd-block {
-  background:var(--bg);
+/* Energy Flow */
+.flow-box {
+  background:var(--panel2);
   border:1px solid var(--border2);
-  border-radius:8px;
-  padding:10px 14px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:12px;
-  color:var(--green);
-  margin:8px 0;
-  line-height:1.7;
-  position:relative;
+  border-radius:12px;
+  padding:14px;
+  text-align:center;
 }
-.cmd-block .comment { color:var(--muted); }
+.flow-box .fb-label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+.flow-box .fb-val { font-size:22px; font-weight:800; margin-top:4px; }
+.flow-arrow { text-align:center; color:var(--sun); font-size:20px; margin:8px 0; }
 
-.wire-table { width:100%; border-collapse:collapse; font-size:13px; }
-.wire-table th {
-  text-align:left; padding:8px 12px;
-  background:var(--panel2); color:var(--muted2);
-  font-size:11px; text-transform:uppercase; letter-spacing:1px;
-  font-family:'JetBrains Mono',monospace;
-}
-.wire-table td { padding:8px 12px; border-bottom:1px solid var(--border); }
-.wire-table tr:last-child td { border-bottom:none; }
-
-.color-dot {
-  display:inline-block; width:10px; height:10px;
-  border-radius:50%; margin-right:6px; vertical-align:middle;
-}
-
-/* Section divider */
-.section-label {
-  display:flex; align-items:center; gap:12px;
-  margin:24px 0 16px;
-  font-size:12px; text-transform:uppercase;
-  letter-spacing:2px; color:var(--muted);
-  font-family:'JetBrains Mono',monospace;
-}
-.section-label::after {
-  content:''; flex:1; height:1px; background:var(--border);
-}
+/* Mini Stats */
+.mini-stats { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.mini-stat { background:var(--panel2); border-radius:10px; padding:12px; text-align:center; }
+.mini-stat .val { font-size:18px; font-weight:800; font-family:'JetBrains Mono', monospace; }
+.mini-stat .lbl { font-size:10px; color:var(--muted); text-transform:uppercase; margin-top:4px; }
 </style>
 </head>
 <body>
 
-<!-- CLEAN ALERT BANNER -->
-<div class="clean-alert" id="cleanAlert">
-  <div class="alert-content">
-    <div class="alert-icon-big">🧹</div>
-    <div class="alert-text">
-      <h3>⚠️ Panel Cleaning Required — Performance Drop Detected!</h3>
-      <p>Current output is 31% below expected for today's weather. Dirt/dust buildup likely. Last cleaned: 23 days ago. Clean panels to recover ~0.9kW of lost power.</p>
-    </div>
-  </div>
-  <button class="alert-dismiss" onclick="document.getElementById('cleanAlert').classList.add('hidden')">Dismiss ✕</button>
-</div>
-
 <header>
-  <div class="logo">
+  <div class="logo" onclick="window.location.href='index.html'">
     <div class="logo-mark">☀️</div>
     <div class="logo-name">Solar<span>OS</span> <span style="color:var(--muted);font-size:11px;font-weight:400">Pro</span></div>
   </div>
   <div class="header-center">
-    <button class="nav-tab active">Dashboard</button>
-    <button class="nav-tab">Analytics</button>
-    <button class="nav-tab">Devices</button>
-    <button class="nav-tab">Setup Guide</button>
+    <button class="nav-tab active" onclick="window.location.href='index.html'">Dashboard</button>
+    <button class="nav-tab" onclick="window.location.href='analytics.html'">Analytics</button>
+    <button class="nav-tab" onclick="window.location.href='devices.html'">Devices</button>
+    <button class="nav-tab" onclick="window.location.href='setup.html'">Setup Guide</button>
+    <button class="nav-tab" onclick="window.location.href='settings.html'">⚙️ Settings</button>
   </div>
   <div class="header-right">
     <div class="inverter-badge">
@@ -564,502 +251,256 @@ svg.mainchart { width:100%; height:100%; overflow:visible; }
 
 <main>
 
-  <!-- KPIs -->
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="filter-left">
+      <span class="filter-label">📅 Time Period:</span>
+      <div class="filter-group">
+        <button class="filter-btn" onclick="setFilter('today')">Today</button>
+        <button class="filter-btn" onclick="setFilter('week')">Week</button>
+        <button class="filter-btn active" onclick="setFilter('month')">Month</button>
+        <button class="filter-btn" onclick="setFilter('3month')">3 Months</button>
+        <button class="filter-btn" onclick="setFilter('6month')">6 Months</button>
+        <button class="filter-btn" onclick="setFilter('1year')">1 Year</button>
+        <button class="filter-btn" onclick="setFilter('custom')">Custom</button>
+      </div>
+    </div>
+    <div class="filter-date">
+      <span class="filter-label">Range:</span>
+      <input type="date" id="dateFrom" value="2024-12-01">
+      <span>to</span>
+      <input type="date" id="dateTo" value="2024-12-15">
+    </div>
+  </div>
+
+  <!-- KPI CARDS WITH DONUT -->
   <div class="kpi-row">
-    <div class="kpi gen">
-      <div class="kpi-glow"></div>
-      <div class="kpi-icon">☀️</div>
-      <div class="kpi-label">Solar Generation</div>
-      <div class="kpi-val" id="kpi-gen">2.41<span class="kpi-unit">kW</span></div>
-      <div class="kpi-sub warn-col">⚠ Expected 3.5kW — 31% drop</div>
+    <!-- Generated -->
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <div class="kpi-icon">☀️</div>
+        <span class="kpi-badge up">↑ 12%</span>
+      </div>
+      <div class="kpi-label">Energy Generated</div>
+      <div class="kpi-value sun" id="kpi-generated">312<span class="kpi-unit">kWh</span></div>
+      <div class="kpi-sub">This month vs last month</div>
+      <div class="donut-container">
+        <div class="donut">
+          <svg viewBox="0 0 36 36">
+            <path class="donut-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="donut-fill" stroke="var(--sun)" stroke-dasharray="78, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div class="donut-center" style="color:var(--sun)">78%</div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-item"><span class="donut-dot" style="background:var(--sun)"></span> Solar: 243 kWh</div>
+          <div class="donut-legend-item"><span class="donut-dot" style="background:var(--panel2)"></span> Grid: 69 kWh</div>
+        </div>
+      </div>
     </div>
-    <div class="kpi load">
-      <div class="kpi-glow"></div>
-      <div class="kpi-icon">🏠</div>
-      <div class="kpi-label">Home Load</div>
-      <div class="kpi-val" id="kpi-load">1.38<span class="kpi-unit">kW</span></div>
-      <div class="kpi-sub up">↓ 120W vs avg</div>
+
+    <!-- Consumed -->
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <div class="kpi-icon">🏠</div>
+        <span class="kpi-badge down">↓ 5%</span>
+      </div>
+      <div class="kpi-label">Energy Consumed</div>
+      <div class="kpi-value red" id="kpi-consumed">198<span class="kpi-unit">kWh</span></div>
+      <div class="kpi-sub">This month</div>
+      <div class="donut-container">
+        <div class="donut">
+          <svg viewBox="0 0 36 36">
+            <path class="donut-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="donut-fill" stroke="var(--red)" stroke-dasharray="62, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div class="donut-center" style="color:var(--red)">62%</div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-item"><span class="donut-dot" style="background:var(--red)"></span> Used: 198 kWh</div>
+          <div class="donut-legend-item"><span class="donut-dot" style="background:var(--panel2)"></span> Wasted: 12 kWh</div>
+        </div>
+      </div>
     </div>
-    <div class="kpi exp">
-      <div class="kpi-glow"></div>
-      <div class="kpi-icon">🔌</div>
-      <div class="kpi-label">Grid Export</div>
-      <div class="kpi-val" id="kpi-exp">1.03<span class="kpi-unit">kW</span></div>
-      <div class="kpi-sub up">Earning credits</div>
+
+    <!-- Exported -->
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <div class="kpi-icon">🔌</div>
+        <span class="kpi-badge up">↑ 18%</span>
+      </div>
+      <div class="kpi-label">Grid Exported</div>
+      <div class="kpi-value green" id="kpi-exported">114<span class="kpi-unit">kWh</span></div>
+      <div class="kpi-sub">Earning credits</div>
+      <div class="donut-container">
+        <div class="donut">
+          <svg viewBox="0 0 36 36">
+            <path class="donut-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="donut-fill" stroke="var(--green)" stroke-dasharray="45, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div class="donut-center" style="color:var(--green)">45%</div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-item"><span class="donut-dot" style="background:var(--green)"></span> Exported: 114 kWh</div>
+          <div class="donut-legend-item"><span class="donut-dot" style="background:var(--panel2)"></span> Self: 129 kWh</div>
+        </div>
+      </div>
     </div>
-    <div class="kpi eff">
-      <div class="kpi-glow"></div>
-      <div class="kpi-icon">📊</div>
-      <div class="kpi-label">Panel Efficiency</div>
-      <div class="kpi-val" id="kpi-eff">69<span class="kpi-unit">%</span></div>
-      <div class="kpi-sub warn-col">⚠ Clean panels! Ideal: 95%+</div>
-    </div>
-    <div class="kpi savings">
-      <div class="kpi-glow"></div>
-      <div class="kpi-icon">💰</div>
-      <div class="kpi-label">Today Saved</div>
-      <div class="kpi-val" id="kpi-save">₹84<span class="kpi-unit"></span></div>
-      <div class="kpi-sub muted">Based on ₹7.5/kWh</div>
+
+    <!-- Savings -->
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <div class="kpi-icon">💰</div>
+        <span class="kpi-badge up">↑ 22%</span>
+      </div>
+      <div class="kpi-label">Money Saved</div>
+      <div class="kpi-value blue" id="kpi-saved">₹2,340<span class="kpi-unit"></span></div>
+      <div class="kpi-sub">This month</div>
+      <div class="donut-container">
+        <div class="donut">
+          <svg viewBox="0 0 36 36">
+            <path class="donut-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="donut-fill" stroke="var(--blue)" stroke-dasharray="68, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div class="donut-center" style="color:var(--blue)">68%</div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-item"><span class="donut-dot" style="background:var(--blue)"></span> Solar Savings</div>
+          <div class="donut-legend-item"><span class="donut-dot" style="background:var(--panel2)"></span> Grid Cost</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- PANEL CLEANING ALERT -->
-  <div class="panel-health" id="cleanBanner">
-    <div class="ph-left">
-      <div class="ph-icon">🧼</div>
-      <div class="ph-info">
-        <h3>Panel Cleaning Alert — Action Recommended</h3>
-        <p>Output is 31% below baseline for current weather conditions. Panels were last cleaned 23 days ago. Dust/bird droppings may be reducing yield.</p>
-      </div>
-    </div>
-    <div class="ph-meters">
-      <div class="ph-metric">
-        <div class="val" style="color:var(--warn)">23</div>
-        <div class="lbl">Days Since Clean</div>
-      </div>
-      <div class="ph-metric">
-        <div class="val" style="color:var(--red)">−0.9kW</div>
-        <div class="lbl">Lost Power</div>
-      </div>
-      <div class="ph-metric">
-        <div class="val" style="color:var(--sun)">−₹48</div>
-        <div class="lbl">Lost Today</div>
-      </div>
-    </div>
-    <button class="ph-btn" onclick="markCleaned()">✅ Mark as Cleaned</button>
-  </div>
-
-  <!-- MAIN CHART + FLOW -->
+  <!-- ALERTS + ENERGY FLOW -->
   <div class="grid-2">
+    <!-- Alert Logs -->
     <div class="card">
       <div class="card-title">
-        Live Power — Today
-        <span class="tag tag-live">UPDATING</span>
+        🚨 Alert Logs
+        <span class="tag tag-warn">3 New</span>
       </div>
-      <div class="chart-area">
-        <svg class="mainchart" id="mainchart" viewBox="0 0 800 190" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#D97706" stop-opacity="0.5"/>
-              <stop offset="100%" stop-color="#D97706" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#DC2626" stop-opacity="0.3"/>
-              <stop offset="100%" stop-color="#DC2626" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="eg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#D97706" stop-opacity="0.15"/>
-              <stop offset="100%" stop-color="#D97706" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <!-- grid -->
-          <line x1="0" y1="40" x2="760" y2="40" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
-          <line x1="0" y1="80" x2="760" y2="80" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
-          <line x1="0" y1="120" x2="760" y2="120" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
-          <line x1="0" y1="160" x2="760" y2="160" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
-          <!-- Expected line (dashed) -->
-          <path id="expPath" fill="none" stroke="rgba(217,119,6,0.3)" stroke-width="1.5" stroke-dasharray="5,4"/>
-          <!-- Solar fill -->
-          <path id="solarFill" fill="url(#sg)"/>
-          <!-- Load fill -->
-          <path id="loadFill" fill="url(#lg)"/>
-          <!-- Lines -->
-          <path id="solarLine" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path id="loadLine" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-dasharray="7,3"/>
-          <!-- Axis labels -->
-          <text x="15" y="180" fill="rgba(0,0,0,0.3)" font-size="10" font-family="monospace">06:00</text>
-          <text x="175" y="180" fill="rgba(0,0,0,0.3)" font-size="10" font-family="monospace">09:00</text>
-          <text x="355" y="180" fill="rgba(0,0,0,0.3)" font-size="10" font-family="monospace">12:00</text>
-          <text x="535" y="180" fill="rgba(0,0,0,0.3)" font-size="10" font-family="monospace">15:00</text>
-          <text x="700" y="180" fill="rgba(0,0,0,0.3)" font-size="10" font-family="monospace">18:00</text>
-          <text x="715" y="44" fill="rgba(0,0,0,0.25)" font-size="9" font-family="monospace">3.5kW</text>
-          <text x="715" y="84" fill="rgba(0,0,0,0.25)" font-size="9" font-family="monospace">2.5kW</text>
-          <text x="715" y="124" fill="rgba(0,0,0,0.25)" font-size="9" font-family="monospace">1.5kW</text>
-          <text x="715" y="164" fill="rgba(0,0,0,0.25)" font-size="9" font-family="monospace">0.5kW</text>
-          <!-- Legend -->
-          <rect x="15" y="10" width="12" height="3" fill="#D97706" rx="1"/>
-          <text x="32" y="15" fill="rgba(0,0,0,0.35)" font-size="10" font-family="monospace">Actual Solar</text>
-          <line x1="120" y1="11" x2="135" y2="11" stroke="#D97706" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/>
-          <text x="140" y="15" fill="rgba(0,0,0,0.35)" font-size="10" font-family="monospace">Expected (clean panels)</text>
-          <rect x="290" y="10" width="12" height="3" fill="#DC2626" rx="1"/>
-          <text x="307" y="15" fill="rgba(0,0,0,0.35)" font-size="10" font-family="monospace">Home Load</text>
-        </svg>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Energy Flow — Real Time</div>
-      <div class="flow-diagram" style="gap:6px">
-        <div class="flow-box">
-          <div class="fb-icon">☀️</div>
-          <div class="fb-label">Solar Panels (3.5kW inst.)</div>
-          <div class="fb-val" style="color:var(--sun)" id="ff-gen">2.41 kW</div>
-        </div>
-        <div class="flow-connector"><div class="flow-line-v"></div></div>
-        <div class="flow-box">
-          <div class="fb-icon">⚡</div>
-          <div class="fb-label">Inverter / WiFi Logger</div>
-          <div class="fb-val" style="color:var(--muted2)">ESP32 / Pi4</div>
-        </div>
-        <div class="flow-connector"><div class="flow-line-v"></div></div>
-        <div class="flow-split">
-          <div class="flow-box-sm">
-            <div class="fb-icon">🏠</div>
-            <div class="fb-label">Home</div>
-            <div class="fb-val" style="color:var(--red)" id="ff-load">1.38 kW</div>
-          </div>
-          <div class="flow-box-sm">
-            <div class="fb-icon">🔌</div>
-            <div class="fb-label">Grid</div>
-            <div class="fb-val" style="color:var(--green)" id="ff-grid">1.03 kW</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- BOTTOM 3 -->
-  <div class="grid-3">
-
-    <!-- DEVICES -->
-    <div class="card">
-      <div class="card-title">Smart Devices <span class="tag tag-info">5 Active</span></div>
-      <div class="dev-item">
-        <div class="dev-l"><div class="dev-ico">❄️</div><div><div class="dev-name">Air Conditioner</div><div class="dev-st">Running · 820W · 2h14m</div></div></div>
-        <div class="dev-r"><div class="dev-w">820W</div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-      </div>
-      <div class="dev-item">
-        <div class="dev-l"><div class="dev-ico">🖥️</div><div><div class="dev-name">Desktop PC</div><div class="dev-st">Running · 3h02m</div></div></div>
-        <div class="dev-r"><div class="dev-w">400W</div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-      </div>
-      <div class="dev-item">
-        <div class="dev-l"><div class="dev-ico">📺</div><div><div class="dev-name">Television</div><div class="dev-st">Running · 45m</div></div></div>
-        <div class="dev-r"><div class="dev-w">120W</div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-      </div>
-      <div class="dev-item">
-        <div class="dev-l"><div class="dev-ico">💡</div><div><div class="dev-name">Lighting (LEDs)</div><div class="dev-st">Running</div></div></div>
-        <div class="dev-r"><div class="dev-w">80W</div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-      </div>
-      <div class="dev-item">
-        <div class="dev-l"><div class="dev-ico">💧</div><div><div class="dev-name">Water Heater</div><div class="dev-st">Standby</div></div></div>
-        <div class="dev-r"><div class="dev-w">0W</div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
-      </div>
-    </div>
-
-    <!-- MONTHLY -->
-    <div class="card">
-      <div class="card-title">Monthly Summary</div>
-      <div class="big-num">₹2,890</div>
-      <div class="big-sub">saved vs full-grid this month</div>
-      <div style="margin-top:12px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace">74% of ₹3,900 monthly goal</div>
-      <div class="prog"><div class="prog-fill" style="width:74%"></div></div>
-      <div style="font-size:11px;color:var(--warn);font-family:'JetBrains Mono',monospace">+₹420 potential if panels cleaned</div>
-      <div class="stat-grid">
-        <div class="stat-box"><div class="sv" style="color:var(--sun)">278kWh</div><div class="sl">Generated</div></div>
-        <div class="stat-box"><div class="sv" style="color:var(--red)">174kWh</div><div class="sl">Consumed</div></div>
-        <div class="stat-box"><div class="sv" style="color:var(--green)">104kWh</div><div class="sl">Exported</div></div>
-        <div class="stat-box"><div class="sv" style="color:var(--warn)">69%</div><div class="sl">Avg Efficiency</div></div>
-      </div>
-    </div>
-
-    <!-- ALERTS + CLEAN LOG -->
-    <div class="card">
-      <div class="card-title">Alerts & Panel Log <span class="tag tag-warn">3 Unread</span></div>
       <div id="alerts">
         <div class="alert-card critical">
           <div class="al-ico">🧹</div>
-          <div><div class="al-txt"><strong>Panel cleaning overdue.</strong> 23 days since last wash. Output 31% below expected.</div><div class="al-time">Today · Automated AI detection</div></div>
+          <div>
+            <div class="al-txt"><strong>Panel Cleaning Required!</strong> Output 31% below expected. Dirt buildup detected.</div>
+            <div class="al-time">Today 09:15 · Auto-detected</div>
+          </div>
         </div>
         <div class="alert-card warn">
           <div class="al-ico">⚡</div>
-          <div><div class="al-txt"><strong>Peak solar missed.</strong> 12:00–14:00 window had cloud cover. Only 68% of theoretical peak reached.</div><div class="al-time">Today 14:10</div></div>
+          <div>
+            <div class="al-txt"><strong>Peak Solar Missed!</strong> Cloud cover reduced yield by 28% during 12-2pm.</div>
+            <div class="al-time">Yesterday 14:30</div>
+          </div>
         </div>
         <div class="alert-card ok">
           <div class="al-ico">✅</div>
-          <div><div class="al-txt">Inverter health check passed. WiFi logger responding normally on 192.168.1.105.</div><div class="al-time">Today 08:00</div></div>
+          <div>
+            <div class="al-txt"><strong>System Healthy!</strong> Inverter responding normally. WiFi logger stable.</div>
+            <div class="al-time">Today 08:00 · Daily check</div>
+          </div>
         </div>
         <div class="alert-card info">
-          <div class="al-ico">🌤️</div>
-          <div><div class="al-txt">Tomorrow: Mostly sunny forecast. Expected yield: ~3.2kWh. Good day to schedule cleaning tonight.</div><div class="al-time">Weather API</div></div>
+          <div class="al-ico">📈</div>
+          <div>
+            <div class="al-txt"><strong>Best Day This Month!</strong> Generated 14.2 kWh on Dec 10th.</div>
+            <div class="al-time">Dec 10 · Record</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Energy Flow -->
+    <div class="card">
+      <div class="card-title">⚡ Energy Flow — Live</div>
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
+        <div class="flow-box" style="width:100%;">
+          <div class="fb-label">Solar Generation</div>
+          <div class="fb-val" style="color:var(--sun)" id="flow-gen">2.41 kW</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box" style="width:100%;">
+          <div class="fb-label">Inverter</div>
+          <div class="fb-val" style="color:var(--muted2)">98% efficient</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div style="display:flex; gap:8px; width:100%;">
+          <div class="flow-box" style="flex:1;">
+            <div class="fb-label">Home Use</div>
+            <div class="fb-val" style="color:var(--red)" id="flow-home">1.38 kW</div>
+          </div>
+          <div class="flow-box" style="flex:1;">
+            <div class="fb-label">Grid Export</div>
+            <div class="fb-val" style="color:var(--green)" id="flow-grid">1.03 kW</div>
+          </div>
+        </div>
+      </div>
+      <div class="mini-stats" style="margin-top:16px;">
+        <div class="mini-stat">
+          <div class="val" style="color:var(--sun)">230V</div>
+          <div class="lbl">Grid Voltage</div>
+        </div>
+        <div class="mini-stat">
+          <div class="val" style="color:var(--blue)">50.1Hz</div>
+          <div class="lbl">Frequency</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ============ GUIDE SECTION ============ -->
-  <div class="section-label">📋 Setup Guide — Your Hardware & Software Stack</div>
-
-  <div class="info-section">
-    <h2>🔍 Step 1: Discover What Your Inverter Can Do <span class="badge">Do This First</span></h2>
-    <div class="info-grid">
-      <div class="info-card">
-        <h3><span class="ico">🔎</span> Identify Your Inverter Brand</h3>
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-txt">Find the model sticker on the side of your inverter. Common WiFi brands in India: <strong>Growatt, Deye, Sofar, SolarEdge, Goodwe, Solis, Voltronic</strong></div>
+  <!-- BENEFITS / HOW TO MAXIMIZE -->
+  <div class="card">
+    <div class="card-title">💡 Tips to Maximize Your Solar Power</div>
+    <div class="grid-3">
+      <div class="benefit-card">
+        <div class="benefit-header">
+          <span class="benefit-icon">🧹</span>
+          <span class="benefit-title">Clean Your Panels</span>
         </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-txt">Check if there's a <strong>WiFi stick/dongle</strong> plugged into the inverter (usually labeled "WiFi Logger", "Data Stick", or "WLAN")</div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-txt">Look for the inverter's <strong>own WiFi hotspot</strong> on your phone — many broadcast as "AP_XXXXXX" or brand name when in setup mode</div>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <div class="step-txt">Check your home router — find the inverter's <strong>IP address</strong> in connected devices list. Try opening that IP in browser to see a local web portal</div>
-        </div>
+        <div class="benefit-desc">Dirty panels can reduce efficiency by 20-30%. Clean them every 2-4 weeks for optimal performance.</div>
+        <span class="benefit-impact">+0.5-0.9 kW potential</span>
       </div>
-
-      <div class="info-card">
-        <h3><span class="ico">📡</span> Scan For Open Ports (on Pi4)</h3>
-        <p style="color:var(--muted2);font-size:13px;margin-bottom:12px">Run these commands on your Raspberry Pi 4 to detect what your inverter exposes over WiFi:</p>
-        <div class="cmd-block">
-          <span class="comment"># Install nmap (network scanner)</span><br>
-          sudo apt install nmap -y<br><br>
-          <span class="comment"># Find inverter on network</span><br>
-          nmap -sn 192.168.1.0/24<br><br>
-          <span class="comment"># Scan inverter ports (replace IP)</span><br>
-          nmap -p 502,8899,8888,80,443,23 192.168.1.XXX
+      <div class="benefit-card">
+        <div class="benefit-header">
+          <span class="benefit-icon">⏰</span>
+          <span class="benefit-title">Run High-Power Devices Midday</span>
         </div>
-        <p style="color:var(--muted2);font-size:12px;margin-top:8px">
-          <strong style="color:var(--sun)">Port 502</strong> = Modbus TCP &nbsp;
-          <strong style="color:var(--green)">Port 8899</strong> = SolarmanV5 &nbsp;
-          <strong style="color:var(--blue)">Port 80</strong> = Web UI
-        </p>
+        <div class="benefit-desc">Schedule AC, washing machine, and heavy appliances between 10AM-2PM when solar output peaks.</div>
+        <span class="benefit-impact">Save ₹200-400/month</span>
       </div>
-
-      <div class="info-card">
-        <h3><span class="ico">🔌</span> Communication Types Explained</h3>
-        <table class="wire-table">
-          <tr>
-            <th>Type</th><th>What It Is</th><th>How To Use</th>
-          </tr>
-          <tr>
-            <td><strong style="color:var(--sun)">SolarmanV5</strong></td>
-            <td style="color:var(--muted2)">Most common WiFi stick protocol</td>
-            <td style="color:var(--green)">Python pysolarmanv5 on Pi4</td>
-          </tr>
-          <tr>
-            <td><strong style="color:var(--blue)">Modbus TCP</strong></td>
-            <td style="color:var(--muted2)">Industrial standard over WiFi/LAN</td>
-            <td style="color:var(--green)">pymodbus on Pi4</td>
-          </tr>
-          <tr>
-            <td><strong style="color:var(--purple)">Modbus RTU</strong></td>
-            <td style="color:var(--muted2)">Serial over RS485 wire</td>
-            <td style="color:var(--green)">ESP32 + RS485 module</td>
-          </tr>
-          <tr>
-            <td>Web Portal</td>
-            <td style="color:var(--muted2)">Built-in web dashboard</td>
-            <td style="color:var(--green)">Open IP in browser</td>
-          </tr>
-        </table>
+      <div class="benefit-card">
+        <div class="benefit-header">
+          <span class="benefit-icon">🌳</span>
+          <span class="benefit-title">Trim Nearby Trees</span>
+        </div>
+        <div class="benefit-desc">Ensure no shadows fall on panels. Even partial shading significantly reduces panel output.</div>
+        <span class="benefit-impact">+5-15% generation</span>
       </div>
-    </div>
-  </div>
-
-  <div class="info-section" style="margin-top:24px">
-    <h2>🛠️ Step 2: Hardware Wiring Guide <span class="badge">Your Devices: ESP32 + Pi4 + UNO</span></h2>
-    <div class="info-grid">
-      <div class="info-card">
-        <h3><span class="ico">📶</span> Option A — WiFi Only (Easiest, Zero Wiring)</h3>
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-txt"><strong>Pi4 connects to home WiFi</strong> → pings inverter WiFi logger → reads data via SolarmanV5 or Modbus TCP. No wires needed if your inverter has WiFi stick!</div>
+      <div class="benefit-card">
+        <div class="benefit-header">
+          <span class="benefit-icon">🔋</span>
+          <span class="benefit-title">Add Battery Storage</span>
         </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-txt"><strong>ESP32 connects to home WiFi</strong> independently → posts sensor data (PZEM-004T load readings) to Pi4 via MQTT</div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-txt"><strong>Pi4 runs all software:</strong> MQTT broker (Mosquitto) + Node-RED + InfluxDB + Grafana — accessible from mobile/laptop on same WiFi</div>
-        </div>
-        <div class="cmd-block">
-          <span class="comment"># Test WiFi inverter connection</span><br>
-          pip3 install pysolarmanv5<br>
-          python3 -c "from pysolarmanv5 import PySolarmanV5;<br>
-          &nbsp;&nbsp;inv = PySolarmanV5('192.168.1.X', 1234567890);<br>
-          &nbsp;&nbsp;print(inv.read_holding_registers(0,10))"
-        </div>
+        <div class="benefit-desc">Store excess solar for evening use. lithium batteries can store 5-13 kWh for night consumption.</div>
+        <span class="benefit-impact">Become 100% independent</span>
       </div>
-
-      <div class="info-card">
-        <h3><span class="ico">🔧</span> Option B — ESP32 + RS485 (If No WiFi Stick)</h3>
-        <table class="wire-table" style="margin-bottom:12px">
-          <tr><th>ESP32 Pin</th><th>RS485 Module</th><th>Color</th></tr>
-          <tr>
-            <td>GPIO16 (RX2)</td>
-            <td>RO (Receive)</td>
-            <td><span class="color-dot" style="background:#4ade80"></span>Green</td>
-          </tr>
-          <tr>
-            <td>GPIO17 (TX2)</td>
-            <td>DI (Transmit)</td>
-            <td><span class="color-dot" style="background:#facc15"></span>Yellow</td>
-          </tr>
-          <tr>
-            <td>GPIO4</td>
-            <td>DE + RE</td>
-            <td><span class="color-dot" style="background:#f97316"></span>Orange</td>
-          </tr>
-          <tr>
-            <td>3.3V</td>
-            <td>VCC</td>
-            <td><span class="color-dot" style="background:#f43f5e"></span>Red</td>
-          </tr>
-          <tr>
-            <td>GND</td>
-            <td>GND</td>
-            <td><span class="color-dot" style="background:#6b7280"></span>Black</td>
-          </tr>
-        </table>
-        <div style="color:var(--muted2);font-size:12px;line-height:1.7">
-          RS485 Module → Inverter RS485 port:<br>
-          <strong style="color:var(--sun)">A+</strong> pin on module → <strong style="color:var(--sun)">A</strong> on inverter<br>
-          <strong style="color:var(--blue)">B−</strong> pin on module → <strong style="color:var(--blue)">B</strong> on inverter<br>
-          <span style="color:var(--warn)">⚠ Swap A/B if no data — it's normal to get it reversed!</span>
+      <div class="benefit-card">
+        <div class="benefit-header">
+          <span class="benefit-icon">📊</span>
+          <span class="benefit-title">Monitor Daily Patterns</span>
         </div>
+        <div class="benefit-desc">Track your usage patterns. Shift non-essential loads to peak solar hours (10AM-3PM).</div>
+        <span class="benefit-impact">+10-20% self-use</span>
       </div>
-
-      <div class="info-card">
-        <h3><span class="ico">⚡</span> PZEM-004T Load Meter (Clamp)</h3>
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-txt">Clamp the CT coil around your <strong>main live wire</strong> at the distribution board — measures real power, voltage, current, power factor</div>
+      <div class="benefit-card">
+        <div class="benefit-header">
+          <span class="benefit-icon">🔧</span>
+          <span class="benefit-title">Regular Maintenance</span>
         </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-txt">Connect PZEM to <strong>ESP32</strong> via TX/RX pins. Library: <code style="color:var(--green)">PZEM004Tv30</code> on Arduino IDE</div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-txt"><strong>UNO tip:</strong> Use Arduino UNO only for quick sensor prototyping — it lacks WiFi. Use ESP32 for all WiFi-connected sensors</div>
-        </div>
-        <div class="cmd-block">
-          PZEM-004T → ESP32:<br>
-          <span style="color:var(--green)">PZEM TX</span> → GPIO16 (ESP RX)<br>
-          <span style="color:var(--sun)">PZEM RX</span> → GPIO17 (ESP TX)<br>
-          <span style="color:var(--red)">5V</span> → VIN<br>
-          <span style="color:var(--muted)">GND</span> → GND
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="info-section" style="margin-top:24px">
-    <h2>💻 Step 3: Software Stack on Raspberry Pi 4 <span class="badge">All Free & Open Source</span></h2>
-    <div class="info-grid">
-      <div class="info-card">
-        <h3><span class="ico">🐳</span> Install Everything with Docker</h3>
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-txt">Install <strong>Docker + Docker Compose</strong> on Pi4 — this runs all services in containers, easiest approach</div>
-        </div>
-        <div class="cmd-block">
-          <span class="comment"># Install Docker</span><br>
-          curl -fsSL https://get.docker.com | sh<br>
-          sudo usermod -aG docker pi<br><br>
-          <span class="comment"># Create docker-compose.yml</span><br>
-          mkdir ~/solar && cd ~/solar
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-txt">Services to run: <strong>Mosquitto</strong> (MQTT broker) + <strong>Node-RED</strong> (visual data pipeline) + <strong>InfluxDB</strong> (database) + <strong>Grafana</strong> (dashboard)</div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-txt">Access everything from your phone/laptop on the same WiFi: <strong>Pi4 IP:3000</strong> = Grafana dashboard | <strong>Pi4 IP:1880</strong> = Node-RED flows</div>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <h3><span class="ico">🔄</span> Data Pipeline Flow</h3>
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-txt"><strong>Python script on Pi4</strong> polls inverter every 30 seconds via WiFi → publishes to MQTT topic <code style="color:var(--green)">solar/generation</code></div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-txt"><strong>ESP32</strong> reads PZEM-004T every 5 seconds → publishes to MQTT topic <code style="color:var(--green)">solar/load</code></div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-txt"><strong>Node-RED</strong> subscribes to MQTT → calculates efficiency → writes to InfluxDB → <strong>sends Telegram/WhatsApp alert</strong> when panels need cleaning</div>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <div class="step-txt"><strong>Grafana</strong> queries InfluxDB → live dashboard accessible on mobile browser or as PWA (works like an app!)</div>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <h3><span class="ico">🧹</span> Panel Cleaning Algorithm</h3>
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-txt">Call <strong>OpenWeatherMap API</strong> (free) to get solar irradiance / cloud cover for your location</div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-txt">Calculate <strong>expected output</strong> = 3500W × (irradiance factor) × time_of_day_curve</div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-txt">If <strong>actual / expected < 0.80</strong> on a clear day → flag as cleaning needed. Node-RED counts 3 consecutive days to avoid false alarms</div>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <div class="step-txt">Alert via <strong>Telegram Bot</strong> (free!) → "🧹 Solar panels need cleaning! Yield is 25% below expected for 3 days."</div>
-        </div>
-        <div class="cmd-block">
-          efficiency = actual_kw / expected_kw<br>
-          if efficiency < 0.80 and is_clear_day:<br>
-          &nbsp;&nbsp;consecutive_low_days += 1<br>
-          if consecutive_low_days >= 3:<br>
-          &nbsp;&nbsp;send_telegram_alert()
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cost Summary -->
-  <div class="section-label">💰 Total Cost Estimate</div>
-  <div class="info-grid" style="margin-bottom:40px">
-    <div class="info-card" style="grid-column:span 3">
-      <h3><span class="ico">🛒</span> Minimum Cost Shopping List — You Already Have ESP32 & Pi4!</h3>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:4px">
-        <div style="background:var(--panel2);border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:22px;margin-bottom:6px">✅</div>
-          <div style="font-weight:700;font-size:14px">ESP32</div>
-          <div style="color:var(--green);font-weight:800;font-size:18px;margin:4px 0">₹0</div>
-          <div style="color:var(--muted);font-size:11px">Already owned</div>
-        </div>
-        <div style="background:var(--panel2);border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:22px;margin-bottom:6px">✅</div>
-          <div style="font-weight:700;font-size:14px">Raspberry Pi 4</div>
-          <div style="color:var(--green);font-weight:800;font-size:18px;margin:4px 0">₹0</div>
-          <div style="color:var(--muted);font-size:11px">Already owned</div>
-        </div>
-        <div style="background:var(--panel2);border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:22px;margin-bottom:6px">🔌</div>
-          <div style="font-weight:700;font-size:14px">PZEM-004T</div>
-          <div style="color:var(--sun);font-weight:800;font-size:18px;margin:4px 0">~₹650</div>
-          <div style="color:var(--muted);font-size:11px">Load meter clamp</div>
-        </div>
-        <div style="background:var(--panel2);border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:22px;margin-bottom:6px">📡</div>
-          <div style="font-weight:700;font-size:14px">RS485 Module</div>
-          <div style="color:var(--sun);font-weight:800;font-size:18px;margin:4px 0">~₹120</div>
-          <div style="color:var(--muted);font-size:11px">Only if no WiFi stick</div>
-        </div>
-      </div>
-      <div style="margin-top:16px;padding:14px;background:rgba(5,150,105,0.08);border:1px solid rgba(5,150,105,0.2);border-radius:10px;font-size:13px;color:var(--muted2)">
-        <strong style="color:var(--green)">Total: ~₹770</strong> (if inverter has WiFi stick: just ₹650 for PZEM-004T) &nbsp;·&nbsp; 
-        All software is <strong style="color:var(--green)">free</strong>: Docker, Mosquitto, Node-RED, InfluxDB, Grafana, Python &nbsp;·&nbsp; 
-        <strong style="color:var(--sun)">Telegram alerts: free</strong> via BotFather API
+        <div class="benefit-desc">Check connections, inverter vents, and cable integrity monthly. Dust accumulation causes heating.</div>
+        <span class="benefit-impact">Prevent 15% losses</span>
       </div>
     </div>
   </div>
@@ -1073,81 +514,42 @@ function tick() {
 }
 setInterval(tick, 1000); tick();
 
-// === CHART ===
-function buildChart() {
-  const actual  = [0,0,0.08,0.25,0.6,1.1,1.6,2.0,2.2,2.3,2.4,2.35,2.41,2.2,1.9,1.4,0.9,0.3,0,0];
-  const expected= [0,0,0.1, 0.35,0.9,1.6,2.3,2.9,3.2,3.35,3.5,3.4,3.35,3.1,2.7,2.0,1.3,0.4,0,0];
-  const load    = [0.35,0.5,0.4,0.45,0.55,0.75,0.9,1.1,1.2,1.3,1.35,1.4,1.38,1.3,1.2,1.1,1.3,1.5,0.7,0.3];
-
-  const W=760, H=165, max=3.5;
-  const n = actual.length;
-
-  function coords(arr) {
-    return arr.map((v,i) => [(i/(n-1))*(W-20)+10, H-(v/max)*H]);
-  }
-
-  function smooth(pts, close) {
-    let d = pts.map((p,i) => {
-      if(i===0) return `M ${p[0].toFixed(1)},${p[1].toFixed(1)}`;
-      const pr = pts[i-1];
-      const cx1 = pr[0]+(p[0]-pr[0])*1;
-      const cy1 = pr[1];
-      const cx2 = p[0]-(p[0]-pr[0])*1;
-      const cy2 = p[1];
-      return `C ${cx1.toFixed(1)},${cy1.toFixed(1)} ${cx2.toFixed(1)},${cy2.toFixed(1)} ${p[0].toFixed(1)},${p[1].toFixed(1)}`;
-    }).join(' ');
-    if(close) d += ` L ${pts[n-1][0]},${H} L ${pts[0][0]},${H} Z`;
-    return d;
-  }
-
-  const ac = coords(actual), ec = coords(expected), lc = coords(load);
-
-  document.getElementById('solarFill').setAttribute('d', smooth(ac, true));
-  document.getElementById('solarLine').setAttribute('d', smooth(ac, false));
-  document.getElementById('loadFill').setAttribute('d', smooth(lc, true));
-  document.getElementById('loadLine').setAttribute('d', smooth(lc, false));
-  document.getElementById('expPath').setAttribute('d', smooth(ec, false));
+// === FILTER FUNCTION ===
+function setFilter(period) {
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  // Simulated data based on filter
+  const data = {
+    today: { generated: 12.4, consumed: 8.2, exported: 4.2, saved: 340 },
+    week: { generated: 78, consumed: 52, exported: 26, saved: 1820 },
+    month: { generated: 312, consumed: 198, exported: 114, saved: 2340 },
+    '3month': { generated: 892, consumed: 578, exported: 314, saved: 6890 },
+    '6month': { generated: 1724, consumed: 1156, exported: 568, saved: 13420 },
+    '1year': { generated: 3240, consumed: 2180, exported: 1060, saved: 25200 },
+    custom: { generated: 156, consumed: 98, exported: 58, saved: 1170 }
+  };
+  
+  const d = data[period] || data.month;
+  document.getElementById('kpi-generated').innerHTML = d.generated + '<span class="kpi-unit">kWh</span>';
+  document.getElementById('kpi-consumed').innerHTML = d.consumed + '<span class="kpi-unit">kWh</span>';
+  document.getElementById('kpi-exported').innerHTML = d.exported + '<span class="kpi-unit">kWh</span>';
+  document.getElementById('kpi-saved').innerHTML = '₹' + d.saved.toLocaleString() + '<span class="kpi-unit"></span>';
 }
-buildChart();
 
 // === LIVE DATA SIMULATION ===
 function liveUpdate() {
   const gen = (2.41 + (Math.random()-0.5)*0.12).toFixed(2);
-  const load = (1.38 + (Math.random()-0.5)*0.08).toFixed(2);
-  const exp = Math.max(0, gen - load).toFixed(2);
-  const eff = Math.round((gen / 3.5) * 100);
-
-  document.getElementById('kpi-gen').innerHTML = gen + '<span class="kpi-unit">kW</span>';
-  document.getElementById('kpi-load').innerHTML = load + '<span class="kpi-unit">kW</span>';
-  document.getElementById('kpi-exp').innerHTML = exp + '<span class="kpi-unit">kW</span>';
-  document.getElementById('kpi-eff').innerHTML = eff + '<span class="kpi-unit">%</span>';
-  document.getElementById('ff-gen').textContent = gen + ' kW';
-  document.getElementById('ff-load').textContent = load + ' kW';
-  document.getElementById('ff-grid').textContent = exp + ' kW';
+  const home = (1.38 + (Math.random()-0.5)*0.08).toFixed(2);
+  const grid = Math.max(0, (gen - home)).toFixed(2);
+  
+  document.getElementById('flow-gen').textContent = gen + ' kW';
+  document.getElementById('flow-home').textContent = home + ' kW';
+  document.getElementById('flow-grid').textContent = grid + ' kW';
 }
 setInterval(liveUpdate, 4000);
-
-// === MARK CLEANED ===
-function markCleaned() {
-  document.getElementById('cleanBanner').innerHTML = `
-    <div class="ph-left">
-      <div class="ph-icon">✅</div>
-      <div class="ph-info">
-        <h3 style="color:var(--green)">Panels Marked as Cleaned!</h3>
-        <p>Baseline reset. System will monitor and alert again if efficiency drops below 80% on clear days. Next check in 14 days.</p>
-      </div>
-    </div>
-    <div class="ph-meters">
-      <div class="ph-metric"><div class="val" style="color:var(--green)">0</div><div class="lbl">Days Since Clean</div></div>
-      <div class="ph-metric"><div class="val" style="color:var(--green)">+0.9kW</div><div class="lbl">Power Recovered</div></div>
-      <div class="ph-metric"><div class="val" style="color:var(--green)">~95%</div><div class="lbl">Expected Eff.</div></div>
-    </div>`;
-  document.getElementById('cleanBanner').style.background = 'linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.05))';
-  document.getElementById('cleanBanner').style.borderColor = 'rgba(5,150,105,0.25)';
-  document.getElementById('cleanAlert').classList.add('hidden');
-  // Update KPIs to show clean state
-  document.getElementById('kpi-eff').innerHTML = '94<span class="kpi-unit">%</span>';
-}
 </script>
+
 </body>
 </html>
