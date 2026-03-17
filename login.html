@@ -327,7 +327,7 @@ document.getElementById('loginForm').addEventListener('submit', e=>{
     document.getElementById('errorMsg').classList.remove('show');
     
     setTimeout(()=>{
-      if(user.role === 'admin') window.location.href = 'users_light.html';
+      if(user.role === 'admin') window.location.href = 'index.html';
       else window.location.href = 'index.html';
     }, 600);
   } else {

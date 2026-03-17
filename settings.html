@@ -82,9 +82,10 @@ header {
   border:none; background:none;
   transition:all 0.2s;
 }
-.nav-tab:hover, .nav-tab.active {
-  background:var(--panel2);
-  color:var(--text);
+.nav-tab:hover { background:var(--panel2); color:var(--text); }
+.nav-tab.active { 
+  color:var(--text); 
+  border-bottom: 3px solid var(--sun2); 
 }
 
 .header-right { display:flex; align-items:center; gap:12px; }
