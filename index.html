@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+nogi<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SolarOS Pro — IoT Dashboard</title>
+<title>Solar Pro — IoT Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=DM+Sans:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -29,7 +29,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   min-height: 100vh;
 }
@@ -73,10 +73,91 @@ header {
 }
 .nav-tab:hover, .nav-tab.active { background:var(--panel2); color:var(--text); }
 .header-right { display:flex; align-items:center; gap:12px; }
-.live-chip { display:flex; align-items:center; gap:7px; background: rgba(5,150,105,0.1); border:1px solid rgba(5,150,105,0.25); border-radius:20px; padding:5px 13px; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--green); }
+@media (max-width: 768px) { 
+  .kpi-row { grid-template-columns: 1fr; gap:24px; } 
+  .kpi-card { padding:28px; margin-bottom:24px; min-height:auto !important; } 
+  .filter-bar { flex-direction:column !important; gap:20px; padding:24px; } 
+  .filter-group { justify-content:center; flex-wrap:wrap; } 
+  .grid-2, .grid-3 { grid-template-columns: 1fr !important; gap:24px; } 
+  .header-right { flex-wrap:wrap; gap:8px; } 
+  .Btn { order:-1; } 
+}
+.filter-btn { white-space:nowrap; padding:12px 20px; flex:1; min-width:100px; }
+@media (max-width: 480px) { 
+  main { padding:16px !important; } 
+  .card { padding:20px; } 
+  .kpi-value { font-size:28px !important; } 
+  .donut-container { flex-direction:column !important; gap:16px; text-align:center; } 
+  .donut { width:80px !important; height:80px !important; } 
+}
+html { font-size:15px; }
+@media (max-width: 768px) { html { font-size:14px; } }
+@media (max-width: 480px) { html { font-size:13px; } }
+.Btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition-duration: 0.3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  background-color: white;
+}
+.sign {
+  width: 100%;
+  transition-duration: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sign svg {
+  width: 17px;
+}
+.sign svg path {
+  fill: black;
+}
+.text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition-duration: 0.3s;
+}
+.Btn:hover {
+  background-color: black;
+  width: 125px;
+  border-radius: 40px;
+  transition-duration: 0.3s;
+}
+.Btn:hover .sign {
+  width: 30%;
+  transition-duration: 0.3s;
+  padding-left: 20px;
+}
+.Btn:hover .sign svg path {
+  fill: white;
+}
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: 0.3s;
+  padding-right: 10px;
+}
+.Btn:active {
+  transform: translate(2px, 2px);
+}
+.live-chip { display:flex; align-items:center; gap:7px; background: rgba(5,150,105,0.1); border:1px solid rgba(5,150,105,0.25); border-radius:20px; padding:5px 13px; font-family:'Roboto', sans-serif; font-size:11px; color:var(--green); }
 .live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(5,150,105,0.5)} 50%{opacity:0.6;box-shadow:0 0 0 4px rgba(5,150,105,0)} }
-#clock { font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--muted2); background:var(--panel); padding:6px 12px; border-radius:8px; border:1px solid var(--border); }
+/* Removed clock per user request */
 .inverter-badge { background:var(--panel2); border:1px solid var(--border2); border-radius:8px; padding:6px 12px; font-size:12px; display:flex; align-items:center; gap:6px; }
 .inv-dot { width:7px; height:7px; border-radius:50%; background:var(--sun); }
 main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin:0 auto; }
@@ -104,7 +185,7 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
   font-weight:600;
   cursor:pointer;
   transition:all 0.2s;
-  font-family:'JetBrains Mono', monospace;
+  font-family:'Roboto', sans-serif;
 }
 .filter-btn:hover { border-color:var(--sun); color:var(--sun); }
 .filter-btn.active { background:var(--sun); color:#1a0a00; border-color:var(--sun); }
@@ -113,7 +194,7 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
   padding:8px 12px;
   border:1px solid var(--border2);
   border-radius:8px;
-  font-family:'JetBrains Mono', monospace;
+  font-family:'Roboto', sans-serif;
   font-size:12px;
 }
 
@@ -130,17 +211,17 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
 .kpi-card:hover { border-color:var(--border2); box-shadow:0 4px 20px rgba(0,0,0,0.08); }
 .kpi-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
 .kpi-icon { font-size:24px; }
-.kpi-badge { font-size:10px; padding:3px 8px; border-radius:6px; font-family:'JetBrains Mono', monospace; font-weight:600; }
+.kpi-badge { font-size:10px; padding:3px 8px; border-radius:6px; font-family:'Roboto', sans-serif; font-weight:600; }
 .kpi-badge.up { background:rgba(5,150,105,0.1); color:var(--green); }
 .kpi-badge.down { background:rgba(196,29,58,0.1); color:var(--red); }
-.kpi-label { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-family:'JetBrains Mono', monospace; margin-bottom:8px; }
+.kpi-label { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-family:'Roboto', sans-serif; margin-bottom:8px; }
 .kpi-value { font-size:32px; font-weight:900; line-height:1; }
 .kpi-value.sun { color:var(--sun); }
 .kpi-value.red { color:var(--red); }
 .kpi-value.green { color:var(--green); }
 .kpi-value.blue { color:var(--blue); }
 .kpi-unit { font-size:14px; font-weight:400; color:var(--muted2); margin-left:2px; }
-.kpi-sub { font-size:11px; color:var(--muted); margin-top:6px; font-family:'JetBrains Mono', monospace; }
+.kpi-sub { font-size:11px; color:var(--muted); margin-top:6px; font-family:'Roboto', sans-serif; }
 
 /* Donut Chart */
 .donut-container { display:flex; align-items:center; gap:16px; margin-top:10px; }
@@ -151,7 +232,7 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
 .donut svg { transform:rotate(-90deg); }
 .donut-bg { fill:none; stroke:var(--panel2); stroke-width:8; }
 .donut-fill { fill:none; stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
-.donut-center { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:14px; font-weight:700; font-family:'JetBrains Mono', monospace; }
+.donut-center { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:14px; font-weight:700; font-family:'Roboto', sans-serif; }
 .donut-legend { display:flex; flex-direction:column; gap:4px; font-size:11px; }
 .donut-legend-item { display:flex; align-items:center; gap:6px; }
 .donut-dot { width:8px; height:8px; border-radius:50%; }
@@ -161,7 +242,7 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
 .grid-3 { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
 .card { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:22px; }
 .card-title {
-  font-family:'JetBrains Mono', monospace;
+  font-family:'Roboto', sans-serif;
   font-size:10px;
   text-transform:uppercase;
   letter-spacing:1.5px;
@@ -169,7 +250,7 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
   margin-bottom:18px;
   display:flex; align-items:center; justify-content:space-between;
 }
-.card-title .tag { font-size:10px; padding:3px 9px; border-radius:20px; font-family:'JetBrains Mono', monospace; }
+.card-title .tag { font-size:10px; padding:3px 9px; border-radius:20px; font-family:'Roboto', sans-serif; }
 .tag-live { background:rgba(5,150,105,0.1); color:var(--green); border:1px solid rgba(5,150,105,0.3); }
 .tag-warn { background:rgba(251,146,60,0.1); color:var(--warn); border:1px solid rgba(251,146,60,0.3); }
 
@@ -189,7 +270,7 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
 .alert-card.info { border-color:var(--blue); }
 .al-ico { font-size:18px; flex-shrink:0; }
 .al-txt { font-size:12px; line-height:1.5; flex:1; }
-.al-time { font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-top:4px; }
+.al-time { font-size:10px; color:var(--muted); font-family:'Roboto', sans-serif; margin-top:4px; }
 
 /* Benefits Section */
 .benefit-card {
@@ -204,7 +285,7 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
 .benefit-icon { font-size:20px; }
 .benefit-title { font-weight:700; font-size:14px; }
 .benefit-desc { font-size:12px; color:var(--muted2); line-height:1.5; }
-.benefit-impact { display:inline-block; margin-top:8px; padding:4px 10px; background:rgba(5,150,105,0.1); color:var(--green); border-radius:6px; font-size:11px; font-weight:600; font-family:'JetBrains Mono', monospace; }
+.benefit-impact { display:inline-block; margin-top:8px; padding:4px 10px; background:rgba(5,150,105,0.1); color:var(--green); border-radius:6px; font-size:11px; font-weight:600; font-family:'Roboto', sans-serif; }
 
 /* Energy Flow */
 .flow-box {
@@ -214,14 +295,14 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
   padding:14px;
   text-align:center;
 }
-.flow-box .fb-label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+.flow-box .fb-label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-family:'Roboto', sans-serif; }
 .flow-box .fb-val { font-size:22px; font-weight:800; margin-top:4px; }
 .flow-arrow { text-align:center; color:var(--sun); font-size:20px; margin:8px 0; }
 
 /* Mini Stats */
 .mini-stats { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 .mini-stat { background:var(--panel2); border-radius:10px; padding:12px; text-align:center; }
-.mini-stat .val { font-size:18px; font-weight:800; font-family:'JetBrains Mono', monospace; }
+.mini-stat .val { font-size:18px; font-weight:800; font-family:'Roboto', sans-serif; }
 .mini-stat .lbl { font-size:10px; color:var(--muted); text-transform:uppercase; margin-top:4px; }
 </style>
 </head>
@@ -239,14 +320,23 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
     <button class="nav-tab" onclick="window.location.href='setup.html'">Setup Guide</button>
     <button class="nav-tab" onclick="window.location.href='settings.html'">⚙️ Settings</button>
   </div>
-  <div class="header-right">
-    <div class="inverter-badge">
-      <div class="inv-dot"></div>
-      <span id="invName">Inverter: WiFi Connected</span>
+    <div class="header-right">
+      <div class="status-stack">
+        <div class="live-chip"><div class="live-dot"></div>LIVE</div>
+        <div class="inverter-badge">
+          <div class="inv-dot"></div>
+          <span id="invName">WiFi Connected</span>
+        </div>
+      </div>
+      <button class="Btn" onclick="logout()">
+        <div class="sign">
+          <svg viewBox="0 0 512 512">
+            <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+          </svg>
+        </div>
+        <div class="text">Logout</div>
+      </button>
     </div>
-    <div class="live-chip"><div class="live-dot"></div>LIVE</div>
-    <div id="clock">00:00:00</div>
-  </div>
 </header>
 
 <main>
@@ -334,7 +424,7 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
       <div class="kpi-sub">Earning credits</div>
       <div class="donut-container">
         <div class="donut">
-          <svg viewBox="0 0 36 36">
+          <svg viewBox="0 0 36 36">whether wifi
             <path class="donut-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
             <path class="donut-fill" stroke="var(--green)" stroke-dasharray="45, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
           </svg>
@@ -509,6 +599,7 @@ main { position:relative; z-index:1; padding:24px 28px; max-width:1600px; margin
 
 <script>
 // === CLOCK ===
+// Check authentication first\nif(!localStorage.getItem('solarCurrentUser')) {\n  window.location.href = 'login_light.html';\n}\n\nfunction tick() {\n  document.getElementById('clock').textContent = new Date().toLocaleTimeString();\n}\nsetInterval(tick, 1000); tick();\n\n// === FILTER FUNCTION ===
 function tick() {
   document.getElementById('clock').textContent = new Date().toLocaleTimeString();
 }
